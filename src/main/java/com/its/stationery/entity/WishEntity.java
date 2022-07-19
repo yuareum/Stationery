@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
-@Table(name = "wish")
+@Table(name = "wish_table")
 public class WishEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,9 +37,12 @@ public class WishEntity {
     @Column(length = 20, nullable = false)
     private String wishMemberId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private ProductEntity productEntity;
 
 }

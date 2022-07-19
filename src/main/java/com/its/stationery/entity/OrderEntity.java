@@ -3,14 +3,13 @@ package com.its.stationery.entity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
-@Table(name = "order")
+@Table(name = "order_table")
 public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,10 +37,11 @@ public class OrderEntity {
     @Column(nullable = false)
     private LocalDateTime orderCreatedTime;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50)
     private String orderFileName;
 
     @ColumnDefault("0")
+    @Column(nullable = false)
     private int adminProcess;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,8 +51,6 @@ public class OrderEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
-
-
 
 
 

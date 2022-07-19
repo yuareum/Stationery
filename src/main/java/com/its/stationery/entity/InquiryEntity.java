@@ -6,10 +6,12 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
-@Table(name = "inquiry")
+@Table(name = "inquiry_table")
 public class InquiryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +33,9 @@ public class InquiryEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
+
+    @OneToMany(mappedBy = "inquiryEntity", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<CommentEntity> commentEntity = new ArrayList<>();
 
 
 }

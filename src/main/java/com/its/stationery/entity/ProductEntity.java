@@ -2,16 +2,14 @@ package com.its.stationery.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter @Setter
-@Table(name = "product")
+@Table(name = "product_table")
 public class ProductEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,10 +49,7 @@ public class ProductEntity extends BaseEntity {
     @OneToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ShoppingCartEntity> shoppingCartEntityList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<WishEntity> wishEntityList = new ArrayList<>();
-
-
-
 
 }

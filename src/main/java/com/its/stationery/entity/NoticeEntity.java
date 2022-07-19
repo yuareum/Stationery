@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-@Table(name = "notice")
+@Table(name = "notice_table")
 public class NoticeEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +28,7 @@ public class NoticeEntity extends BaseEntity{
     private String noticeFileName;
 
     @ColumnDefault("0")
+    @Column(nullable = false)
     private int noticeHits;
 
 }

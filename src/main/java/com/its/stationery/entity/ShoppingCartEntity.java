@@ -5,10 +5,12 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
-@Table(name = "shoppingCart")
+@Table(name = "shoppingCart_table")
 public class ShoppingCartEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,8 +38,12 @@ public class ShoppingCartEntity {
     @Column(nullable = false)
     private Long shoppingCartPrice;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private ProductEntity productEntity;
 
 }
