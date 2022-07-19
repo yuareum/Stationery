@@ -78,4 +78,10 @@ public class MemberService {
         }
 
     }
+
+    public Long update(MemberDTO memberDTO) {
+        MemberEntity memberEntity = MemberEntity.toUpdateEntity(memberDTO);
+        Long id = memberRepository.save(memberEntity).getId();
+        return id;
+    }
 }
