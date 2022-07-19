@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller
@@ -32,4 +33,19 @@ public class MemberController {
     public String loginForm(){
         return "memberPages/login";
     }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session){
+        MemberDTO loginResult = memberService.login(memberDTO);
+        if (loginResult != null) {
+            session.setAttribute("loginId", loginResult.getId());
+            session.setAttribute("loginId", loginResult.getMemberId());
+            return "redirect:/";
+
+        }
+        else {
+            return "memberPages/login";
+        }
+    }
+
 }
