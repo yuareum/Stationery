@@ -2,6 +2,7 @@ package com.its.stationery.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -37,7 +38,8 @@ public class ProductEntity extends BaseEntity {
     @Column(length = 50)
     private String productFileName;
 
-    @Column
+    @ColumnDefault("0")
+    @Column(nullable = false)
     private int productHits;
 
     @OneToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
