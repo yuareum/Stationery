@@ -4,6 +4,7 @@ import com.its.stationery.dto.MemberDTO;
 import com.its.stationery.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -39,13 +40,26 @@ public class MemberController {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             session.setAttribute("loginId", loginResult.getId());
-            session.setAttribute("loginId", loginResult.getMemberId());
+            session.setAttribute("loginMemberId", loginResult.getMemberId());
             return "redirect:/";
 
         }
         else {
             return "memberPages/login";
         }
+    }
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
+    }
+
+    @GetMapping("/myPage/{id}")
+    public String myPage(@PathVariable("id") Long id, Model model){
+        MemberDTO memberDTO = memberService.findById(id);
+
+        model.addAttribute("member", memberDTO);
+        return "memberPages/myPage";
     }
 
 }
