@@ -23,7 +23,7 @@
                             <a th:if="${session.loginMemberId.toString().equals('admin')}" class="nav-link" href="/member/admin">관리자페이지</a>
                         </li>
                         <li class="nav-item" th:if="${session.loginId}">
-                            <a class="nav-link" th:href="@{|/member/myPage/${session.loginId}|}">MyPage</a>
+                            <a class="nav-link"  th:if="${session.loginMemberId.toString()} != 'admin'" th:href="@{|/member/myPage/${session.loginId}|}">MyPage</a>
                         </li>
                         <li class="nav-item" th:if="${session.loginId}">
                             <a class="nav-link" href="/member/logout">로그아웃</a>

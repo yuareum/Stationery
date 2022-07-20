@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>상품 등록</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <style>
+        .container{
+            margin-top: 20px;
+        }
+        .nav{
+            width: 180px;
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="commonPages/header :: header"></th:block>
+<div class="container">
+    <div class="d-flex align-items-start">
+        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="false" onclick="location.href='/member/admin'">Home</button>
+            <button class="nav-link" id="v-pills-member-tab" data-bs-toggle="pill" data-bs-target="#v-pills-member" type="button" role="tab" aria-controls="v-pills-member" aria-selected="false" onclick="location.href='/member'">회원 관리</button>
+            <button class="nav-link active" id="v-pills-product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-product" type="button" role="tab" aria-controls="v-pills-product" aria-selected="true" onclick="location.href='/product/save-form'">상품 등록</button>
+            <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button>
+        </div>
+        <div class="container">
+            <form action="/product/save" method="post">
+                <input type="hidden" name="productAdmin" th:value="${session.loginMemberId}"><br>
+                상품명<input type="text" name="productName" class="form-control"><br>
+                상품 카테고리 <select name="categoryName" class="form-control">
+                            <option value="필기류" selected>필기류</option>
+                            <option value="노트/수첩/메모지">노트/수첩/메모지</option>
+                            <option value="파일/사무용품">파일/사무용품</option>
+                            <option value="팬시용품">팬시용품</option>
+                            </select><br>
+                상품 브랜드 <input type="text" class="form-control" name="productBrand"><br>
+                상품 가격 <input type="text" class="form-control" name="productPrice"><br>
+                상품 상세 정보 <textarea class="form-control" name="productInformation" cols="5" rows="10"></textarea><br>
+                첨부파일 <input type="file" class="form-control" name="productFile"><br>
+                <input type="submit" class="btn btn-outline-primary" value="상품 등록">
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -120,7 +120,7 @@ public class MemberController {
     public String findById(@PathVariable("id") Long id, Model model){
         MemberDTO memberDTO = memberService.findById(id);
         model.addAttribute("member", memberDTO);
-        return "/memberPages/detail";
+        return "memberPages/detail";
     }
 
     @DeleteMapping("/{id}")

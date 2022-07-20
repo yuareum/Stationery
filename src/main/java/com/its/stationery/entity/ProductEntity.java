@@ -1,5 +1,6 @@
 package com.its.stationery.entity;
 
+import com.its.stationery.dto.ProductDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -33,6 +34,9 @@ public class ProductEntity extends BaseEntity {
     private Long productPrice;
 
     @Column(nullable = false)
+    private String productInformation;
+
+    @Column(nullable = false)
     private String productCreatedTime;
 
     @Column(length = 50)
@@ -41,6 +45,9 @@ public class ProductEntity extends BaseEntity {
     @ColumnDefault("0")
     @Column(nullable = false)
     private int productHits;
+
+    @Column(length = 20, nullable = false)
+    private String categoryName;
 
     @OneToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ReviewEntity> reviewEntityList = new ArrayList<>();
@@ -54,4 +61,17 @@ public class ProductEntity extends BaseEntity {
     @OneToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<WishEntity> wishEntityList = new ArrayList<>();
 
+
+    public static ProductEntity toSaveEntity(ProductDTO productDTO, MemberEntity memberEntity) {
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setProductCounts(productDTO.getProductCounts());
+        productEntity.setCategoryName(productEntity.getCategoryName());
+        productEntity.setProductAdmin(memberEntity.getMemberId());
+        productEntity.setProductBrand(productDTO.getProductBrand());
+        productEntity.setProductName(productDTO.getProductName());
+        productEntity.setProductPrice(productDTO.getProductPrice());
+        productEntity.setProductInformation(productDTO.getProductInformation());
+        productEntity.setProductFileName(productDTO.getProductFileName());
+        return productEntity;
+    }
 }
