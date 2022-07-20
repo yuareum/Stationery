@@ -7,6 +7,8 @@
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </head>
 <body>
+<th:block th:replace="commonPages/header :: header"></th:block>
+
 <div class="container">
     <h2>회원 탈퇴</h2>
     <form action="/member/withdrawal" method="post" name="withdrawal">

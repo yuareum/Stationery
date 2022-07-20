@@ -12,6 +12,8 @@
     }
 </style>
 <body>
+<th:block th:replace="commonPages/header :: header"></th:block>
+
 <div class="container">
     <h2>회원 정보 수정</h2>
     <form action="/member/update" method="post" name="updateForm">
@@ -26,6 +28,7 @@
     </form>
 </div>
 </body>
+
 <script th:inline="javascript">
     const memberUpdate = () => {
         const password = document.getElementById("password").value;

@@ -1,10 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>회원 목록</title>
+    <title>회원목록</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <style>
+        .container{
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
+<th:block th:replace="commonPages/header :: header"></th:block>
+<div class="container">
+    <div class="d-flex align-items-start">
+        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="false" onclick="location.href='/member/admin'">Home</button>
+            <button class="nav-link active" id="v-pills-member-tab" data-bs-toggle="pill" data-bs-target="#v-pills-member" type="button" role="tab" aria-controls="v-pills-member" aria-selected="true" onclick="location.href='/member'">회원 관리</button>
+            <button class="nav-link" id="v-pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#v-pills-disabled" type="button" role="tab" aria-controls="v-pills-disabled" aria-selected="false" disabled>Disabled</button>
+            <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button>
+            <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button>
+        </div>
+        <div class="container">
+            <h2>회원목록</h2>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">회원 번호</th>
+                    <th scope="col">회원 이메일</th>
+                    <th scope="col">회원 이름</th>
+                    <th scope="col">회원 전화번호</th>
+                    <th scope="col">회원 상세 조회</th>
+                    <th scope="col">회원 삭제</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="member: ${memberList}">
+                    <td th:text="${member.id}"></td>
+                    <td th:text="${member.memberEmail}"></td>
+                    <td th:text="${member.memberName}"></td>
+                    <td th:text="${member.memberMobile}"></td>
+                    <td><a th:href="@{|/member/${member.id}|}">조회</a></td>
+                    <td>
+                        <button class="btn btn-secondary" th:onclick="deleteById([[${member.id}]])">삭제</button>
+                    </td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
 
+            <div class="container">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <!--첫페이지 요청 링크-->
+                        <a class="page-link" th:href="@{/member(page=1)}">
+                            <span>First</span>
+                        </a>
+                    </li>
+
+                    <li th:class="${memberList.first} ? 'disabled'" class="page-item">
+                        <!--boardList.first: isFirst()
+                            boardList.number: getNumber()-->
+                        <a class="page-link" th:href="${memberList.first} ? '#' : @{/member(page=${memberList.number})}">
+                            <span><</span> <!-- < -->
+                        </a>
+                    </li>
+
+                    <!-- startPage ~ endPage 까지 숫자를 만들어주는 역할 -->
+                    <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+                        th:class="${page == memberList.number + 1} ? 'page-item active'" class="page-item">
+                        <a class="page-link" th:text="${page}" th:href="@{/member(page=${page})}"></a>
+                    </li>
+
+
+                    <li th:class="${memberList.last} ? 'disabled'">
+                        <a class="page-link" th:href="${memberList.last} ? '#' : @{/member(page=${memberList.number + 2})}">
+                            <span>&gt;</span>
+                        </a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/member(page=${memberList.totalPages})}">
+                            <span>Last</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<script th:inline="javascript">
+    const deleteById = (id) => {
+        $.ajax({
+            type: "delete",
+            url: "/member/"+id,
+            success:function (){
+                location.href = "/member/";
+            },
+            error:function (){
+                alert("ajax 실패");
+            }
+        });
+
+    }
+</script>
 </html>

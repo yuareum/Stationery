@@ -7,6 +7,8 @@
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </head>
 <body>
+<th:block th:replace="commonPages/header :: header"></th:block>
+
     <div class="container">
         <h2>My Page</h2>
         <button class="btn btn-outline-success" style="float: right;" th:onclick="'location.href=\''+ @{|/member/update/${member.id}|} + '\''">회원정보수정</button>

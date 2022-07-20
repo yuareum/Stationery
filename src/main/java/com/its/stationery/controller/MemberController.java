@@ -1,8 +1,12 @@
 package com.its.stationery.controller;
 
+import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.MemberDTO;
 import com.its.stationery.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -86,5 +90,27 @@ public class MemberController {
         memberService.delete((Long) session.getAttribute("loginId"));
         session.invalidate();
         return "redirect:/";
+    }
+
+    @GetMapping("/admin")
+    public String admin(Model model, HttpSession session){
+        MemberDTO memberDTO = memberService.findByMemberId((String) session.getAttribute("loginMemberId"));
+        if("admin".equals(memberDTO.getMemberId())) {
+            model.addAttribute("member", memberDTO);
+            return "memberPages/admin";
+        }
+        else{
+            return "redirect:/";
+        }
+    }
+    @GetMapping
+    public String findAll(@PageableDefault(page = 1) Pageable pageable, Model model) {
+        Page<MemberDTO> memberList = memberService.paging(pageable);
+        model.addAttribute("memberList", memberList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < memberList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : memberList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        return "memberPages/list";
     }
 }

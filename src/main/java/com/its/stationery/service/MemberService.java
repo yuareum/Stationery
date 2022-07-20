@@ -1,9 +1,14 @@
 package com.its.stationery.service;
 
+import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.MemberDTO;
 import com.its.stationery.entity.MemberEntity;
 import com.its.stationery.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -87,5 +92,35 @@ public class MemberService {
 
     public void delete(Long id) {
         memberRepository.deleteById(id);
+    }
+
+
+    public MemberDTO findByMemberId(String memberId) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberId(memberId);
+        if(optionalMemberEntity.isPresent()){
+            MemberEntity memberEntity = optionalMemberEntity.get();
+            MemberDTO memberDTO = MemberDTO.toMemberDTO(memberEntity);
+            return  memberDTO;
+        }
+        else{
+            return null;
+        }
+    }
+
+    public Page<MemberDTO> paging(Pageable pageable) {
+        int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
+        // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
+//        page = page - 1;
+        // 삼항연산자
+        page = (page == 1)? 0: (page-1);
+        Page<MemberEntity> memberEntities = memberRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        Page<MemberDTO> memberList = memberEntities.map(
+                member -> new MemberDTO(member.getId(),
+                        member.getMemberId(),
+                        member.getMemberName(),
+                        member.getMemberEmail(),
+                        member.getMemberMobile()
+                ));
+        return memberList;
     }
 }
