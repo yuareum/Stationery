@@ -6,6 +6,14 @@
 </head>
 <body>
 <th:block th:replace="commonPages/header :: header"></th:block>
-
+<div class="container">
+    <h2 style="margin-top: 20px">회원 상세 조회</h2><br>
+    <img th:src="@{|/upload/${member.memberProfileName}|}" width="250" height="200" alt=""><br>
+    아이디 <input class="form-control" type="text" th:value="${member.memberId}" readonly>
+    비밀번호 <input class="form-control" type="text" th:value="${member.memberPassword}" readonly>
+    이메일 <input class="form-control" type="text" th:value="${member.memberEmail}" readonly>
+    이름 <input class="form-control" type="text" th:value="${member.memberName}" readonly>
+    전화번호 <input class="form-control" type="text" th:value="${member.memberMobile}" readonly>
+</div>
 </body>
 </html>
