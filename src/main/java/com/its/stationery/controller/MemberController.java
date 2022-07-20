@@ -73,4 +73,18 @@ public class MemberController {
         memberService.update(memberDTO);
         return "redirect:/member/myPage/" + memberDTO.getId();
     }
+
+    @GetMapping("/withdrawal/{id}")
+    public String withdrawalForm(@PathVariable("id") Long id, Model model){
+        MemberDTO memberDTO = memberService.findById(id);
+        model.addAttribute("member", memberDTO);
+        return "memberPages/withdrawal";
+    }
+
+    @PostMapping("/withdrawal")
+    public String withdrawal(HttpSession session){
+        memberService.delete((Long) session.getAttribute("loginId"));
+        session.invalidate();
+        return "redirect:/";
+    }
 }

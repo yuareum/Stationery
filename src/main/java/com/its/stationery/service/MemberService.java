@@ -84,4 +84,8 @@ public class MemberService {
         Long id = memberRepository.save(memberEntity).getId();
         return id;
     }
+
+    public void delete(Long id) {
+        memberRepository.deleteById(id);
+    }
 }
