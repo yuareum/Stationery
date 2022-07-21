@@ -13,6 +13,9 @@
         .nav{
             width: 180px;
         }
+        .btn{
+            width: 180px;
+        }
     </style>
 </head>
 <body>
@@ -42,6 +45,7 @@
                 상품 가격 <input type="text" class="form-control" name="productPrice"><br>
                 상품 상세 정보 <textarea class="form-control" name="productInformation" cols="5" rows="10"></textarea><br>
                 첨부파일 <input type="file" class="form-control" name="productFile"><br>
+                <input type="button" class="btn btn-outline-dark" value="취소" onclick="location.href='/member/admin'">
                 <input type="submit" class="btn btn-outline-primary" value="상품 등록">
             </form>
         </div>
