@@ -14,9 +14,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -38,7 +41,7 @@ public class ProductService {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberId(productDTO.getProductAdmin());
         if(optionalMemberEntity.isPresent()) {
             MemberEntity memberEntity = optionalMemberEntity.get();
-            if(memberEntity.getMemberId() == "admin"){
+            if(Objects.equals(memberEntity.getMemberId(), "admin")){
                 Long saveId = productRepository.save(ProductEntity.toSaveEntity(productDTO, memberEntity)).getId();
                 return saveId;
             }
@@ -50,13 +53,20 @@ public class ProductService {
             return null;
         }
     }
-
+    @Transactional
+    public List<ProductDTO> findAll() {
+        List<ProductEntity> productEntityList = productRepository.findAll();
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(ProductEntity product: productEntityList){
+            productDTOList.add(ProductDTO.toProductDTO(product));
+        }
+        return productDTOList;
+    }
     public Page<ProductDTO> paging(Pageable pageable) {
         int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
         page = (page == 1)? 0: (page-1);
         Page<ProductEntity> productEntities = productRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
         Page<ProductDTO> productList = productEntities.map(
-
             product -> new ProductDTO(product.getId(),
                     product.getProductName(),
                     product.getProductBrand(),
@@ -65,7 +75,7 @@ public class ProductService {
             ));
         return productList;
     }
-
+    @Transactional
     public ProductDTO detail(Long id) {
         productRepository.productHits(id);
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);

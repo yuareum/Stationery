@@ -28,7 +28,7 @@ public class ProductController {
     @PostMapping("/save")
     public String save(@ModelAttribute ProductDTO productDTO) throws IOException {
         Long id = productService.save(productDTO);
-        return "redirect:/product/"+ id;
+        return "redirect:/product/"+id;
     }
     @GetMapping
     public String findAll(@PageableDefault(page = 1) Pageable pageable, Model model){

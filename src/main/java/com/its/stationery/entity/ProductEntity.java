@@ -65,12 +65,13 @@ public class ProductEntity extends BaseEntity {
     public static ProductEntity toSaveEntity(ProductDTO productDTO, MemberEntity memberEntity) {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setProductCounts(productDTO.getProductCounts());
-        productEntity.setCategoryName(productEntity.getCategoryName());
+        productEntity.setCategoryName(productDTO.getCategoryName());
         productEntity.setProductAdmin(memberEntity.getMemberId());
         productEntity.setProductBrand(productDTO.getProductBrand());
         productEntity.setProductName(productDTO.getProductName());
         productEntity.setProductPrice(productDTO.getProductPrice());
         productEntity.setProductInformation(productDTO.getProductInformation());
+        productEntity.setProductCreatedTime(productDTO.getProductCreatedTime());
         productEntity.setProductFileName(productDTO.getProductFileName());
         return productEntity;
     }

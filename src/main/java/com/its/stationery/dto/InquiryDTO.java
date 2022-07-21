@@ -15,4 +15,5 @@ public class InquiryDTO {
     private String inquiryTitle;
     private String inquiryContents;
     private LocalDateTime inquiryCreatedTime;
+    private int commentCheck;
 }

@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class ProductDTO {
     private Long id;
     private int productCounts;
+    private String categoryName;
     private String productName;
     private String productAdmin;
     private String productBrand;
@@ -22,9 +23,9 @@ public class ProductDTO {
     private String productCreatedTime;
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;
+    private int productHits;
     private MultipartFile productFile;
     private String productFileName;
-    private int productHits;
 
     public ProductDTO(Long id, String productName, String productBrand, Long productPrice, String productFileName) {
         this.id = id;
@@ -35,5 +36,20 @@ public class ProductDTO {
     }
 
     public static ProductDTO toProductDTO(ProductEntity productEntity) {
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setId(productEntity.getId());
+        productDTO.setProductCounts(productEntity.getProductCounts());
+        productDTO.setCategoryName(productEntity.getCategoryName());
+        productDTO.setProductAdmin(productEntity.getProductAdmin());
+        productDTO.setProductBrand(productEntity.getProductBrand());
+        productDTO.setProductHits(productEntity.getProductHits());
+        productDTO.setProductInformation(productEntity.getProductInformation());
+        productDTO.setProductName(productEntity.getProductName());
+        productDTO.setProductPrice(productEntity.getProductPrice());
+        productDTO.setProductCreatedTime(productEntity.getProductCreatedTime());
+        productDTO.setProductFileName(productEntity.getProductFileName());
+        productDTO.setCreatedTime(productEntity.getCreatedTime());
+        productDTO.setUpdatedTime(productEntity.getUpdatedTime());
+        return productDTO;
     }
 }

@@ -2,6 +2,7 @@ package com.its.stationery.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -29,6 +30,10 @@ public class InquiryEntity {
 
     @Column(nullable = false)
     private LocalDateTime inquiryCreatedTime;
+
+    @ColumnDefault("0")
+    @Column(nullable = false)
+    private int commentCheck;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
