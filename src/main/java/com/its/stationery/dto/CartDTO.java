@@ -1,11 +1,9 @@
 package com.its.stationery.dto;
 
+import com.its.stationery.entity.CartEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -13,5 +11,12 @@ import java.time.LocalDateTime;
 public class CartDTO {
     private Long id;
     private String cartMemberId;
+    private Long memberId;
 
+    public static CartDTO toCartDTO(CartEntity cartEntity) {
+        CartDTO cartDTO = new CartDTO();
+        cartDTO.setId(cartEntity.getId());
+        cartDTO.setCartMemberId(cartEntity.getCartMemberId());
+        return cartDTO;
+    }
 }

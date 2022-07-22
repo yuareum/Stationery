@@ -6,6 +6,7 @@ import com.its.stationery.entity.MemberEntity;
 import com.its.stationery.entity.ProductEntity;
 import com.its.stationery.repository.MemberRepository;
 import com.its.stationery.repository.ProductRepository;
+import com.its.stationery.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +29,8 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     private final MemberRepository memberRepository;
+
+    private final ReviewRepository reviewRepository;
 
     public Long save(ProductDTO productDTO) throws IOException {
         MultipartFile productFile = productDTO.getProductFile();
@@ -69,10 +72,10 @@ public class ProductService {
         Page<ProductDTO> productList = productEntities.map(
             product -> new ProductDTO(product.getId(),
                     product.getProductName(),
-                    product.getProductBrand(),
                     product.getProductPrice(),
                     product.getProductFileName()
             ));
+
         return productList;
     }
     @Transactional

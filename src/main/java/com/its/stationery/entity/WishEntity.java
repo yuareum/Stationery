@@ -2,10 +2,10 @@ package com.its.stationery.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -16,33 +16,22 @@ public class WishEntity {
     @Column
     private Long id;
 
-    @Column(length = 50)
-    private String wishFileName;
-
-    @Column(length = 50, nullable = false)
-    private String wishProductName;
-
-    @Column(length = 30, nullable = false)
-    private String wishProductBrand;
-
-    @Column(length = 30, nullable = false)
-    private String wishProductCreatedTime;
-
-    @Column(nullable = false)
-    private LocalDateTime wishCreatedTime;
-
-    @Column(nullable = false)
-    private Long wishPrice;
-
     @Column(length = 20, nullable = false)
     private String wishMemberId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private ProductEntity productEntity;
+    @OneToMany(mappedBy = "wishEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<WishProductEntity> wishProductEntityList = new ArrayList<>();
+
+
+    public static WishEntity toSaveEntity(String memberId,MemberEntity memberEntity) {
+        WishEntity wishEntity = new WishEntity();
+        wishEntity.setWishMemberId(memberId);
+        wishEntity.setMemberEntity(memberEntity);
+        return wishEntity;
+    }
 
 }

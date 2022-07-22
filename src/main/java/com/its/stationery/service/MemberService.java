@@ -2,8 +2,12 @@ package com.its.stationery.service;
 
 import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.MemberDTO;
+import com.its.stationery.entity.CartEntity;
 import com.its.stationery.entity.MemberEntity;
+import com.its.stationery.entity.WishEntity;
+import com.its.stationery.repository.CartRepository;
 import com.its.stationery.repository.MemberRepository;
+import com.its.stationery.repository.WishRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,12 +20,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final CartRepository cartRepository;
+    private final WishRepository wishRepository;
 
     public Long save(MemberDTO memberDTO) throws IOException {
         MultipartFile memberProfile = memberDTO.getMemberProfile();

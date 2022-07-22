@@ -26,4 +26,10 @@ public class CartEntity {
     @OneToMany(mappedBy = "cartEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CartProductEntity> cartProductEntityList = new ArrayList<>();
 
+    public static CartEntity toSaveEntity(MemberEntity memberEntity) {
+        CartEntity cartEntity = new CartEntity();
+        cartEntity.setCartMemberId(memberEntity.getMemberId());
+        cartEntity.setMemberEntity(memberEntity);
+        return cartEntity;
+    }
 }

@@ -1,5 +1,6 @@
 package com.its.stationery.dto;
 
+import com.its.stationery.entity.CartProductEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartProductDTO {
+    private Long id;
     private String cartProductName;
     private String cartProductBrand;
     private String cartProductCreatedTime;
@@ -19,4 +21,17 @@ public class CartProductDTO {
     private String cartProductFileName;
     private Long cartProductPrice;
     private int cartProductCounts;
+
+    public static CartProductDTO toCartProductDTO(CartProductEntity cartProductEntity) {
+        CartProductDTO cartProductDTO = new CartProductDTO();
+        cartProductDTO.setId(cartProductEntity.getId());
+        cartProductDTO.setCartProductCounts(cartProductEntity.getCartProductCounts());
+        cartProductDTO.setCartProductBrand(cartProductEntity.getCartProductBrand());
+        cartProductDTO.setCartProductName(cartProductEntity.getCartProductName());
+        cartProductDTO.setCartProductPrice(cartProductEntity.getCartProductPrice());
+        cartProductDTO.setCartProductCreatedTime(cartProductEntity.getCartProductCreatedTime());
+        cartProductDTO.setCartProductFileName(cartProductEntity.getCartProductFileName());
+        cartProductDTO.setCreatedTime(cartProductEntity.getCreatedTime());
+        return cartProductDTO;
+    }
 }

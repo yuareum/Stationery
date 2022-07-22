@@ -2,7 +2,9 @@ package com.its.stationery.controller;
 
 import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.MemberDTO;
+import com.its.stationery.service.CartService;
 import com.its.stationery.service.MemberService;
+import com.its.stationery.service.WishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,14 +23,24 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+
+    private final CartService cartService;
+    private final WishService wishService;
     @GetMapping("/save-form")
     public String saveForm(){
         return "memberPages/save";
     }
     @PostMapping("/save")
     public String save(@ModelAttribute MemberDTO memberDTO) throws IOException {
-        memberService.save(memberDTO);
-        return "redirect:/member/login-form";
+        Long id = memberService.save(memberDTO);
+        if(id >0){
+            cartService.save(memberDTO.getMemberId());
+            wishService.save(memberDTO.getMemberId());
+            return "redirect:/member/login-form";
+        }
+        else{
+            return "saveFall";
+        }
     }
     @PostMapping("/dup-check")
     public @ResponseBody String dupCheck(@RequestParam("memberId") String memberId){

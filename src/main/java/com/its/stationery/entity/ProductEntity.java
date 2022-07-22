@@ -59,7 +59,7 @@ public class ProductEntity extends BaseEntity {
     private List<CartProductEntity> cartProductEntityList = new ArrayList<>();
 
     @OneToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<WishEntity> wishEntityList = new ArrayList<>();
+    private List<WishProductEntity> wishProductEntityList = new ArrayList<>();
 
 
     public static ProductEntity toSaveEntity(ProductDTO productDTO, MemberEntity memberEntity) {

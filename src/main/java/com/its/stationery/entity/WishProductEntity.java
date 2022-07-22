@@ -8,41 +8,34 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
-@Table(name = "cart_product_table")
-public class CartProductEntity {
+@Table(name = "wish_product_table")
+public class WishProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
 
     @Column(length = 50)
-    private String cartProductFileName;
+    private String wishFileName;
 
     @Column(length = 50, nullable = false)
-    private String cartProductName;
+    private String wishProductName;
 
     @Column(length = 30, nullable = false)
-    private String cartProductBrand;
+    private String wishProductBrand;
 
     @Column(length = 30, nullable = false)
-    private String cartProductCreatedTime;
-
-
-    @Column(nullable = false)
-    private LocalDateTime createdTime;
+    private String wishProductCreatedTime;
 
     @Column(nullable = false)
-    private Long cartProductPrice;
+    private Long wishPrice;
 
-    @Column(nullable = false)
-    private int cartProductCounts;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
-    private CartEntity cartEntity;
+    @JoinColumn(name = "wish_id")
+    private WishEntity wishEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
-
 }

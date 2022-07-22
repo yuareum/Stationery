@@ -27,10 +27,9 @@ public class ProductDTO {
     private MultipartFile productFile;
     private String productFileName;
 
-    public ProductDTO(Long id, String productName, String productBrand, Long productPrice, String productFileName) {
+    public ProductDTO(Long id, String productName, Long productPrice, String productFileName) {
         this.id = id;
         this.productName = productName;
-        this.productBrand = productBrand;
         this.productPrice = productPrice;
         this.productFileName = productFileName;
     }
