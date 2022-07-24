@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class WishProductDTO {
     private Long id;
+    private String wishMemberId;
     private String wishProductName;
     private String wishProductBrand;
     private Long wishPrice;

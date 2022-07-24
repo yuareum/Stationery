@@ -15,6 +15,9 @@ public class CartProductEntity {
     @Column
     private Long id;
 
+    @Column(length = 20)
+    private String cartMemberId;
+
     @Column(length = 50)
     private String cartProductFileName;
 
@@ -26,7 +29,6 @@ public class CartProductEntity {
 
     @Column(length = 30, nullable = false)
     private String cartProductCreatedTime;
-
 
     @Column(nullable = false)
     private LocalDateTime createdTime;

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 public class CartDTO {
     private Long id;
     private String cartMemberId;
-    private Long memberId;
 
     public static CartDTO toCartDTO(CartEntity cartEntity) {
         CartDTO cartDTO = new CartDTO();

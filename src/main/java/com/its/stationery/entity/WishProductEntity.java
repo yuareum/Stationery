@@ -15,6 +15,9 @@ public class WishProductEntity {
     @Column
     private Long id;
 
+    @Column(length = 20)
+    private String wishMemberId;
+
     @Column(length = 50)
     private String wishFileName;
 

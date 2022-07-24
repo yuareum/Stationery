@@ -19,12 +19,13 @@ import java.util.List;
 public class CartController {
     private final CartService cartService;
     private final CartProductService cartProductService;
-    @GetMapping("/{cartMemberId}")
-    public String findByMemberId(@PathVariable("cartMemberId") String cartMemberId, Model model){
-        CartDTO findDTO = cartService.findByMemberId(cartMemberId);
-        model.addAttribute("cart", findDTO);
-        List<CartProductDTO> cartProductDTOList = cartProductService.findAll(findDTO.getCartMemberId());
-        model.addAttribute("cartProductList", cartProductDTOList);
-        return "cartPages/list";
-    }
+
+//    @GetMapping("/{id}")
+//    public String findByMemberId(@PathVariable("id") Long id, Model model){
+//        CartDTO findDTO = cartService.findById(id);
+//        model.addAttribute("cart", findDTO);
+//        List<CartProductDTO> cartProductDTOList = cartProductService.findList(findDTO.getCartMemberId());
+//        model.addAttribute("cartProductList", cartProductDTOList);
+//        return "cartPages/list";
+//    }
 }

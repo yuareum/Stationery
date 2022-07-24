@@ -15,11 +15,11 @@ import java.util.List;
 public class CartProductService {
     private final CartProductRepository cartProductRepository;
 
-    public List<CartProductDTO> findAll(String cartMemberId) {
-        List<CartProductEntity> cartProductEntityList = cartProductRepository.list(cartMemberId);
+    public List<CartProductDTO> findList(String cartMemberId) {
+        List<CartProductEntity> cartProductEntityList = cartProductRepository.findList(cartMemberId);
         List<CartProductDTO> cartProductDTOList  = new ArrayList<>();
-        for(CartProductEntity cart : cartProductEntityList){
-            cartProductDTOList.add(CartProductDTO.toCartProductDTO(cart));
+        for(CartProductEntity cartProduct : cartProductEntityList){
+            cartProductDTOList.add(CartProductDTO.toCartProductDTO(cartProduct));
         }
         return cartProductDTOList;
     }

@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CartProductDTO {
     private Long id;
+    private String cartMemberId;
     private String cartProductName;
     private String cartProductBrand;
     private String cartProductCreatedTime;

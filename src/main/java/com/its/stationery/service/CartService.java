@@ -22,10 +22,10 @@ public class CartService {
     private final CartRepository cartRepository;
     private final MemberRepository memberRepository;
 
-    public Long save(String memberId) {
-        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberId(memberId);
+    public Long save(String cartMemberId) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberId(cartMemberId);
         if(optionalMemberEntity.isPresent()){
-            if(!Objects.equals(memberId, "admin")){
+            if(!Objects.equals(cartMemberId, "admin")){
                 Long saveId = cartRepository.save(CartEntity.toSaveEntity(optionalMemberEntity.get())).getId();
                 return saveId;
             }
@@ -36,6 +36,14 @@ public class CartService {
 
     public CartDTO findByMemberId(String cartMemberId) {
         Optional<CartEntity> optionalCartEntity = cartRepository.findByMemberId(cartMemberId);
+        if(optionalCartEntity.isPresent()) {
+            return CartDTO.toCartDTO(optionalCartEntity.get());
+        }
+        return null;
+    }
+
+    public CartDTO findById(Long id) {
+        Optional<CartEntity> optionalCartEntity = cartRepository.findById(id);
         if(optionalCartEntity.isPresent()) {
             return CartDTO.toCartDTO(optionalCartEntity.get());
         }
