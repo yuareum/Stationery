@@ -73,6 +73,12 @@ public class ProductController {
         productService.update(productDTO);
         return "redirect:/product/" + productDTO.getId();
     }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") Long id){
+        productService.delete(id);
+        return "redirect:/product";
+    }
     @GetMapping("/search")
     public String search(@RequestParam("q") String q, Model model){
         List<ProductDTO> searchList = productService.search(q);

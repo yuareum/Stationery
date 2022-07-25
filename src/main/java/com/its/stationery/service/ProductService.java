@@ -126,4 +126,8 @@ public class ProductService {
         Long id = productRepository.save(productEntity).getId();
         return id;
     }
+
+    public void delete(Long id) {
+        productRepository.deleteById(id);
+    }
 }
