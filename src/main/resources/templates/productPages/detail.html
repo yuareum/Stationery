@@ -6,10 +6,19 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <style>
+        .btn-outline-primary {
+            float: right;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
 <th:block th:replace="commonPages/header :: header"></th:block>
     <div class="container">
+        <div th:if="${session.loginId}">
+            <button th:if="${session.loginMemberId.toString().equals('admin')}" class="btn btn-outline-primary" th:onclick="'location.href=\''+ @{|/product/update/${product.id}|} + '\''">상품정보수정</button>
+        </div>
         <table class="table">
             <tr>
                 <td style="font-size: 35px;" th:text="${product.productName}">상품명</td>

@@ -110,4 +110,20 @@ public class ProductService {
         }
         return productDTOList;
     }
+
+    public ProductDTO findById(Long id) {
+        Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
+        if(optionalProductEntity.isPresent()){
+            return ProductDTO.toProductDTO(optionalProductEntity.get());
+        }
+        else {
+            return null;
+        }
+    }
+
+    public Long update(ProductDTO productDTO) {
+        ProductEntity productEntity = ProductEntity.toUpdateEntity(productDTO);
+        Long id = productRepository.save(productEntity).getId();
+        return id;
+    }
 }

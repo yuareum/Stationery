@@ -61,6 +61,18 @@ public class ProductController {
         return "productPages/detail";
     }
 
+    @GetMapping("/update/{id}")
+    public String updateForm(@PathVariable("id") Long id, Model model){
+        ProductDTO productDTO = productService.findById(id);
+        model.addAttribute("product", productDTO);
+        return "productPages/update";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute ProductDTO productDTO){
+        productService.update(productDTO);
+        return "redirect:/product/" + productDTO.getId();
+    }
     @GetMapping("/search")
     public String search(@RequestParam("q") String q, Model model){
         List<ProductDTO> searchList = productService.search(q);

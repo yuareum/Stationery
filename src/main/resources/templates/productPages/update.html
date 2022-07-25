@@ -1,10 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>상품 수정</title>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>상품 정보 수정</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
 </head>
 <body>
+<div class="container">
+    <h2>상품 정보 수정</h2>
+    <form action="/product/update" method="post">
+        <input type="hidden" name="productAdmin" th:value="${session.loginMemberId}"><br>
+        <input type="hidden" name="id" th:value="${product.id}">
+        상품명<input type="text" name="productName" class="form-control" th:value="${product.productName}"><br>
+        상품 판매 수량 <input type="text" name="productCounts" class="form-control" th:value="${product.productCounts}"><br>
+        상품 카테고리 <select name="categoryId" class="form-select" aria-label="Default select example" th:value="${product.categoryId}">
+            <option value="1" selected>필기류</option>
+            <option value="2">노트/수첩/메모지</option>
+            <option value="3">파일/사무용품</option>
+            <option value="4">팬시용품</option>
+            </select><br>
+        상품 브랜드 <input type="text" class="form-control" name="productBrand" th:value="${product.productBrand}" readonly><br>
+        상품 제조일 <input type="text" class="form-control" name="productCreatedTime"  th:value="${product.productCreatedTime}"readonly><br>
+        상품 가격 <input type="text" class="form-control" name="productPrice" th:value="${product.productPrice}"><br>
+        상품 상세 정보 <textarea class="form-control" name="productInformation" cols="5" rows="10" th:text="${product.productInformation}">text</textarea><br>
+        <input type="hidden" class="form-control" name="productFileName" th:value="${product.productFileName}" ><br>
+        <input type="hidden" name="productHits" th:value="${product.productHits}">
 
+        <input type="button" class="btn btn-outline-dark" value="취소" th:onclick="'location.href=\''+ @{|/product/${product.id}|} + '\''">
+        <input type="submit" class="btn btn-outline-primary" value="상품 정보 수정">
+    </form>
+</div>
 </body>
 </html>

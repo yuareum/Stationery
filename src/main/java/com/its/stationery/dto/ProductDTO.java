@@ -47,6 +47,7 @@ public class ProductDTO {
         productDTO.setProductPrice(productEntity.getProductPrice());
         productDTO.setProductCreatedTime(productEntity.getProductCreatedTime());
         productDTO.setProductFileName(productEntity.getProductFileName());
+        productDTO.setCategoryId(productEntity.getCategoryId());
         productDTO.setCreatedTime(productEntity.getCreatedTime());
         productDTO.setUpdatedTime(productEntity.getUpdatedTime());
         return productDTO;

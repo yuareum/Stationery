@@ -76,6 +76,20 @@ public class ProductEntity extends BaseEntity {
         return productEntity;
     }
 
-    public void setProductEntity(Object o) {
+    public static ProductEntity toUpdateEntity(ProductDTO productDTO) {
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setId(productDTO.getId());
+        productEntity.setProductPrice(productDTO.getProductPrice());
+        productEntity.setProductName(productDTO.getProductName());
+        productEntity.setProductInformation(productDTO.getProductInformation());
+        productEntity.setProductBrand(productDTO.getProductBrand());
+        productEntity.setProductAdmin(productDTO.getProductAdmin());
+        productEntity.setProductCreatedTime(productDTO.getProductCreatedTime());
+        productEntity.setProductCounts(productDTO.getProductCounts());
+        productEntity.setCategoryId(productDTO.getCategoryId());
+        productEntity.setProductHits(productDTO.getProductHits());
+        productEntity.setProductFileName(productDTO.getProductFileName());
+        return productEntity;
     }
+
 }
