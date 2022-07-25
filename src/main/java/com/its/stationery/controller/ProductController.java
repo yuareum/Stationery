@@ -3,6 +3,7 @@ package com.its.stationery.controller;
 import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.service.ProductService;
+import com.its.stationery.service.WishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+
+    private final WishService wishService;
 
     @GetMapping("/save-form")
     public String saveForm(){
@@ -41,10 +44,27 @@ public class ProductController {
         return "productPages/list";
     }
 
+    @GetMapping("/category")
+    private String category(@RequestParam("categoryId") Long categoryId, Model model){
+        if(categoryId == 1){
+            List<ProductDTO> productDTOList = productService.categoryList(categoryId);
+            model.addAttribute("productList", productDTOList);
+            return "prdouctPages/categoryList";
+        }
+        return "redirect:/product";
+    }
+
     @GetMapping("/{id}")
     public String detail(@PathVariable("id") Long id, Model model){
         ProductDTO productDTO = productService.detail(id);
         model.addAttribute("product", productDTO);
         return "productPages/detail";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam("q") String q, Model model){
+        List<ProductDTO> searchList = productService.search(q);
+        model.addAttribute("searchList", searchList);
+        return "productPages/searchList";
     }
 }

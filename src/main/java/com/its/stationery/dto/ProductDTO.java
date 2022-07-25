@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 public class ProductDTO {
     private Long id;
     private int productCounts;
-    private String categoryName;
     private String productName;
     private String productAdmin;
     private String productBrand;
+    private Long categoryId;
     private Long productPrice;
     private String productInformation;
     private String productCreatedTime;
@@ -27,18 +27,18 @@ public class ProductDTO {
     private MultipartFile productFile;
     private String productFileName;
 
-    public ProductDTO(Long id, String productName, Long productPrice, String productFileName) {
+    public ProductDTO(Long id, String productName, Long productPrice, String productFileName, Long categoryId) {
         this.id = id;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productFileName = productFileName;
+        this.categoryId = categoryId;
     }
 
     public static ProductDTO toProductDTO(ProductEntity productEntity) {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setId(productEntity.getId());
         productDTO.setProductCounts(productEntity.getProductCounts());
-        productDTO.setCategoryName(productEntity.getCategoryName());
         productDTO.setProductAdmin(productEntity.getProductAdmin());
         productDTO.setProductBrand(productEntity.getProductBrand());
         productDTO.setProductHits(productEntity.getProductHits());

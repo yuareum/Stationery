@@ -42,13 +42,14 @@ public class ProductEntity extends BaseEntity {
     @Column(length = 50)
     private String productFileName;
 
+    @Column
+    private Long categoryId;
+
+
     @ColumnDefault("0")
     @Column(nullable = false)
     private int productHits;
-
-    @Column(length = 20, nullable = false)
-    private String categoryName;
-
+    
     @OneToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ReviewEntity> reviewEntityList = new ArrayList<>();
 
@@ -62,11 +63,10 @@ public class ProductEntity extends BaseEntity {
     private List<WishProductEntity> wishProductEntityList = new ArrayList<>();
 
 
-    public static ProductEntity toSaveEntity(ProductDTO productDTO, MemberEntity memberEntity) {
+    public static ProductEntity toSaveEntity(ProductDTO productDTO) {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setProductCounts(productDTO.getProductCounts());
-        productEntity.setCategoryName(productDTO.getCategoryName());
-        productEntity.setProductAdmin(memberEntity.getMemberId());
+        productEntity.setProductAdmin(productDTO.getProductAdmin());
         productEntity.setProductBrand(productDTO.getProductBrand());
         productEntity.setProductName(productDTO.getProductName());
         productEntity.setProductPrice(productDTO.getProductPrice());
@@ -74,5 +74,8 @@ public class ProductEntity extends BaseEntity {
         productEntity.setProductCreatedTime(productDTO.getProductCreatedTime());
         productEntity.setProductFileName(productDTO.getProductFileName());
         return productEntity;
+    }
+
+    public void setProductEntity(Object o) {
     }
 }

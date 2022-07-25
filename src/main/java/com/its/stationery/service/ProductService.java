@@ -45,7 +45,7 @@ public class ProductService {
         if(optionalMemberEntity.isPresent()) {
             MemberEntity memberEntity = optionalMemberEntity.get();
             if(Objects.equals(memberEntity.getMemberId(), "admin")){
-                Long saveId = productRepository.save(ProductEntity.toSaveEntity(productDTO, memberEntity)).getId();
+                Long saveId = productRepository.save(ProductEntity.toSaveEntity(productDTO)).getId();
                 return saveId;
             }
             else {
@@ -73,7 +73,8 @@ public class ProductService {
             product -> new ProductDTO(product.getId(),
                     product.getProductName(),
                     product.getProductPrice(),
-                    product.getProductFileName()
+                    product.getProductFileName(),
+                    product.getCategoryId()
             ));
 
         return productList;
@@ -89,5 +90,24 @@ public class ProductService {
         else {
             return null;
         }
+    }
+    
+
+    public List<ProductDTO> categoryList(Long categoryId) {
+        List<ProductEntity> productEntityList = productRepository.findByCategoryId(categoryId);
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(ProductEntity productEntity: productEntityList){
+            productDTOList.add(ProductDTO.toProductDTO(productEntity));
+        }
+        return productDTOList;
+    }
+
+    public List<ProductDTO> search(String q) {
+        List<ProductEntity> productEntityList = productRepository.findByProductNameContainingOrProductBrandContaining(q, q);
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(ProductEntity productEntity: productEntityList){
+            productDTOList.add(ProductDTO.toProductDTO(productEntity));
+        }
+        return productDTOList;
     }
 }

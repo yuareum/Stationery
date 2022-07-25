@@ -20,12 +20,12 @@ public class CartController {
     private final CartService cartService;
     private final CartProductService cartProductService;
 
-//    @GetMapping("/{id}")
-//    public String findByMemberId(@PathVariable("id") Long id, Model model){
-//        CartDTO findDTO = cartService.findById(id);
-//        model.addAttribute("cart", findDTO);
-//        List<CartProductDTO> cartProductDTOList = cartProductService.findList(findDTO.getCartMemberId());
-//        model.addAttribute("cartProductList", cartProductDTOList);
-//        return "cartPages/list";
-//    }
+    @GetMapping("/{id}")
+    public String findByMemberId(@PathVariable("id") Long id, Model model){
+        CartDTO findDTO = cartService.findById(id);
+        model.addAttribute("cart", findDTO);
+        List<CartProductDTO> cartProductDTOList = cartProductService.findByCartMemberId(findDTO.getCartMemberId());
+        model.addAttribute("cartProductList", cartProductDTOList);
+        return "cartPages/list";
+    }
 }

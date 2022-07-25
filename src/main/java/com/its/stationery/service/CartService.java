@@ -35,7 +35,7 @@ public class CartService {
     }
 
     public CartDTO findByMemberId(String cartMemberId) {
-        Optional<CartEntity> optionalCartEntity = cartRepository.findByMemberId(cartMemberId);
+        Optional<CartEntity> optionalCartEntity = cartRepository.findByCartMemberId(cartMemberId);
         if(optionalCartEntity.isPresent()) {
             return CartDTO.toCartDTO(optionalCartEntity.get());
         }
