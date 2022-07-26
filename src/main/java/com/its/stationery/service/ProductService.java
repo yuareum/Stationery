@@ -1,10 +1,13 @@
 package com.its.stationery.service;
 
 import com.its.stationery.common.PagingConst;
+import com.its.stationery.dto.OrderDTO;
 import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.entity.MemberEntity;
+import com.its.stationery.entity.OrderEntity;
 import com.its.stationery.entity.ProductEntity;
 import com.its.stationery.repository.MemberRepository;
+import com.its.stationery.repository.OrderRepository;
 import com.its.stationery.repository.ProductRepository;
 import com.its.stationery.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +34,7 @@ public class ProductService {
     private final MemberRepository memberRepository;
 
     private final ReviewRepository reviewRepository;
+    private final OrderRepository orderRepository;
 
     public Long save(ProductDTO productDTO) throws IOException {
         MultipartFile productFile = productDTO.getProductFile();
@@ -129,5 +133,14 @@ public class ProductService {
 
     public void delete(Long id) {
         productRepository.deleteById(id);
+    }
+
+    public void findByProductName(String productName) {
+        ProductEntity productEntity = productRepository.findByProductName(productName);
+        ProductDTO productDTO = ProductDTO.toProductDTO(productEntity);
+        OrderEntity orderEntity = orderRepository.findByOrderProductName(productDTO.getProductName());
+        if(orderEntity != null){
+            productEntity.setProductCounts(productEntity.getProductCounts()-orderEntity.getOrderCounts());
+        }
     }
 }

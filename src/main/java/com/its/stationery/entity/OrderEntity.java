@@ -1,8 +1,10 @@
 package com.its.stationery.entity;
 
+import com.its.stationery.dto.OrderDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,6 +17,9 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
+
+    @Column
+    private Long orderProductId;
 
     @Column(nullable = false)
     private int orderCounts;
@@ -34,7 +39,8 @@ public class OrderEntity {
     @Column(length = 20, nullable = false)
     private String orderMobile;
 
-    @Column(nullable = false)
+    @CreationTimestamp
+    @Column
     private LocalDateTime orderCreatedTime;
 
     @Column(length = 50)
@@ -53,6 +59,19 @@ public class OrderEntity {
     private ProductEntity productEntity;
 
 
-
-
+    public static OrderEntity toSaveEntity(OrderDTO orderDTO, MemberEntity memberEntity, ProductEntity productEntity) {
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setOrderCounts(orderDTO.getOrderCounts());
+        orderEntity.setOrderAddress(orderDTO.getOrderAddress());
+        orderEntity.setOrderProductName(orderDTO.getOrderProductName());
+        orderEntity.setOrderMobile(orderDTO.getOrderMobile());
+        orderEntity.setOrderMemberId(orderDTO.getOrderMemberId());
+        orderEntity.setOrderPrice(orderDTO.getOrderPrice());
+        orderEntity.setOrderProductId(orderDTO.getOrderProductId());
+        orderEntity.setAdminProcess(orderDTO.getAdminProcess());
+        orderEntity.setOrderFileName(orderDTO.getOrderFileName());
+        orderEntity.setMemberEntity(memberEntity);
+        orderEntity.setProductEntity(productEntity);
+        return orderEntity;
+    }
 }

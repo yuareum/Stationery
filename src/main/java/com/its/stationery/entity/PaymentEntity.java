@@ -28,6 +28,7 @@ public class PaymentEntity {
     @Column(length = 20, nullable = false)
     private String paymentMemberMobile;
 
+    @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime paymentCreatedTime;
 

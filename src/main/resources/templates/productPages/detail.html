@@ -36,6 +36,7 @@
                 <td colspan="4"><img th:src="@{|/upload/${product.productFileName}|}" width="400" height="300" alt=""></td>
                 <td th:text="${product.productPrice}">판매가</td>
                 <td th:text="${product.productBrand}">상품 브랜드</td>
+                <td><input type="button" class="btn btn-outline-info" th:onclick="productOrder([[${product.id}]])" value="주문하기"></td>
             </tr>
             <tr>
                 <td rowspan="4" th:text="${product.productInformation}"></td>
@@ -62,6 +63,25 @@
                         alert("상품 삭제 실패")
                     }
                 })
+            }
+        }
+    }
+
+    const productOrder = (id) => {
+        const member = [[${session.loginMemberId}]]
+        if(member == null){
+            alert("비회원은 주문할 수 없습니다.");
+            const login = confirm("로그인을 하시겠습니까?");
+            if(login){
+                location.href='/member/login-form';
+            }
+        }
+        else{
+            if(member == "admin"){
+                alert("관리자는 주문할 수 없습니다.");
+            }
+            else{
+                location.href="/order/save-form/" + id;
             }
         }
     }

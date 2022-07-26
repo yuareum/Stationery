@@ -31,7 +31,7 @@
     </div>
         <div class="container">
             <div class="tab-content" id="nav-tabContent">
-                <div class="card" style="width: 18rem; height: 240px;" th:each="product: ${productList}">
+                <div class="card" style="width: 18rem; height: 260px;" th:each="product: ${productList}">
                     <img th:src="@{|/upload/${product.productFileName}|}" class="card-img-top" alt="" width="30" height="130" th:onclick="'location.href=\''+ @{|/product/${product.id}|} + '\''">
                     <div class="card-body">
                         <a class="card-title" style="font-size: 25px;" th:text="${product.productName}" th:href="@{|/product/${product.id}|}" >Card title</a>
@@ -41,6 +41,41 @@
                 </div>
             </div>
         </div>
+    <div class="container">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+
+                <a class="page-link" th:href="@{/product(page=1)}">
+                    <span>First</span>
+                </a>
+            </li>
+
+            <li th:class="${productList.first} ? 'disabled'" class="page-item">
+
+                <a class="page-link" th:href="${productList.first} ? '#' : @{/product(page=${memberList.number})}">
+                    <span><</span> <!-- < -->
+                </a>
+            </li>
+
+
+            <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+                th:class="${page == productList.number + 1} ? 'page-item active'" class="page-item">
+                <a class="page-link" th:text="${page}" th:href="@{/product(page=${page})}"></a>
+            </li>
+
+            <li th:class="${productList.last} ? 'disabled'">
+                <a class="page-link" th:href="${productList.last} ? '#' : @{/product(page=${productList.number + 2})}">
+                    <span>&gt;</span>
+                </a>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" th:href="@{/product(page=${productList.totalPages})}">
+                    <span>Last</span>
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>
 </body>
 

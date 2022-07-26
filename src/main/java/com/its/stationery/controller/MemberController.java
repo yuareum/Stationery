@@ -60,6 +60,8 @@ public class MemberController {
         if (loginResult != null) {
             session.setAttribute("loginId", loginResult.getId());
             session.setAttribute("loginMemberId", loginResult.getMemberId());
+            session.setAttribute("loginMobile", loginResult.getMemberMobile());
+            session.setAttribute("loginEmail", loginResult.getMemberEmail());
             return "redirect:/";
 
         }
@@ -88,8 +90,10 @@ public class MemberController {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute MemberDTO memberDTO){
+    public String update(@ModelAttribute MemberDTO memberDTO, HttpSession session){
         memberService.update(memberDTO);
+        session.setAttribute("loginMobile", memberDTO.getMemberMobile());
+        session.setAttribute("loginEmail", memberDTO.getMemberEmail());
         return "redirect:/member/myPage/" + memberDTO.getId();
     }
 

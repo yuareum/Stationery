@@ -1,10 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
     <title>상품 주문</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+    <style>
+        .container{
+            margin-top: 30px;
+        }
+        .btn{
+            float: right;
+            margin-left: 10px;
+            width: 160px;
+            height: 40px;
+        }
+    </style>
 </head>
 <body>
-
+<th:block th:replace="commonPages/header :: header"></th:block>
+    <div class="container">
+        <h2>주문 정보</h2>
+        <form action="/order/save" method="post" name="order">
+            <table style="margin-top: 20px;" class="table">
+                <input type="hidden" name="orderProductId" th:value="${product.id}">
+                <tr>
+                    <th>주문 상품명</th>
+                    <td><input type="text" class="form-control" name="orderProductName" th:value="${product.productName}" readonly></td>
+                </tr>
+                <tr>
+                    <th>주문 회원</th>
+                    <td><input type="text" class="form-control" name="orderMemberId" th:value="${session.loginMemberId}" readonly></td>
+                </tr>
+                <tr>
+                    <th>주문 회원 연락처</th>
+                    <td><input type="text" class="form-control" name="orderMobile" th:value="${session.loginMobile}" readonly></td>
+                </tr>
+                <tr>
+                    <th>배송지</th>
+                    <td><input type="text" class="form-control" id="orderAddress" name="orderAddress"></td>
+                </tr>
+                <tr>
+                    <td><input type="hidden" name="orderFileName" th:value="${product.productFileName}"></td>
+                    <input type="hidden" name="adminProcess" th:value="0">
+                </tr>
+                <tr>
+                    <th>상품 가격</th>
+                    <td><input type="text" class="form-control" id="productPrice" th:value="${product.productPrice}" readonly></td>
+                </tr>
+                <tr>
+                    <th>판매 상품 수량</th>
+                    <td><input type="text" class="form-control" id="productCounts" th:value="${product.productCounts}" readonly></td>
+                </tr>
+                <tr>
+                    <th>주문할 상품 수량</th>
+                    <td><select class="form-select" id="orderCounts" name="orderCounts" onchange="orderCountsCheck()">
+                        <option value=0 th:selected>0</option>
+                        <option value=1>1</option>
+                        <option value=2>2</option>
+                        <option value=3>3</option>
+                        <option value=4>4</option>
+                        <option value=5>5</option>
+                        <option value=6>6</option>
+                        <option value=7>7</option>
+                        <option value=8>8</option>
+                        <option value=9>9</option>
+                        <option value=10>10</option>
+                    </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>총 주문 금액</th>
+                    <td><input type="text" class="form-control" id="orderPrice" name="orderPrice" readonly></td>
+                </tr>
+            </table>
+            <input type="button" class="btn btn-outline-danger" onclick="orderComplete()" value="주문하기">
+            <input type="button" class="btn btn-secondary" id="btn" th:onclick="'location.href=\''+ @{|/product/${product.id}|} + '\''" value="취소하기">
+        </form>
+    </div>
 </body>
+<script th:inline="javascript">
+    const orderCountsCheck = () => {
+        let orderCounts = document.getElementById("orderCounts");
+        const productCounts = document.getElementById("productCounts").value;
+        let orderPrice = document.getElementById("orderPrice");
+        const productPrice = document.getElementById("productPrice").value;
+        if(orderCounts.value <= productCounts){
+            orderPrice.value = orderCounts.value * productPrice;
+        }
+        else{
+            alert("판매 수량이 적습니다. 더 적은 상품 수를 선택해주세요.");
+            orderCounts.value = 0;
+            orderPrice.value = 0;
+        }
+    }
+
+    const orderComplete = () => {
+        const address = document.getElementById("orderAddress").value;
+        const orderCounts = document.getElementById("orderCounts").value;
+        const orderPrice = document.getElementById("orderPrice").value;
+        if(address.length == 0){
+            alert("배송지를 입력해주세요.");
+        }
+        else{
+            if(orderCounts == 0){
+                alert("상품을 1개 이상 주문해주세요.")
+            }
+            else{
+                order.submit();
+                const payment = confirm("결제도 진행하겠습니까?");
+                if(payment){
+                    var IMP = window.IMP;
+                    IMP.init('imp43569804');
+                    IMP.request_pay({
+                        pg: 'kakao',
+                        pay_method: "card",
+                        merchant_uid: 'merchant_' + new Date().getTime(),
+                        name: '구매 상품 결제',
+                        amount: orderPrice,
+                        buyer_email: [[${session.loginEmail}]],
+                        buyer_name:[[${session.loginMemberId}]],
+                        buyer_tel: [[${session.loginMobile}]],
+                        buyer_addr: address,
+                        buyer_postcode: '123-456'
+                    }, function (rsp) {
+                        console.log(rsp);
+                        if (rsp.success) {
+                            var msg = '결제가 완료되었습니다.';
+                            msg += '고유ID : ' + rsp.imp_uid;
+                            msg += '상점 거래ID : ' + rsp.merchant_uid;
+                            msg += '결제 금액 : ' + rsp.paid_amount;
+                            msg += '카드 승인번호 : ' + rsp.apply_num;
+                            $.ajax({
+                                type:"post",
+                                url:"/payment/save",
+                                data: {"paymentMemberId": [[${session.loginMemberId}]], "paymentPrice": orderPrice, "paymentAddress": address, "paymentMemberMobile": [[${session.loginMobile}]]},
+                                dataType: "text",
+                                success: function (result){
+                                    console.log(result);
+                                    if(result == "ok"){
+                                        location.href='/product/countsUpdate/' + [[${product.productName}]];
+                                    }
+                                    else{
+                                        alert("결제 정보가 저장되지 않았습니다.");
+                                    }
+                                },
+                                error: function (){
+                                    alert("ajax 실패 ");
+                                }
+                            })
+                        } else {
+                            var msg = '결제에 실패하였습니다.';
+                            msg += '에러내용 : ' + rsp.error_msg;
+                        }
+                        alert(msg);
+                    });
+                }
+                else{
+                    location.href="/order/findByMemberId/" + [[${session.loginMemberId}]]
+                }
+            }
+        }
+    }
+</script>
 </html>
