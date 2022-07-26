@@ -1,5 +1,6 @@
 package com.its.stationery.entity;
 
+import com.its.stationery.dto.PaymentDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -35,4 +36,15 @@ public class PaymentEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
+
+
+    public static PaymentEntity toSaveEntity(PaymentDTO paymentDTO, MemberEntity memberEntity) {
+        PaymentEntity paymentEntity = new PaymentEntity();
+        paymentEntity.setPaymentAddress(paymentDTO.getPaymentAddress());
+        paymentEntity.setPaymentMemberId(paymentDTO.getPaymentMemberId());
+        paymentEntity.setPaymentPrice(paymentDTO.getPaymentPrice());
+        paymentEntity.setPaymentMemberMobile(paymentDTO.getPaymentMemberMobile());
+        paymentEntity.setMemberEntity(memberEntity);
+        return paymentEntity;
+    }
 }

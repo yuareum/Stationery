@@ -10,22 +10,32 @@
     .container{
         margin-top: 20px;
     }
+    .nav{
+        width: 180px;
+    }
 </style>
 <body>
 <th:block th:replace="commonPages/header :: header"></th:block>
-
-<div class="container">
-    <h2>회원 정보 수정</h2>
-    <form action="/member/update" method="post" name="updateForm">
-        <input type="hidden" class="form-control" name="id" th:value="${updateMember.id}">
-        아이디 <input type="text" class="form-control" name="memberId" th:value="${updateMember.memberId}" readonly>
-        비밀번호 <input type="password" class="form-control" id="password" name="memberPassword">
-        이름 <input type="text" class="form-control" name="memberName" th:value="${updateMember.memberName}" readonly>
-        이메일 <input  type="text" class="form-control" name="memberEmail" th:value="${updateMember.memberEmail}">
-        전화번호 <input type="text" class="form-control" name="memberMobile" th:value="${updateMember.memberMobile}">
-        프로필 <input type="text" class="form-control" name="memberProfileName" th:value="${updateMember.memberProfileName}" readonly><br>
-        <input type="button" class="btn btn-outline-primary"  th:onclick="memberUpdate()" value="회원 정보 수정">
-    </form>
+<div class="d-flex align-items-start">
+        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="false" th:onclick="'location.href=\''+ @{|/member/myPage/${updateMember.id}|} + '\''">Home</button>
+            <button class="nav-link active" id="v-pills-update-tab" data-bs-toggle="pill" data-bs-target="#v-pills-update" type="button" role="tab" aria-controls="v-pills-member" aria-selected="true">내 정보 수정</button>
+            <button class="nav-link" id="v-pills-withdrawal-tab" data-bs-toggle="pill" data-bs-target="#v-pills-withdrawal" type="button" role="tab" aria-controls="v-pills-product" aria-selected="false" th:onclick="'location.href=\''+ @{|/member/withdrawal/${updateMember.id}|} + '\''">회원 탈퇴</button>
+            <button class="nav-link" id="v-pills-order-tab" data-bs-toggle="pill" data-bs-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">내 주문 목록</button>
+        </div>
+    <div class="container">
+        <h2>회원 정보 수정</h2>
+        <form action="/member/update" method="post" name="updateForm">
+            <input type="hidden" class="form-control" name="id" th:value="${updateMember.id}">
+            아이디 <input type="text" class="form-control" name="memberId" th:value="${updateMember.memberId}" readonly>
+            비밀번호 <input type="password" class="form-control" id="password" name="memberPassword">
+            이름 <input type="text" class="form-control" name="memberName" th:value="${updateMember.memberName}" readonly>
+            이메일 <input  type="text" class="form-control" name="memberEmail" th:value="${updateMember.memberEmail}">
+            전화번호 <input type="text" class="form-control" name="memberMobile" th:value="${updateMember.memberMobile}">
+            프로필 <input type="text" class="form-control" name="memberProfileName" th:value="${updateMember.memberProfileName}" readonly><br>
+            <input type="button" class="btn btn-outline-primary"  th:onclick="memberUpdate()" value="회원 정보 수정">
+        </form>
+    </div>
 </div>
 </body>
 
