@@ -25,6 +25,18 @@ public class OrderDTO {
     private String orderFileName;
     private int adminProcess;
 
+    public OrderDTO(Long id, Long orderProductId, String orderFileName, String orderMemberId, String orderProductName, int orderCounts, Long orderPrice, LocalDateTime orderCreatedTime, int adminProcess) {
+        this.id = id;
+        this.orderProductId = orderProductId;
+        this.orderFileName = orderFileName;
+        this.orderProductName = orderProductName;
+        this.orderPrice = orderPrice;
+        this.orderCounts = orderCounts;
+        this.orderCreatedTime = orderCreatedTime;
+        this.adminProcess = adminProcess;
+        this.orderMemberId = orderMemberId;
+    }
+
     public static OrderDTO toOrderDTO(OrderEntity orderEntity) {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(orderEntity.getId());

@@ -1,10 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
     <title>회원 전체 주문 목록</title>
+    <meta charset="UTF-8">
+    <title>회원목록</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <style>
+        .container{
+            margin-top: 20px;
+        }
+        .nav{
+            width: 180px;
+        }
+        .btn{
+            width: 120px;
+        }
+    </style>
+
 </head>
 <body>
+<th:block th:replace="commonPages/header :: header"></th:block>
+<div class="container">
+    <div class="d-flex align-items-start">
+        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="false" onclick="location.href='/member/admin'">Admin Page</button>
+            <button class="nav-link" id="v-pills-member-tab" data-bs-toggle="pill" data-bs-target="#v-pills-member" type="button" role="tab" aria-controls="v-pills-member" aria-selected="false" onclick="location.href='/member'">회원 관리</button>
+            <button class="nav-link" id="v-pills-product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-product" type="button" role="tab" aria-controls="v-pills-product" aria-selected="false" onclick="location.href='/product/save-form'">상품 등록</button>
+            <button class="nav-link active" id="v-pills-order-tab" data-bs-toggle="pill" data-bs-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-order" aria-selected="true">주문 관리</button>
+        </div>
+        <div class="container">
+            <h2>주문 목록</h2>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col" style="visibility: hidden">주문 첨부 파일</th>
+                    <th scope="col">주문 번호</th>
+                    <th scope="col">주문 상품 번호</th>
+                    <th scope="col">주문 회원 아이디</th>
+                    <th scope="col">주문 상품명</th>
+                    <th scope="col">주문 상품 수</th>
+                    <th scope="col">주문 상품 가격</th>
+                    <th scope="col">주문 시간</th>
+                    <th scope="col">상세 조회</th>
+                    <th scope="col" style="visibility: hidden">주문 처리</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order: ${orderList}">
+                    <td><img th:src="@{|/upload/${order.orderFileName}|}" width="100" height="100" alt=""></td>
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${order.orderProductId}"></td>
+                    <td th:text="${order.orderMemberId}"></td>
+                    <td><a th:href="@{|/product/${order.orderProductId}|}" th:text="${order.orderProductName}"></a></td>
+                    <td th:text="${order.orderCounts}"></td>
+                    <td th:text="${order.orderPrice}"></td>
+                    <td th:text="*{#temporals.format(order.orderCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td><button class="btn btn-outline-success" th:onclick="'location.href=\''+ @{|/order/${order.id}|} + '\''">상세 조회</button></td>
+                    <td><button class="btn btn-info" th:onclick="process([[${order.id}]])">주문 처리</button></td>
+                </tr>
+                </tbody>
+            </table>
 
+            <div class="container">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+
+                        <a class="page-link" th:href="@{/order(page=1)}">
+                            <span>First</span>
+                        </a>
+                    </li>
+
+                    <li th:class="${orderList.first} ? 'disabled'" class="page-item">
+
+                        <a class="page-link" th:href="${orderList.first} ? '#' : @{/member(page=${memberList.number})}">
+                            <span><</span>
+                        </a>
+                    </li>
+
+
+                    <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+                        th:class="${page == orderList.number + 1} ? 'page-item active'" class="page-item">
+                        <a class="page-link" th:text="${page}" th:href="@{/order(page=${page})}"></a>
+                    </li>
+
+
+                    <li th:class="${orderList.last} ? 'disabled'">
+                        <a class="page-link" th:href="${orderList.last} ? '#' : @{/order(page=${orderList.number + 2})}">
+                            <span>&gt;</span>
+                        </a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/order(page=${orderList.totalPages})}">
+                            <span>Last</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<script th:inline="javascript">
+    const process = (id) => {
+
+    }
+</script>
 </html>

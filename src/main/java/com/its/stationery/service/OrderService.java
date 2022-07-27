@@ -1,5 +1,6 @@
 package com.its.stationery.service;
 
+import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.OrderDTO;
 import com.its.stationery.entity.MemberEntity;
 import com.its.stationery.entity.OrderEntity;
@@ -8,6 +9,10 @@ import com.its.stationery.repository.MemberRepository;
 import com.its.stationery.repository.OrderRepository;
 import com.its.stationery.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -49,5 +54,23 @@ public class OrderService {
             return orderDTO;
         }
         return null;
+    }
+
+    public Page<OrderDTO> paging(Pageable pageable) {
+        int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
+        page = (page == 1)? 0: (page-1);
+        Page<OrderEntity> orderEntities = orderRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        Page<OrderDTO> orderList = orderEntities.map(
+                order -> new OrderDTO(order.getId(),
+                        order.getOrderProductId(),
+                        order.getOrderFileName(),
+                        order.getOrderMemberId(),
+                        order.getOrderProductName(),
+                        order.getOrderCounts(),
+                        order.getOrderPrice(),
+                        order.getOrderCreatedTime(),
+                        order.getAdminProcess()
+                ));
+        return orderList;
     }
 }

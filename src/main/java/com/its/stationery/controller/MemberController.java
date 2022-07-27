@@ -123,21 +123,27 @@ public class MemberController {
         }
     }
     @GetMapping
-    public String findAll(@PageableDefault(page = 1) Pageable pageable, Model model) {
-        Page<MemberDTO> memberList = memberService.paging(pageable);
-        model.addAttribute("memberList", memberList);
-        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
-        int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < memberList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : memberList.getTotalPages();
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        return "memberPages/list";
+    public String findAll(@PageableDefault(page = 1) Pageable pageable, Model model,HttpSession session) {
+        if("admin".equals(session.getAttribute("loginMemberId"))) {
+            Page<MemberDTO> memberList = memberService.paging(pageable);
+            model.addAttribute("memberList", memberList);
+            int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+            int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < memberList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : memberList.getTotalPages();
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+            return "memberPages/list";
+        }
+        return "redirect:/";
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable("id") Long id, Model model){
-        MemberDTO memberDTO = memberService.findById(id);
-        model.addAttribute("member", memberDTO);
-        return "memberPages/detail";
+    public String findById(@PathVariable("id") Long id, Model model, HttpSession session){
+        if("admin".equals(session.getAttribute("loginMemberId"))) {
+            MemberDTO memberDTO = memberService.findById(id);
+            model.addAttribute("member", memberDTO);
+            return "memberPages/detail";
+        }
+        return "redirect:/";
     }
 
     @DeleteMapping("/{id}")
