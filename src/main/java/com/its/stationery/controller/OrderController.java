@@ -34,8 +34,8 @@ public class OrderController {
 
     @PostMapping("/save")
     public String save(@ModelAttribute OrderDTO orderDTO, HttpSession session){
-        orderService.save(orderDTO);
-        return "redirect:/order/" + orderDTO.getId();
+        Long id = orderService.save(orderDTO);
+        return "redirect:/order/" + id;
     }
 
     @GetMapping("/findByOrderMemberId/{orderMemberId}")

@@ -84,6 +84,7 @@ public class OrderEntity {
         orderEntity.setOrderMemberId(orderDTO.getOrderMemberId());
         orderEntity.setOrderPrice(orderDTO.getOrderPrice());
         orderEntity.setAdminProcess(1);
+        orderEntity.setOrderCreatedTime(orderDTO.getOrderCreatedTime());
         orderEntity.setOrderProductId(orderDTO.getOrderProductId());
         orderEntity.setOrderFileName(orderDTO.getOrderFileName());
         return orderEntity;
