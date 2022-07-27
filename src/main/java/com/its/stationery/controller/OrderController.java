@@ -38,7 +38,7 @@ public class OrderController {
         return "redirect:/order/" + orderDTO.getId();
     }
 
-    @GetMapping("/findByMemberId/{orderMemberId}")
+    @GetMapping("/findByOrderMemberId/{orderMemberId}")
     public String findByOrderMemberId(@PathVariable("orderMemberId") String orderMemberId, Model model){
         List<OrderDTO> orderDTOList = orderService.findByOrderMemberId(orderMemberId);
         model.addAttribute("orderList", orderDTOList);
@@ -65,13 +65,13 @@ public class OrderController {
         model.addAttribute("order", orderDTO);
         return "orderPages/detail";
     }
-    @GetMapping("/processUpdate/{id}")
-    public  String processUpdate(@PathVariable("id") Long id){
+    @PostMapping("/processUpdate/{id}")
+    public @ResponseBody OrderDTO processUpdate(@PathVariable("id") Long id){
         OrderDTO orderDTO = orderService.findById(id);
         Long updateResult = orderService.processUpdate(orderDTO);
         if(updateResult>0){
-            return "redirect:/product/countsUpdate/" + orderDTO.getOrderProductId();
+            return orderDTO;
         }
-        return "redirect:/";
+        return null;
     }
 }

@@ -40,7 +40,7 @@ public class OrderEntity {
     private String orderMobile;
 
     @CreationTimestamp
-    @Column
+    @Column(nullable = false)
     private LocalDateTime orderCreatedTime;
 
     @Column(length = 50)

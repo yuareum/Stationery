@@ -58,7 +58,7 @@
                     <td th:text="*{#temporals.format(order.orderCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td><button class="btn btn-outline-success" th:onclick="'location.href=\''+ @{|/order/${order.id}|} + '\''">상세 조회</button></td>
                     <td><button th:if="${order.adminProcess} == 1" class="btn btn-info" disabled="true">구매 완료</button></td>
-                    <td><button th:if="${order.adminProcess} == 0"class="btn btn-info" id="process" th:onclick="'location.href=\''+ @{|/order/processUpdate/${order.id}|} + '\''">주문 처리</button></td>
+                    <td><button th:if="${order.adminProcess} == 0"class="btn btn-info" id="process" th:onclick="process([[${order.id}]])">주문 처리</button></td>
                 </tr>
                 </tbody>
             </table>
@@ -103,27 +103,27 @@
     </div>
 </div>
 </body>
-<!--<script th:inline="javascript">-->
-<!--    const process = (orderProductId) => {-->
-<!--        $.ajax({-->
-<!--            type: "post",-->
-<!--            url: "/order/processUpdate/" + orderProductId,-->
-<!--            dataType: "text",-->
-<!--            success:function (result){-->
-<!--                if(result == "ok"){-->
-<!--                    console.log("success");-->
-<!--                    document.getElementById("process").innerHTML = "구매 완료";-->
-<!--                    document.getElementById("process").disabled = true;-->
-<!--                    location.href='/product/countsUpdate/' + orderProductId;-->
-<!--                }-->
-<!--                else{-->
-<!--                    alert("구매 처리 실패");-->
-<!--                }-->
-<!--            },-->
-<!--            error:function (){-->
-<!--                alert("ajax 실패");-->
-<!--            }-->
-<!--        })-->
-<!--    }-->
-<!--</script>-->
+<script th:inline="javascript">
+    const process = (id) => {
+        $.ajax({
+            type: "post",
+            url: "/order/processUpdate/" + id,
+            dataType: "json",
+            success:function (result){
+                if(result != null){
+                    console.log("success");
+                    document.getElementById("process").innerHTML = "구매 완료";
+                    document.getElementById("process").disabled = true;
+                    location.href='/product/countsUpdate/' + result.orderProductId;
+                }
+                else{
+                    alert("구매 처리 실패");
+                }
+            },
+            error:function (){
+                alert("ajax 실패");
+            }
+        })
+    }
+</script>
 </html>
