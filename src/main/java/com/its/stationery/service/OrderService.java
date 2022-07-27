@@ -40,4 +40,14 @@ public class OrderService {
         }
         return orderDTOList;
     }
+
+    public OrderDTO findById(Long id) {
+        Optional<OrderEntity> optionalOrderEntity = orderRepository.findById(id);
+        if(optionalOrderEntity.isPresent()){
+            OrderEntity orderEntity = optionalOrderEntity.get();
+            OrderDTO orderDTO = OrderDTO.toOrderDTO(orderEntity);
+            return orderDTO;
+        }
+        return null;
+    }
 }

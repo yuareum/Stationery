@@ -5,6 +5,7 @@ import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.service.OrderService;
 import com.its.stationery.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,5 +37,12 @@ public class OrderController {
         List<OrderDTO> orderDTOList = orderService.findByOrderMemberId(orderMemberId);
         model.addAttribute("orderList", orderDTOList);
         return "/orderPages/myList";
+    }
+
+    @GetMapping("/{id}")
+    public String findById(@PathVariable("id") Long id, Model model){
+        OrderDTO orderDTO = orderService.findById(id);
+        model.addAttribute("order", orderDTO);
+        return "orderPages/detail";
     }
 }
