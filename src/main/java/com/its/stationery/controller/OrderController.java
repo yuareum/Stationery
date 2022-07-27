@@ -11,6 +11,7 @@ import org.hibernate.criterion.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,16 +33,16 @@ public class OrderController {
     }
 
     @PostMapping("/save")
-    public @ResponseBody String save(@ModelAttribute OrderDTO orderDTO, HttpSession session){
+    public String save(@ModelAttribute OrderDTO orderDTO, HttpSession session){
         orderService.save(orderDTO);
-        return "ok";
+        return "redirect:/order/" + orderDTO.getId();
     }
 
     @GetMapping("/findByMemberId/{orderMemberId}")
     public String findByOrderMemberId(@PathVariable("orderMemberId") String orderMemberId, Model model){
         List<OrderDTO> orderDTOList = orderService.findByOrderMemberId(orderMemberId);
         model.addAttribute("orderList", orderDTOList);
-        return "/orderPages/myList";
+        return "orderPages/myList";
     }
 
     @GetMapping
@@ -63,5 +64,14 @@ public class OrderController {
         OrderDTO orderDTO = orderService.findById(id);
         model.addAttribute("order", orderDTO);
         return "orderPages/detail";
+    }
+    @GetMapping("/processUpdate/{id}")
+    public  String processUpdate(@PathVariable("id") Long id){
+        OrderDTO orderDTO = orderService.findById(id);
+        Long updateResult = orderService.processUpdate(orderDTO);
+        if(updateResult>0){
+            return "redirect:/product/countsUpdate/" + orderDTO.getOrderProductId();
+        }
+        return "redirect:/";
     }
 }

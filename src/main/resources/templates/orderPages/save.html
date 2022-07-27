@@ -24,7 +24,7 @@
 <th:block th:replace="commonPages/header :: header"></th:block>
     <div class="container">
         <h2>주문 정보</h2>
-        <form action="/order/save" method="post" name="order">
+        <form action="/order/save" method="post" name="orderForm">
             <input type="hidden" name="orderProductId" th:value="${product.id}">
             주문 상품명 <br>
             <input type="text" class="form-control" name="orderProductName" th:value="${product.productName}" readonly>
@@ -120,8 +120,7 @@
                             success: function (result){
                                 console.log(result);
                                 if(result == 1){
-                                    order.submit();
-                                    location.href="/order/findByMemberId/ " + [[${session.loginMemberId}]];
+                                    orderForm.submit();
                                 }
                                 else{
                                     alert("결제 정보가 저장되지 않았습니다.");

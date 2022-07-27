@@ -1,7 +1,6 @@
 package com.its.stationery.service;
 
 import com.its.stationery.common.PagingConst;
-import com.its.stationery.dto.OrderDTO;
 import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.entity.MemberEntity;
 import com.its.stationery.entity.OrderEntity;
@@ -135,12 +134,10 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public void findByProductName(String productName) {
-        ProductEntity productEntity = productRepository.findByProductName(productName);
-        ProductDTO productDTO = ProductDTO.toProductDTO(productEntity);
-        OrderEntity orderEntity = orderRepository.findByOrderProductName(productDTO.getProductName());
-        if(orderEntity != null){
-            productEntity.setProductCounts(productEntity.getProductCounts()-orderEntity.getOrderCounts());
-        }
+    public Long countsUpdate(ProductDTO productDTO) {
+        OrderEntity orderEntity = orderRepository.findByOrderProductId(productDTO.getId());
+        ProductEntity productEntity = ProductEntity.toUpdateCounts(productDTO, orderEntity);
+        Long id = productRepository.save(productEntity).getId();
+        return id;
     }
 }

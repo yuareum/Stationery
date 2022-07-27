@@ -73,4 +73,19 @@ public class OrderEntity {
         orderEntity.setProductEntity(productEntity);
         return orderEntity;
     }
+
+    public static OrderEntity toUpdateEntity(OrderDTO orderDTO) {
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setId(orderDTO.getId());
+        orderEntity.setOrderCounts(orderDTO.getOrderCounts());
+        orderEntity.setOrderAddress(orderDTO.getOrderAddress());
+        orderEntity.setOrderProductName(orderDTO.getOrderProductName());
+        orderEntity.setOrderMobile(orderDTO.getOrderMobile());
+        orderEntity.setOrderMemberId(orderDTO.getOrderMemberId());
+        orderEntity.setOrderPrice(orderDTO.getOrderPrice());
+        orderEntity.setAdminProcess(1);
+        orderEntity.setOrderProductId(orderDTO.getOrderProductId());
+        orderEntity.setOrderFileName(orderDTO.getOrderFileName());
+        return orderEntity;
+    }
 }

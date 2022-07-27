@@ -57,7 +57,7 @@ public class OrderService {
     }
 
     public Page<OrderDTO> paging(Pageable pageable) {
-        int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
+        int page = pageable.getPageNumber();
         page = (page == 1)? 0: (page-1);
         Page<OrderEntity> orderEntities = orderRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
         Page<OrderDTO> orderList = orderEntities.map(
@@ -72,5 +72,12 @@ public class OrderService {
                         order.getAdminProcess()
                 ));
         return orderList;
+    }
+
+
+    public Long processUpdate(OrderDTO orderDTO) {
+        OrderEntity orderEntity = OrderEntity.toUpdateEntity(orderDTO);
+        Long id = orderRepository.save(orderEntity).getId();
+        return id;
     }
 }

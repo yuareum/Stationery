@@ -1,7 +1,9 @@
 package com.its.stationery.controller;
 
 import com.its.stationery.common.PagingConst;
+import com.its.stationery.dto.OrderDTO;
 import com.its.stationery.dto.ProductDTO;
+import com.its.stationery.service.OrderService;
 import com.its.stationery.service.ProductService;
 import com.its.stationery.service.WishService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class ProductController {
     private final ProductService productService;
 
     private final WishService wishService;
+
 
     @GetMapping("/save-form")
     public String saveForm(){
@@ -89,9 +92,12 @@ public class ProductController {
         return "productPages/searchList";
     }
 
-    @GetMapping("/countsUpdate/{productName}")
-    public String countsUpdate(@PathVariable("productName") String productName, HttpSession session){
-        productService.findByProductName(productName);
-        return "redirect:/order/finaByMemberId"+ session.getAttribute("loginMemberId");
+    @GetMapping("/countsUpdate/{id}")
+    public String countsUpdate(@PathVariable("id") Long id, HttpSession session){
+        ProductDTO productDTO = productService.findById(id);
+        productService.countsUpdate(productDTO);
+        return "redirect:/order";
     }
+
+
 }

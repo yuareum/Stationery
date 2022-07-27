@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
-    <title>회원 전체 주문 목록</title>
     <meta charset="UTF-8">
-    <title>회원목록</title>
+    <title>회원 전체 주문 목록</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
@@ -37,12 +35,12 @@
                 <thead>
                 <tr>
                     <th scope="col" style="visibility: hidden">주문 첨부 파일</th>
-                    <th scope="col">주문 번호</th>
-                    <th scope="col">주문 상품 번호</th>
-                    <th scope="col">주문 회원 아이디</th>
-                    <th scope="col">주문 상품명</th>
-                    <th scope="col">주문 상품 수</th>
-                    <th scope="col">주문 상품 가격</th>
+                    <th scope="col">주문번호</th>
+                    <th scope="col">상품번호</th>
+                    <th scope="col">회원 아이디</th>
+                    <th scope="col">상품명</th>
+                    <th scope="col">상품 수</th>
+                    <th scope="col">주문 가격</th>
                     <th scope="col">주문 시간</th>
                     <th scope="col">상세 조회</th>
                     <th scope="col" style="visibility: hidden">주문 처리</th>
@@ -59,7 +57,8 @@
                     <td th:text="${order.orderPrice}"></td>
                     <td th:text="*{#temporals.format(order.orderCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td><button class="btn btn-outline-success" th:onclick="'location.href=\''+ @{|/order/${order.id}|} + '\''">상세 조회</button></td>
-                    <td><button class="btn btn-info" th:onclick="process([[${order.id}]])">주문 처리</button></td>
+                    <td><button th:if="${order.adminProcess} == 1" class="btn btn-info" disabled="true">구매 완료</button></td>
+                    <td><button th:if="${order.adminProcess} == 0"class="btn btn-info" id="process" th:onclick="'location.href=\''+ @{|/order/processUpdate/${order.id}|} + '\''">주문 처리</button></td>
                 </tr>
                 </tbody>
             </table>
@@ -75,7 +74,7 @@
 
                     <li th:class="${orderList.first} ? 'disabled'" class="page-item">
 
-                        <a class="page-link" th:href="${orderList.first} ? '#' : @{/member(page=${memberList.number})}">
+                        <a class="page-link" th:href="${orderList.first} ? '#' : @{/order(page=${orderList.number})}">
                             <span><</span>
                         </a>
                     </li>
@@ -104,9 +103,27 @@
     </div>
 </div>
 </body>
-<script th:inline="javascript">
-    const process = (id) => {
-
-    }
-</script>
+<!--<script th:inline="javascript">-->
+<!--    const process = (orderProductId) => {-->
+<!--        $.ajax({-->
+<!--            type: "post",-->
+<!--            url: "/order/processUpdate/" + orderProductId,-->
+<!--            dataType: "text",-->
+<!--            success:function (result){-->
+<!--                if(result == "ok"){-->
+<!--                    console.log("success");-->
+<!--                    document.getElementById("process").innerHTML = "구매 완료";-->
+<!--                    document.getElementById("process").disabled = true;-->
+<!--                    location.href='/product/countsUpdate/' + orderProductId;-->
+<!--                }-->
+<!--                else{-->
+<!--                    alert("구매 처리 실패");-->
+<!--                }-->
+<!--            },-->
+<!--            error:function (){-->
+<!--                alert("ajax 실패");-->
+<!--            }-->
+<!--        })-->
+<!--    }-->
+<!--</script>-->
 </html>
