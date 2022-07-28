@@ -8,6 +8,7 @@
     <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
 </head>
 <body>
+<th:block th:replace="commonPages/header :: header"></th:block>
 <div class="container">
     <h2>상품 정보 수정</h2>
     <form action="/product/update" method="post">

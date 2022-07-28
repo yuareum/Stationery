@@ -47,11 +47,6 @@ public class MemberEntity {
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<InquiryEntity> inquiryEntityList = new ArrayList<>();
 
-    @OneToOne
-    private CartEntity cartEntity;
-
-    @OneToOne
-    private WishEntity wishEntity;
 
     public static MemberEntity toSaveEntity(MemberDTO memberDTO) {
         MemberEntity memberEntity = new MemberEntity();

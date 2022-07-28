@@ -5,6 +5,7 @@
     <title>회원 정보 수정</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
     <style>
         .container{
             margin-top: 20px;
@@ -22,10 +23,10 @@
         <button class="nav-link active" id="v-pills-update-tab" data-bs-toggle="pill" data-bs-target="#v-pills-update" type="button" role="tab" aria-controls="v-pills-update" aria-selected="true">내 정보 수정</button>
         <button class="nav-link" id="v-pills-withdrawal-tab" data-bs-toggle="pill" data-bs-target="#v-pills-withdrawal" type="button" role="tab" aria-controls="v-pills-withdrawal" aria-selected="false" th:onclick="'location.href=\''+ @{|/member/withdrawal/${updateMember.id}|} + '\''">회원 탈퇴</button>
         <button class="nav-link" id="v-pills-order-tab" data-bs-toggle="pill" data-bs-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-order" aria-selected="false" th:onclick="'location.href=\''+ @{|/order/findByOrderMemberId/${updateMember.memberId}|} + '\''">내 주문 목록</button>
-        <button class="nav-link" id="v-pills-locker-tab" data-bs-toggle="pill" data-bs-target="#v-pills-locker" type="button" role="tab" aria-controls="v-pills-locker" aria-selected="false" th:onclick="'location.href=\''+ @{|/cart/${member.memberId}|} + '\''">보관함</button>
+        <button class="nav-link" id="v-pills-locker-tab" data-bs-toggle="pill" data-bs-target="#v-pills-locker" type="button" role="tab" aria-controls="v-pills-locker" aria-selected="false" th:onclick="'location.href=\''+ @{|/cart/${updateMember.memberId}|} + '\''">보관함</button>
     </div>
     <div class="container">
-        <h2>회원 정보 수정</h2>
+        <h2>[[${session.loginMemberId}]] 회원 정보 수정</h2>
         <form action="/member/update" method="post" name="updateForm">
             <input type="hidden" class="form-control" name="id" th:value="${updateMember.id}">
             아이디 <input type="text" class="form-control" name="memberId" th:value="${updateMember.memberId}" readonly>
@@ -33,13 +34,13 @@
             이름 <input type="text" class="form-control" name="memberName" th:value="${updateMember.memberName}" readonly>
             이메일 <input  type="text" class="form-control" name="memberEmail" th:value="${updateMember.memberEmail}">
             전화번호 <input type="text" class="form-control" name="memberMobile" th:value="${updateMember.memberMobile}">
-            프로필 <input type="text" class="form-control" name="memberProfileName" th:value="${updateMember.memberProfileName}" readonly><br>
-            <input type="button" class="btn btn-outline-primary"  th:onclick="memberUpdate()" value="회원 정보 수정">
+            <input type="hidden" class="form-control" name="memberProfileName" th:value="${updateMember.memberProfileName}" readonly><br>
+            <input type="button" class="btn btn-outline-dark" th:onclick="'location.href=\''+ @{|/member/myPage/${updateMember.id}|} + '\''" value="취소">
+            <input type="button" class="btn btn-outline-primary"  onclick="memberUpdate()" value="회원 정보 수정">
         </form>
     </div>
 </div>
 </body>
-
 <script th:inline="javascript">
     const memberUpdate = () => {
         const password = document.getElementById("password").value;
