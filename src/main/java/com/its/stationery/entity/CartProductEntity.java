@@ -1,7 +1,9 @@
 package com.its.stationery.entity;
 
+import com.its.stationery.dto.CartProductDTO;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,6 +23,9 @@ public class CartProductEntity {
     @Column(length = 50)
     private String cartProductFileName;
 
+    @Column
+    private Long cartProductId;
+
     @Column(length = 50, nullable = false)
     private String cartProductName;
 
@@ -30,6 +35,7 @@ public class CartProductEntity {
     @Column(length = 30, nullable = false)
     private String cartProductCreatedTime;
 
+    @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime createdTime;
 
@@ -47,4 +53,18 @@ public class CartProductEntity {
     @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
 
+    public static CartProductEntity toCartProductEntity(CartProductDTO cartProductDTO, CartEntity cartEntity, ProductEntity productEntity) {
+        CartProductEntity cartProductEntity = new CartProductEntity();
+        cartProductEntity.setCartMemberId(cartProductDTO.getCartMemberId());
+        cartProductEntity.setCartProductBrand(cartProductDTO.getCartProductBrand());
+        cartProductEntity.setCartProductCounts(cartProductEntity.getCartProductCounts());
+        cartProductEntity.setCartProductId(cartProductDTO.getCartProductId());
+        cartProductEntity.setCartProductName(cartProductDTO.getCartProductName());
+        cartProductEntity.setCartProductPrice(cartProductDTO.getCartProductPrice());
+        cartProductEntity.setCartProductFileName(cartProductDTO.getCartProductFileName());
+        cartProductEntity.setCartProductCreatedTime(cartProductDTO.getCartProductCreatedTime());
+        cartProductEntity.setCartEntity(cartEntity);
+        cartProductEntity.setProductEntity(productEntity);
+        return cartProductEntity;
+    }
 }

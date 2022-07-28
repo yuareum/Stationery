@@ -27,9 +27,9 @@ public class WishEntity {
     private List<WishProductEntity> wishProductEntityList = new ArrayList<>();
 
 
-    public static WishEntity toSaveEntity(String wishMemberId,MemberEntity memberEntity) {
+    public static WishEntity toSaveEntity(MemberEntity memberEntity) {
         WishEntity wishEntity = new WishEntity();
-        wishEntity.setWishMemberId(wishMemberId);
+        wishEntity.setWishMemberId(memberEntity.getMemberId());
         wishEntity.setMemberEntity(memberEntity);
         return wishEntity;
     }

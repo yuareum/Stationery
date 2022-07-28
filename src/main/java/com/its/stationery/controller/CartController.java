@@ -7,9 +7,7 @@ import com.its.stationery.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +25,15 @@ public class CartController {
         List<CartProductDTO> cartProductDTOList = cartProductService.findByCartMemberId(findDTO.getCartMemberId());
         model.addAttribute("cartProductList", cartProductDTOList);
         return "cartPages/list";
+    }
+
+    @PostMapping("/save")
+    public @ResponseBody int save(@ModelAttribute CartProductDTO cartProductDTO){
+        int checkResult = cartProductService.check(cartProductDTO);
+        if(checkResult>0){
+            int saveResult = cartProductService.save(cartProductDTO);
+            return saveResult;
+        }
+        return 0;
     }
 }

@@ -25,6 +25,10 @@
                 <td style="font-size: 35px;" th:text="${product.productName}">상품명</td>
             </tr>
             <tr>
+                <td style="float: right; font-size: 15px;" th:text="${product.productCreatedTime}"></td>
+                <td style="float: right; font-size: 15px;">제조일 : </td>
+            </tr>
+            <tr>
                 <td style="float: right; font-size: 11px; color: gray;" th:text="${product.id}"></td>
                 <td style="float: right; font-size: 11px; color: gray;">상품번호</td>
                 <td style="float: right; font-size: 11px; color: gray;" th:text="${product.productHits}"></td>
@@ -34,9 +38,13 @@
         <table class="table">
             <tr>
                 <td colspan="4"><img th:src="@{|/upload/${product.productFileName}|}" width="400" height="300" alt=""></td>
-                <td th:text="${product.productPrice}">판매가</td>
-                <td th:text="${product.productBrand}">상품 브랜드</td>
-                <td><input type="button" th:if="${product.productCounts} > 0" class="btn btn-outline-info" th:onclick="productOrder([[${product.id}]])" value="주문하기"></td>
+                <td style="float: right" th:text="'판매가: ' + ${product.productPrice}"></td> <br>
+                <td style="float: right" th:text="'상품 브랜드: ' + ${product.productBrand}"></td>
+                <br>
+                <td><input type="button" class="btn btn-outline-info" th:onclick="productOrder([[${product.id}]])" value="주문하기">
+                    <br>
+                    <input type="button" onclick="cart()" class="btn btn-secondary" value="장바구니 담기">
+                </td>
             </tr>
             <tr>
                 <td rowspan="4" th:text="${product.productInformation}"></td>
@@ -81,8 +89,43 @@
                 alert("관리자는 주문할 수 없습니다.");
             }
             else{
-                location.href="/order/save-form/" + id;
+                if([[${product.productCounts}]] > 0){
+                    location.href="/order/save-form/" + id;
+                }
+                else{
+                    alert("재고가 없으므로 주문할 수 없습니다.");
+                }
             }
+        }
+    }
+    const cart = () => {
+        if([[${session.loginId}]]){
+            if([[${session.loginMemberId}]] == "admin"){
+                alert("관리자는 장바구니에 상품을 담을 수 없습니다.");
+            }
+            $.ajax({
+                type: "post",
+                url: "/cart/save",
+                data: {"cartMemberId": [[${session.loginMemberId}]], "cartProductName": [[${product.productName}]],"cartProductBrand": [[${product.productBrand}]], "cartProductCreatedTime": [[${product.productCreatedTime}]],
+                    "cartProductId": [[${product.id}]], "cartProductFileName": [[${product.productFileName}]], "cartProductPrice": [[${product.productPrice}]], "cartProductCounts":1},
+                dataType: "text",
+                success:function (result){
+                    if(result == 1){
+                        console.log("success");
+                        alert("장바구니에 담겼습니다.");
+                    }
+                    else{
+                        alert("장바구니에 이미 담겨져 있습니다.");
+                    }
+                },
+                error:function (){
+                    alert("장바구니 저장되지 않았습니다.");
+                }
+
+            })
+        }
+        else {
+            alert("비회원은 장바구니에 상품을 담을 수 없습니다.");
         }
     }
 </script>

@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class CartProductDTO {
     private Long id;
     private String cartMemberId;
+    private Long cartProductId;
     private String cartProductName;
     private String cartProductBrand;
     private String cartProductCreatedTime;
@@ -29,6 +30,7 @@ public class CartProductDTO {
         cartProductDTO.setCartProductCounts(cartProductEntity.getCartProductCounts());
         cartProductDTO.setCartProductBrand(cartProductEntity.getCartProductBrand());
         cartProductDTO.setCartProductName(cartProductEntity.getCartProductName());
+        cartProductDTO.setCartProductId(cartProductEntity.getCartProductId());
         cartProductDTO.setCartProductPrice(cartProductEntity.getCartProductPrice());
         cartProductDTO.setCartProductCreatedTime(cartProductEntity.getCartProductCreatedTime());
         cartProductDTO.setCartProductFileName(cartProductEntity.getCartProductFileName());

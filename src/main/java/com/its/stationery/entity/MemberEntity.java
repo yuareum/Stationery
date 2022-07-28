@@ -50,6 +50,9 @@ public class MemberEntity {
     @OneToOne
     private CartEntity cartEntity;
 
+    @OneToOne
+    private WishEntity wishEntity;
+
     public static MemberEntity toSaveEntity(MemberDTO memberDTO) {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setMemberId(memberDTO.getMemberId());

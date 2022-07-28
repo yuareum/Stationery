@@ -1,6 +1,5 @@
 package com.its.stationery.service;
 
-import com.its.stationery.entity.CartEntity;
 import com.its.stationery.entity.MemberEntity;
 import com.its.stationery.entity.WishEntity;
 import com.its.stationery.repository.MemberRepository;
@@ -18,14 +17,13 @@ public class WishService {
 
     private final MemberRepository memberRepository;
 
-    public Long save(String memberId) {
-        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberId(memberId);
+    public Long save(String wishMemberId) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberId(wishMemberId);
         if(optionalMemberEntity.isPresent()){
-            if(!Objects.equals(memberId, "admin")){
-                Long saveId = wishRepository.save(WishEntity.toSaveEntity(memberId,optionalMemberEntity.get())).getId();
+            if(!Objects.equals(wishMemberId, "admin")){
+                Long saveId = wishRepository.save(WishEntity.toSaveEntity(optionalMemberEntity.get())).getId();
                 return saveId;
             }
-            return null;
         }
         return null;
     }

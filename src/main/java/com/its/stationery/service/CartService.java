@@ -29,7 +29,6 @@ public class CartService {
                 Long saveId = cartRepository.save(CartEntity.toSaveEntity(optionalMemberEntity.get())).getId();
                 return saveId;
             }
-            return null;
         }
         return null;
     }
