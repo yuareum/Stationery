@@ -1,6 +1,5 @@
 package com.its.stationery.repository;
 
-import com.its.stationery.dto.CartProductDTO;
 import com.its.stationery.entity.CartProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

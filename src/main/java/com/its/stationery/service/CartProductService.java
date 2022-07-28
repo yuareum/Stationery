@@ -50,4 +50,8 @@ public class CartProductService {
         }
         return 0;
     }
+
+    public void delete(Long id) {
+        cartProductRepository.deleteById(id);
+    }
 }

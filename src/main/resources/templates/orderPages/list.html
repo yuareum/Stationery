@@ -34,16 +34,16 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th scope="col" style="visibility: hidden">주문 첨부 파일</th>
+                    <th scope="col">이미지</th>
                     <th scope="col">주문번호</th>
                     <th scope="col">상품번호</th>
                     <th scope="col">회원 아이디</th>
                     <th scope="col">상품명</th>
-                    <th scope="col">상품 수</th>
+                    <th scope="col">상품수</th>
                     <th scope="col">주문 가격</th>
                     <th scope="col">주문 시간</th>
                     <th scope="col">상세 조회</th>
-                    <th scope="col" style="visibility: hidden">주문 처리</th>
+                    <th scope="col">주문 처리</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -57,8 +57,8 @@
                     <td th:text="${order.orderPrice}"></td>
                     <td th:text="*{#temporals.format(order.orderCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td><button class="btn btn-outline-success" th:onclick="'location.href=\''+ @{|/order/${order.id}|} + '\''">상세 조회</button></td>
-                    <td><button th:if="${order.adminProcess} == 1" class="btn btn-info" disabled="true">구매 완료</button></td>
-                    <td><button th:if="${order.adminProcess} == 0"class="btn btn-info" id="process" th:onclick="process([[${order.id}]])">주문 처리</button></td>
+                    <td><button th:if="${order.adminProcess} == 1" class="btn btn-info" disabled="true">구매 완료</button>
+                    <button th:if="${order.adminProcess} == 0" class="btn btn-info" id="process" th:onclick="process([[${order.id}]])">주문 처리</button></td>
                 </tr>
                 </tbody>
             </table>

@@ -48,4 +48,12 @@ public class CartService {
         }
         return null;
     }
+
+    public CartDTO findByCartMemberId(String cartMemberId) {
+        Optional<CartEntity> optionalCartEntity = cartRepository.findByCartMemberId(cartMemberId);
+        if(optionalCartEntity.isPresent()){
+            return CartDTO.toCartDTO(optionalCartEntity.get());
+        }
+        return null;
+    }
 }

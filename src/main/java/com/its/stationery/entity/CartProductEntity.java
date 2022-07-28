@@ -57,7 +57,7 @@ public class CartProductEntity {
         CartProductEntity cartProductEntity = new CartProductEntity();
         cartProductEntity.setCartMemberId(cartProductDTO.getCartMemberId());
         cartProductEntity.setCartProductBrand(cartProductDTO.getCartProductBrand());
-        cartProductEntity.setCartProductCounts(cartProductEntity.getCartProductCounts());
+        cartProductEntity.setCartProductCounts(cartProductDTO.getCartProductCounts());
         cartProductEntity.setCartProductId(cartProductDTO.getCartProductId());
         cartProductEntity.setCartProductName(cartProductDTO.getCartProductName());
         cartProductEntity.setCartProductPrice(cartProductDTO.getCartProductPrice());

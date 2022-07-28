@@ -27,6 +27,7 @@ public class CartProductDTO {
     public static CartProductDTO toCartProductDTO(CartProductEntity cartProductEntity) {
         CartProductDTO cartProductDTO = new CartProductDTO();
         cartProductDTO.setId(cartProductEntity.getId());
+        cartProductDTO.setCartMemberId(cartProductEntity.getCartMemberId());
         cartProductDTO.setCartProductCounts(cartProductEntity.getCartProductCounts());
         cartProductDTO.setCartProductBrand(cartProductEntity.getCartProductBrand());
         cartProductDTO.setCartProductName(cartProductEntity.getCartProductName());

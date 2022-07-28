@@ -2,9 +2,13 @@ package com.its.stationery.controller;
 
 import com.its.stationery.dto.CartDTO;
 import com.its.stationery.dto.CartProductDTO;
+import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.service.CartProductService;
 import com.its.stationery.service.CartService;
+import com.its.stationery.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +22,10 @@ public class CartController {
     private final CartService cartService;
     private final CartProductService cartProductService;
 
-    @GetMapping("/{id}")
-    public String findByMemberId(@PathVariable("id") Long id, Model model){
-        CartDTO findDTO = cartService.findById(id);
+    private final ProductService productService;
+    @GetMapping("/{cartMemberId}")
+    public String findByCartMemberId(@PathVariable("cartMemberId") String cartMemberId, Model model){
+        CartDTO findDTO = cartService.findByCartMemberId(cartMemberId);
         model.addAttribute("cart", findDTO);
         List<CartProductDTO> cartProductDTOList = cartProductService.findByCartMemberId(findDTO.getCartMemberId());
         model.addAttribute("cartProductList", cartProductDTOList);
@@ -35,5 +40,11 @@ public class CartController {
             return saveResult;
         }
         return 0;
+    }
+
+    @DeleteMapping("/product/{id}")
+    public ResponseEntity delete(@PathVariable("id") Long id){
+        cartProductService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
