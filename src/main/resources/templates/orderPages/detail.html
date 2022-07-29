@@ -10,23 +10,15 @@
         .container{
             margin-top: 20px;
         }
-        .nav{
-            width: 180px;
-        }
     </style>
 </head>
 <body>
 <th:block th:replace="commonPages/header :: header"></th:block>
-<div class="d-flex align-items-start">
-    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <button class="nav-link" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="false" th:onclick="'location.href=\''+ @{|/member/myPage/${session.loginId}|} + '\''">My Page</button>
-        <button class="nav-link" id="v-pills-update-tab" data-bs-toggle="pill" data-bs-target="#v-pills-update" type="button" role="tab" aria-controls="v-pills-member" aria-selected="false" th:onclick="'location.href=\''+ @{|/member/update/${session.loginId}|} + '\''">내 정보 수정</button>
-        <button class="nav-link" id="v-pills-withdrawal-tab" data-bs-toggle="pill" data-bs-target="#v-pills-withdrawal" type="button" role="tab" aria-controls="v-pills-product" aria-selected="false" th:onclick="'location.href=\''+ @{|/member/withdrawal/${session.loginId}|} + '\''">회원 탈퇴</button>
-        <button class="nav-link active" id="v-pills-order-tab" data-bs-toggle="pill" data-bs-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="true" th:onclick="'location.href=\''+ @{|/order/findByOrderMemberId/${order.orderMemberId}|} + '\''">내 주문 목록</button>
-    </div>
-
     <div class="container">
         <h2 style="margin-top: 20px">주문 내역 상세 조회</h2><br>
+        <input type="button" th:if="${session.loginMemberId.toString().equals('admin')}" class="btn btn-outline-success" style="float: right" onclick="location.href='/order'" value="주문 목록">
+        <input type="button" th:if="${session.loginMemberId} != 'admin'" class="btn btn-outline-success" style="float: right" th:onclick="'location.href=\''+ @{|/order/findByMemberId/${order.orderMemberId}|} + '\''" value="주문 목록">
+        <br>
         주문 회원 아이디 <input class="form-control" type="text" th:value="${order.orderMemberId}" readonly>
         주문 번호<input class="form-control" type="text" th:value="${order.id}" readonly>
         주문 상품번호<input class="form-control" type="text" th:value="${order.orderProductId}" readonly>

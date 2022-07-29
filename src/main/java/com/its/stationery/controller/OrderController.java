@@ -38,8 +38,8 @@ public class OrderController {
         return "redirect:/order/" + id;
     }
 
-    @GetMapping("/findByOrderMemberId/{orderMemberId}")
-    public String findByOrderMemberId(@PathVariable("orderMemberId") String orderMemberId, Model model){
+    @GetMapping("/findByMemberId/{orderMemberId}")
+    public String findByMemberId(@PathVariable("orderMemberId") String orderMemberId, Model model){
         List<OrderDTO> orderDTOList = orderService.findByOrderMemberId(orderMemberId);
         model.addAttribute("orderList", orderDTOList);
         return "orderPages/myList";

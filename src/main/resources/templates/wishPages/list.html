@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>찜 목록</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <style>
+        .container{
+            margin-top: 20px;
+        }
+        .nav{
+            width: 180px;
+        }
+        .nav-fill{
+            width: 50%;
+        }
+    </style>
 </head>
 <body>
+<th:block th:replace="commonPages/header :: header"></th:block>
+<div class="row">
+    <div class="col-2">
+        <nav id="navbar-example3" class="h-100 flex-column align-items-stretch pe-4 border-end">
+            <nav class="nav nav-pills flex-column">
+                <a class="nav-link ms-1 my-1" th:href="@{|/member/myPage/${session.loginId}|}">My Page</a>
+                <a class="nav-link ms-1 my-1" href="#">상품 관련 목록</a>
+                <a class="nav-link ms-1 my-1" th:href="@{|/review/findByMemberId/${session.loginMemberId}|}">리뷰</a>
+                <p class="ms-1 my-1">개인 정보</p>
+                <nav class="nav nav-pills flex-column">
+                    <a class="nav-link ms-1 my-1" th:href="@{|/member/profile/${session.loginId}|}">Profile</a>
+                    <a class="nav-link ms-1 my-1" th:href="@{|/member/update/${session.loginId}|}">회원 정보 수정</a>
+                    <a class="nav-link ms-1 my-1" th:href="@{|/member/withdrawal/${session.loginId}|}">회원 탈퇴</a>
+                </nav>
+            </nav>
+        </nav>
+    </div>
+    <div class="col-10">
+        <div class="container">
+            <nav class="nav nav-pills nav-fill">
+                <a class="nav-link" th:href="@{|/order/findByMemberId/${session.loginMemberId}|}">주문 목록</a>
+                <a class="nav-link" th:href="@{|/cart/${session.loginMemberId}|}">장바구니</a>
+                <a class="nav-link active" aria-current="page" href="#">찜목록</a>
+            </nav>
 
+            <h3 style="margin-top: 20px;">[[${session.loginMemberId}]] 찜 목록</h3>
+        </div>
+    </div>
+</div>
 </body>
 </html>

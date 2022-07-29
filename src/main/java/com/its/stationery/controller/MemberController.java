@@ -82,6 +82,12 @@ public class MemberController {
         return "memberPages/myPage";
     }
 
+    @GetMapping("/profile/{id}")
+    public String profile(@PathVariable("id") Long id, Model model){
+        MemberDTO memberDTO = memberService.findById(id);
+        model.addAttribute("member", memberDTO);
+        return "memberPages/profile";
+    }
     @GetMapping("/update/{id}")
     public String updateForm(@PathVariable("id") Long id, Model model){
         MemberDTO memberDTO = memberService.findById(id);
@@ -94,7 +100,7 @@ public class MemberController {
         memberService.update(memberDTO);
         session.setAttribute("loginMobile", memberDTO.getMemberMobile());
         session.setAttribute("loginEmail", memberDTO.getMemberEmail());
-        return "redirect:/member/myPage/" + memberDTO.getId();
+        return "redirect:/member/profile/" + memberDTO.getId();
     }
 
     @GetMapping("/withdrawal/{id}")
@@ -151,4 +157,5 @@ public class MemberController {
         memberService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }
