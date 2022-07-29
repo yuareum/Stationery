@@ -1,5 +1,6 @@
 package com.its.stationery.service;
 
+import com.its.stationery.dto.WishDTO;
 import com.its.stationery.entity.MemberEntity;
 import com.its.stationery.entity.WishEntity;
 import com.its.stationery.repository.MemberRepository;
@@ -27,4 +28,5 @@ public class WishService {
         }
         return null;
     }
+
 }

@@ -1,11 +1,8 @@
 package com.its.stationery.controller;
 
 import com.its.stationery.common.PagingConst;
-import com.its.stationery.dto.OrderDTO;
-import com.its.stationery.dto.ProductDTO;
-import com.its.stationery.service.OrderService;
-import com.its.stationery.service.ProductService;
-import com.its.stationery.service.WishService;
+import com.its.stationery.dto.*;
+import com.its.stationery.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +24,9 @@ public class ProductController {
     private final ProductService productService;
 
     private final WishService wishService;
+    private final WishProductService wishProductService;
+
+    private final ReviewService reviewService;
 
 
     @GetMapping("/save-form")
@@ -61,9 +61,11 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public String detail(@PathVariable("id") Long id, Model model){
+    public String detail(@PathVariable("id") Long id, Model model,HttpSession session){
         ProductDTO productDTO = productService.detail(id);
         model.addAttribute("product", productDTO);
+        List<ReviewDTO> reviewDTOList = reviewService.findByReviewProductId(id);
+        model.addAttribute("reviewList", reviewDTOList);
         return "productPages/detail";
     }
 

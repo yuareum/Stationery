@@ -26,7 +26,15 @@
         <button class="nav-link active" id="v-pills-locker-tab" data-bs-toggle="pill" data-bs-target="#v-pills-locker" type="button" role="tab" aria-controls="v-pills-locker" aria-selected="true">보관함</button>
     </div>
     <div class="container">
-        <h3>[[${session.loginMemberId}]] 장바구니 목록</h3>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">장바구니</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{|/wish/${session.loginMemberId}|}">찜목록</a>
+            </li>
+        </ul>
+        <h3 style="margin-top: 20px;">[[${session.loginMemberId}]] 장바구니 목록</h3>
         <table class="table table-hover">
             <thead>
                 <th scope="col">이미지</th>

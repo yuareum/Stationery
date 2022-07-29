@@ -14,6 +14,9 @@ public class ReviewEntity extends BaseEntity{
     @Column
     private Long id;
 
+    @Column
+    private Long reviewProductId;
+
     @Column(length = 20, nullable = false)
     private String reviewWriter;
 
@@ -22,6 +25,9 @@ public class ReviewEntity extends BaseEntity{
 
     @Column(length = 200, nullable = false)
     private String reviewContents;
+
+    @Column(length=50)
+    private String reviewFileName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
