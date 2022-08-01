@@ -19,15 +19,44 @@
         <input type="button" th:if="${session.loginMemberId.toString().equals('admin')}" class="btn btn-outline-success" style="float: right" onclick="location.href='/order'" value="주문 목록">
         <input type="button" th:if="${session.loginMemberId} != 'admin'" class="btn btn-outline-success" style="float: right" th:onclick="'location.href=\''+ @{|/order/findByMemberId/${order.orderMemberId}|} + '\''" value="주문 목록">
         <br>
-        주문 회원 아이디 <input class="form-control" type="text" th:value="${order.orderMemberId}" readonly>
-        주문 번호<input class="form-control" type="text" th:value="${order.id}" readonly>
-        주문 상품번호<input class="form-control" type="text" th:value="${order.orderProductId}" readonly>
-        주문 상품명<input class="form-control" type="text" th:value="${order.orderProductName}" readonly>
-        주문 상품 수량<input class="form-control" type="text" th:value="${order.orderCounts}" readonly>
-        총 주문 금액 <input class="form-control" type="text" th:value="${order.orderPrice}" readonly>
-        주문 시간 <input class="form-control" type="text" th:value="*{#temporals.format(order.orderCreatedTime, 'yyyy-MM-dd HH:mm:ss')}" readonly>
-        주문 회원 전화번호<input class="form-control" type="text" th:value="${order.orderMobile}" readonly>
-        배송지<input class="form-control" type="text" th:value="${order.orderAddress}" readonly>
+        <table class="table">
+            <tr>
+                <td>주문 회원</td>
+                <td th:text="${order.orderMemberId}"></td>
+            </tr>
+            <tr>
+                <td>주문 번호</td>
+                <td th:text="${order.id}"></td>
+            </tr>
+            <tr>
+                <td>주문 상품 번호</td>
+                <td th:text="${order.orderProductId}"></td>
+            </tr>
+            <tr>
+                <td>상품명</td>
+                <td th:text="${order.orderProductName}"></td>
+            </tr>
+            <tr>
+                <td>주문 수량</td>
+                <td th:text="${order.orderCounts}"></td>
+            </tr>
+            <tr>
+                <td>총 주문 금액</td>
+                <td th:text="${order.orderPrice}"></td>
+            </tr>
+            <tr>
+                <td>주문 시간</td>
+                <td th:text="*{#temporals.format(order.orderCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+            <tr>
+                <td>전화번호</td>
+                <td th:text="${order.orderMobile}"></td>
+            </tr>
+            <tr>
+                <td>배송지</td>
+                <td th:text="${order.orderAddress}"></td>
+            </tr>
+        </table>
     </div>
 </div>
 </body>

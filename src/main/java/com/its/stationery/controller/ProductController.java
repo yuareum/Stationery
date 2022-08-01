@@ -66,6 +66,8 @@ public class ProductController {
         model.addAttribute("product", productDTO);
         List<ReviewDTO> reviewDTOList = reviewService.findByReviewProductId(id);
         model.addAttribute("reviewList", reviewDTOList);
+        WishProductDTO wishProductDTOList = wishProductService.findByWishMemberIdAndWishProductName((String) session.getAttribute("loginMemberId"), productDTO.getProductName());
+        model.addAttribute("wishProduct", wishProductDTOList);
         return "productPages/detail";
     }
 

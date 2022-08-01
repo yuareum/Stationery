@@ -28,11 +28,32 @@
         <div class="container">
             <h2 style="margin-top: 20px">회원 상세 조회</h2><br>
             <img th:src="@{|/upload/${member.memberProfileName}|}" width="250" height="200" alt=""><br>
-            아이디 <input class="form-control" type="text" th:value="${member.memberId}" readonly>
-            비밀번호 <input class="form-control" type="text" th:value="${member.memberPassword}" readonly>
-            이메일 <input class="form-control" type="text" th:value="${member.memberEmail}" readonly>
-            이름 <input class="form-control" type="text" th:value="${member.memberName}" readonly>
-            전화번호 <input class="form-control" type="text" th:value="${member.memberMobile}" readonly>
+            <table class="table">
+                <tr>
+                    <td>회원번호</td>
+                    <td th:text="${member.id}"></td>
+                </tr>
+                <tr>
+                    <td>아이디</td>
+                    <td th:text="${member.memberId}"></td>
+                </tr>
+                <tr>
+                    <td>비밀번호</td>
+                    <td th:text="${member.memberPassword}"></td>
+                </tr>
+                <tr>
+                    <td>이름</td>
+                    <td th:text="${member.memberName}"></td>
+                </tr>
+                <tr>
+                    <td>이메일</td>
+                    <td th:text="${member.memberEmail}"></td>
+                </tr>
+                <tr>
+                    <td>전화번호</td>
+                    <td th:text="${member.memberMobile}"></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>

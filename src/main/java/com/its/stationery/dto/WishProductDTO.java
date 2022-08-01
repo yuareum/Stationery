@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+
 
 @Data
 @NoArgsConstructor
@@ -13,22 +15,26 @@ import org.springframework.web.multipart.MultipartFile;
 public class WishProductDTO {
     private Long id;
     private String wishMemberId;
+    private Long wishProductId;
     private String wishProductName;
     private String wishProductBrand;
     private Long wishPrice;
     private String wishProductCreatedTime;
     private MultipartFile wishFile;
     private String wishFileName;
+    private LocalDateTime createdTime;
 
     public static WishProductDTO toWishProductDTO(WishProductEntity wishProductEntity) {
         WishProductDTO wishProductDTO = new WishProductDTO();
         wishProductDTO.setId(wishProductEntity.getId());
+        wishProductDTO.setWishProductId(wishProductEntity.getWishProductId());
         wishProductDTO.setWishProductName(wishProductEntity.getWishProductName());
         wishProductDTO.setWishProductBrand(wishProductEntity.getWishProductBrand());
         wishProductDTO.setWishMemberId(wishProductEntity.getWishMemberId());
         wishProductDTO.setWishPrice(wishProductEntity.getWishPrice());
         wishProductDTO.setWishProductCreatedTime(wishProductEntity.getWishProductCreatedTime());
         wishProductDTO.setWishFileName(wishProductEntity.getWishFileName());
+        wishProductDTO.setCreatedTime(wishProductEntity.getCreatedTime());
         return wishProductDTO;
     }
 }

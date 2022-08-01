@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WishProductRepository extends JpaRepository<WishProductEntity, Long> {
 
-    WishProductEntity findByWishProductNameAndWishMemberId(String wishProductName, String wishMemberId);
+
+    WishProductEntity findByWishMemberIdAndWishProductName(String wishMemberId, String wishProductName);
 }

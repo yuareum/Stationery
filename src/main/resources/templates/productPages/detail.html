@@ -47,7 +47,16 @@
             </tr>
             <tr>
                 <td>
-                    <div><button class="btn" onclick="req(1)"><i class="bi bi-heart"></i></button></div>
+                    <button th:unless="${session.loginId}" onclick="idCheck(1)" class="btn" style="border-radius: 50%"> <i class="bi bi-heart" style="color: gray;"></i></button>
+                    <div th:if="${session.loginId}">
+                        <div><button th:if="${session.loginMemberId.toString().equals('admin')}" class="btn" style="border-radius: 50%;" onclick="idCheck(2)"> <i class="bi bi-heart" style="color: gray;"></i></button></div>
+                        <div th:if="${session.loginMemberId != 'admin'}">
+                            <button class="btn" style="border-radius: 50%;">
+                                <i th:if="${wishProduct} == null" onclick="wishSave()"  class="bi bi-heart" style="color: gray;"></i>
+                                <i th:if="${wishProduct} != null" th:onclick="wishDelete([[${wishProduct.id}]])" class="bi bi-heart" style="color: red;"></i>
+                            </button>
+                        </div>
+                    </div>
                     <input type="button" class="btn btn-outline-info" th:onclick="productOrder([[${product.id}]])" value="주문하기"> &nbsp;
                     <input type="button" onclick="cart()" class="btn btn-secondary" value="장바구니 담기"> &nbsp;
                 </td>
@@ -119,8 +128,7 @@
     const productOrder = (id) => {
         const member = [[${session.loginMemberId}]]
         if(member == null){
-            alert("비회원은 주문할 수 없습니다.");
-            const login = confirm("로그인을 하시겠습니까?");
+            const login = confirm("비회원은 주문할 수 없습니다. 로그인을 하시겠습니까?");
             if(login){
                 location.href='/member/login-form';
             }
@@ -168,14 +176,62 @@
             }
         }
         else {
-            alert("비회원은 장바구니에 상품을 담을 수 없습니다.");
-            const login = confirm("로그인을 하시겠습니까?");
+            const login = confirm("비회원은 장바구니에 상품을 담을 수 없습니다. 로그인을 하시겠습니까?");
             if(login){
                 location.href='/member/login-form';
             }
         }
     }
+    const idCheck = (num) => {
+        if(num == 1){
+            const check = confirm("비회원은 찜 기능을 할 수 없습니다. 로그인을 하시겠습니까?");
+            if(check){
+                location.href="/member/login-form";
+            }
+        }
+        else if(num == 2){
+            alert("관리자는 찜 기능을 할 수 없습니다.");
+        }
+    }
+    const wishSave = () => {
+        $.ajax({
+            type: "post",
+            url: "/wish/save",
+            data: {
+                "wishMemberId": [[${session.loginMemberId}]],
+                "wishProductId": [[${product.id}]],
+                "wishProductName": [[${product.productName}]],
+                "wishProductBrand": [[${product.productBrand}]],
+                "wishPrice": [[${product.productPrice}]],
+                "wishProductCreatedTime": [[${product.productCreatedTime}]],
+                "wishFileName": [[${product.productFileName}]]
+            },
+            dataType: "text",
+            success: function (result) {
+                if (result == 1) {
+                    location.href = "/product/" + [[${product.id}]];
+                } else {
+                    alert("찜 목록에 상품이 저장되지 않았습니다.");
+                }
 
+            },
+            error: function () {
+                alert("ajax 실패");
+            }
+        })
+    }
+    const wishDelete = (id) => {
+        $.ajax({
+            type: "delete",
+            url: "/wish/" + id,
+            success: function () {
+                location.href = "/product/" + [[${product.id}]];
+            },
+            error: function () {
+                alert("찜 상품 삭제 실패");
+            }
+        })
+    }
     const reviewSave =() => {
 
     }
