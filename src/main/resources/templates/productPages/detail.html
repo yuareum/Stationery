@@ -169,7 +169,7 @@
                         }
                     },
                     error:function (){
-                        alert("장바구니 저장되지 않았습니다.");
+                        alert("장바구니에 담을 수 없습니다.");
                     }
 
                 })
@@ -216,7 +216,7 @@
 
             },
             error: function () {
-                alert("ajax 실패");
+                alert("찜 목록에 상품을 저장하는 기능을 수행할 수 없습니다.");
             }
         })
     }
@@ -228,12 +228,42 @@
                 location.href = "/product/" + [[${product.id}]];
             },
             error: function () {
-                alert("찜 상품 삭제 실패");
+                alert("ajax 실패");
             }
         })
     }
     const reviewSave =() => {
-
+        if([[${session.loginId}]]){
+            if([[${session.loginMemberId}]] == "admin"){
+                alert("관리자는 리뷰를 작성할 수 없습니다.");
+            }
+            else{
+                $.ajax({
+                    type:"post",
+                    url:"/order/check",
+                    data: {"orderProductId": [[${product.id}]], "orderMemberId": [[${session.loginMemberId}]]},
+                    dataType: "text",
+                    success:function (result){
+                        if(result == 1){
+                            console.log("리뷰 작성 가능");
+                            location.href = "/review/save-form/" + [[${product.id}]];
+                        }
+                        else{
+                            alert("해당 상품을 주문 하지 않았거나 구매 완료가 된 상품이 아니므로 리뷰를 작성할 수 없습니다.");
+                        }
+                    },
+                    error:function (){
+                        alert("주문 조회 기능을 수행할 수 없습니다.");
+                    }
+                })
+            }
+        }
+        else{
+            const login = confirm("비회원은 리뷰를 작성할 수 없습니다. 로그인을 하시겠습니까?");
+            if(login){
+                location.href="/member/login-form";
+            }
+        }
     }
 </script>
 </html>

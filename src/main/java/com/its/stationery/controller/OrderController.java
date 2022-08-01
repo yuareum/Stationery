@@ -74,4 +74,10 @@ public class OrderController {
         }
         return null;
     }
+
+    @PostMapping("/check")
+    public @ResponseBody int check(@ModelAttribute OrderDTO orderDTO){
+        int checkResult = orderService.check(orderDTO);
+        return checkResult;
+    }
 }

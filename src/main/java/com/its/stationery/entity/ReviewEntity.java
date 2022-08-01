@@ -17,6 +17,9 @@ public class ReviewEntity extends BaseEntity{
     @Column
     private Long reviewProductId;
 
+    @Column(length = 50, nullable = false)
+    private String reviewProductName;
+
     @Column(length = 20, nullable = false)
     private String reviewWriter;
 

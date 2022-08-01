@@ -76,8 +76,26 @@ public class OrderService {
 
 
     public Long processUpdate(OrderDTO orderDTO) {
-        OrderEntity orderEntity = OrderEntity.toUpdateEntity(orderDTO);
-        Long id = orderRepository.save(orderEntity).getId();
-        return id;
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberId(orderDTO.getOrderMemberId());
+        if(optionalMemberEntity.isPresent()){
+            Optional<ProductEntity> optionalProductEntity = productRepository.findById(orderDTO.getOrderProductId());
+            if(optionalMemberEntity.isPresent()){
+                OrderEntity orderEntity = OrderEntity.toUpdateEntity(orderDTO,optionalMemberEntity.get(),optionalProductEntity.get());
+                Long id = orderRepository.save(orderEntity).getId();
+                return id;
+            }
+        }
+        return null;
+    }
+
+    public int check(OrderDTO orderDTO) {
+        Optional<OrderEntity> optionalOrderEntity = orderRepository.findByOrderMemberIdAndOrderProductId(orderDTO.getOrderMemberId(), orderDTO.getOrderProductId());
+        if(optionalOrderEntity.isPresent()){
+            OrderDTO order = OrderDTO.toOrderDTO(optionalOrderEntity.get());
+            if(order.getAdminProcess() == 1){
+                return 1;
+            }
+        }
+        return 0;
     }
 }

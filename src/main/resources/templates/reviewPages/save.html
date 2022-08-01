@@ -1,10 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
     <title>리뷰 작성</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <style>
+        .container{
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-
+<th:block th:replace="commonPages/header :: header"></th:block>
+<div class="container">
+    <h3>리뷰 작성</h3>
+    <form action="/review/save" method="post" enctype="multipart/form-data" name="reviewForm">
+        <input type="hidden" name="reviewProductId" th:value="${product.id}">
+        아이디<br> <input type="text" class="form-control" name="reviewWriter" th:value="${session.loginMemberId}" readonly>
+        리뷰 상품명<br> <input type="text" class="form-control" name="reviewProductName" th:value="${product.productName}" readonly>
+        리뷰 제목 <br> <input type="text" class="form-control" id="reviewTitle" name="reviewTitle">
+        리뷰 내용 <br> <input type="text" class="form-control" id="reviewContents" name="reviewContents">
+        리뷰 사진 <input type="file" class="form-control" name="reviewFile"><br>
+        <input type="button" class="btn btn-outline-primary" onclick="reviewSave()" value="작성하기">
+    </form>
+</div>
 </body>
+<script th:inline="javascript">
+    const reviewSave = () => {
+        const reviewTitle = document.getElementById("reviewTitle").value;
+        const reviewContents = document.getElementById("reviewContents").value;
+        if(reviewTitle == ""){
+            alert("리뷰 제목을 작성해주세요.");
+        }
+        else if(reviewContents == ""){
+            alert("리뷰 내용을 작성해주세요.");
+        }
+        else {
+            reviewForm.submit();
+        }
+    }
+</script>
 </html>

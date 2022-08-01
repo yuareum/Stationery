@@ -135,9 +135,12 @@ public class ProductService {
     }
 
     public Long countsUpdate(ProductDTO productDTO) {
-        OrderEntity orderEntity = orderRepository.findByOrderProductId(productDTO.getId());
-        ProductEntity productEntity = ProductEntity.toUpdateCounts(productDTO, orderEntity);
-        Long id = productRepository.save(productEntity).getId();
-        return id;
+        Optional<OrderEntity> optionalOrderEntity = orderRepository.findByOrderProductId(productDTO.getId());
+        if(optionalOrderEntity.isPresent()){
+            ProductEntity productEntity = ProductEntity.toUpdateCounts(productDTO, optionalOrderEntity.get());
+            Long id = productRepository.save(productEntity).getId();
+            return id;
+        }
+        return null;
     }
 }

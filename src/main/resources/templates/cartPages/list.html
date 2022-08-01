@@ -62,8 +62,8 @@
                     <td th:text="${cartProduct.cartProductBrand}"></td>
                     <td th:text="${cartProduct.cartProductCounts}"></td>
                     <td th:text="${cartProduct.cartProductPrice}"></td>
-                    <td><button class="btn" th:onclick="deleteById([[${cartProduct.id}]])">상품 삭제</button></td>
-                    <td><button class="btn" th:onclick="'location=\''+ @{|/order/save-form/${cartProduct.cartProductId}|}+'\''">주문하기</button></td>
+                    <td><button class="btn btn-danger" th:onclick="deleteById([[${cartProduct.id}]])">상품 삭제</button></td>
+                    <td><button class="btn btn-outline-info" th:onclick="'location=\''+ @{|/order/save-form/${cartProduct.cartProductId}|}+'\''">주문하기</button></td>
                 </tr>
                 </tbody>
             </table>

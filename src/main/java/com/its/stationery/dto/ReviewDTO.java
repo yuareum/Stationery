@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class ReviewDTO {
     private Long id;
     private Long reviewProductId;
+    private String reviewProductName;
     private String reviewWriter;
     private String reviewTitle;
     private String reviewContents;
@@ -25,6 +26,8 @@ public class ReviewDTO {
     public static ReviewDTO toReviewDTO(ReviewEntity reviewEntity) {
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setReviewTitle(reviewEntity.getReviewTitle());
+        reviewDTO.setReviewProductId(reviewEntity.getReviewProductId());
+        reviewDTO.setReviewProductName(reviewEntity.getReviewProductName());
         reviewDTO.setReviewContents(reviewEntity.getReviewContents());
         reviewDTO.setReviewWriter(reviewEntity.getReviewWriter());
         reviewDTO.setReviewFileName(reviewEntity.getReviewFileName());

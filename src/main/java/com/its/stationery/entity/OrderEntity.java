@@ -58,7 +58,6 @@ public class OrderEntity {
     @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
 
-
     public static OrderEntity toSaveEntity(OrderDTO orderDTO, MemberEntity memberEntity, ProductEntity productEntity) {
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setOrderCounts(orderDTO.getOrderCounts());
@@ -74,7 +73,7 @@ public class OrderEntity {
         return orderEntity;
     }
 
-    public static OrderEntity toUpdateEntity(OrderDTO orderDTO) {
+    public static OrderEntity toUpdateEntity(OrderDTO orderDTO,MemberEntity memberEntity, ProductEntity productEntity) {
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setId(orderDTO.getId());
         orderEntity.setOrderCounts(orderDTO.getOrderCounts());
@@ -87,6 +86,8 @@ public class OrderEntity {
         orderEntity.setOrderCreatedTime(orderDTO.getOrderCreatedTime());
         orderEntity.setOrderProductId(orderDTO.getOrderProductId());
         orderEntity.setOrderFileName(orderDTO.getOrderFileName());
+        orderEntity.setMemberEntity(memberEntity);
+        orderEntity.setProductEntity(productEntity);
         return orderEntity;
     }
 }
