@@ -68,14 +68,18 @@
                             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#information-tab-pane" type="button" role="tab" aria-controls="information-tab-pane" aria-selected="true">상품 정보</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review-tab-pane" type="button" role="tab" aria-controls="review-tab-pane" aria-selected="false">상품 리뷰</button>
+                            <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review-tab-pane" type="button" role="tab" aria-controls="review-tab-pane" aria-selected="false" >상품 리뷰</button>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent" style="margin-left: 55px;">
                         <div class="tab-pane fade show active" id="information-tab-pane" role="tabpanel" aria-labelledby="information-tab" tabindex="0" th:text="${product.productInformation}"></div>
                         <div class="tab-pane fade" id="review-tab-pane" role="tabpanel" aria-labelledby="review-tab" tabindex="0">
-                            <input type="button" th:onclick="reviewSave([[${product.id}]])" class="btn btn-info" value="리뷰 작성">
+                            <i class="bi bi-chat-left-text"></i> [[${reviewList.size()}]] reviews
+                            <button class="btn btn-outline-primary" th:onclick="reviewSave([[${product.id}]])" ><i class="bi bi-pencil-square"></i>작성하기</button>
                             <table class="table" th:each="review : ${reviewList}">
+                                <div th:if="${session.loginMemberId}">
+                                    <button class="btn btn-primary" th:if="${session.loginMemberId.toString().equals('[[${review.reviewWriter}]]')}">수정</button>
+                                </div>
                                 <tr>
                                     <td rowspan="4"><img th:src="@{|/upload/${review.reviewFileName}|}" width="80" height="80" alt=""></td>
                                 </tr>
@@ -91,14 +95,8 @@
                                     <td style="font-size: 15px;" th:text="'제목: ' + ${review.reviewTitle}"></td>
                                     <td style="font-size: 12px; margin-right: 30px;" th:if="${review.updatedTime} != null" th:text="'수정일: ' + *{#temporals.format(review.updatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                 </tr>
-                                <tr>
-                                    <div th:if="${session.loginMemberId}">
-                                        <td><button class="btn btn-outline-primary" th:if="${session.loginMemberId.toString().equals('${review.reviewWriter}')}" th:onclick="'location=\''+ @{|/review/update-form/${review.id}|}+'\'">수정</button></td>
-
-                                    </div>
-                                </tr>
                             </table>
-                        </div>
+                        </p>
                     </div>
                 </td>
             </tr>
@@ -268,5 +266,7 @@
             }
         }
     }
+
+
 </script>
 </html>

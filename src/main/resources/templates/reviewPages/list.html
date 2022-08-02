@@ -1,10 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>작성 리뷰 목록 </title>
+    <meta charset="UTF-8"  xmlns:th="http://www.thymeleaf.org">
+    <title>작성 리뷰 목록</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <style>
+        .container{
+            margin-top: 20px;
+        }
+        .nav{
+            width: 180px;
+        }
+        .nav-fill{
+            width: 50%;
+        }
+    </style>
 </head>
 <body>
+<th:block th:replace="commonPages/header :: header"></th:block>
+<div class="row">
+    <div class="col-2">
+        <nav id="navbar-example3" class="h-100 flex-column align-items-stretch pe-4 border-end">
+            <nav class="nav nav-pills flex-column">
+                <a class="nav-link ms-1 my-1" href="#">My Page</a>
+                <a class="nav-link ms-1 my-1" th:href="@{|/order/findByMemberId/${session.loginMemberId}|}">상품 관련 목록</a>
+                <a class="nav-link ms-1 my-1" th:href="@{|/review/findByMemberId/${session.loginMemberId}|}">리뷰</a>
+                <p class="ms-1 my-1">개인 정보</p>
+                <nav class="nav nav-pills flex-column">
+                    <a class="nav-link ms-1 my-1" th:href="@{|/member/profile/${session.loginId}|}">Profile</a>
+                    <a class="nav-link ms-1 my-1" th:href="@{|/member/update/${session.loginId}|}">회원 정보 수정</a>
+                    <a class="nav-link ms-1 my-1" th:href="@{|/member/withdrawal/${session.loginId}|}">회원 탈퇴</a>
+                </nav>
+            </nav>
+        </nav>
+    </div>
 
+    <div class="col-10">
+        <div class="container">
+            <nav class="nav nav-pills nav-fill">
+                <a class="nav-link active" aria-current="page" href="#">작성한 리뷰</a>
+                <a class="nav-link" th:href="@{|/review/orderCheck/${session.loginMemberId}|}">작성 가능한 리뷰</a>
+            </nav>
+            <h2 style="margin-top: 30px;">[[${session.loginMemberId}]] 리뷰 목록</h2>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">이미지</th>
+                    <th scope="col">리뷰 번호</th>
+                    <th scope="col">상품명</th>
+                    <th scope="col">리뷰 제목</th>
+                    <th scope="col">작성시간</th>
+                    <th scope="col">수정시간</th>
+                    <th scope="col">리뷰 상세 조회</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="review: ${reviewList}">
+                    <td><img th:src="@{|/upload/${review.reviewFileName}|}" width="100" height="100" alt=""></td>
+                    <td th:text="${review.id}"></td>
+                    <td th:text="${review.reviewProductName}"></td>
+                    <td><a th:href="@{|/product/${review.reviewProductId}|}" th:text="${review.reviewProductName}"></a></td>
+                    <td th:text="${review.reviewTitle}"></td>
+                    <td th:text="*{#temporals.format(review.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:if="${review.updatedTime} != null" th:text="*{#temporals.format(review.updatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td><button class="btn btn-outline-success" th:onclick="'location.href=\''+ @{|/review/${review.id}|} + '\''">상세 조회</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
 </html>

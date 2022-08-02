@@ -13,4 +13,6 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
     Optional<ReviewEntity> findByReviewWriterAndReviewProductId(String reviewWriter, Long reviewProductId);
 
     List<ReviewEntity> findByReviewWriter(String reviewWriter);
+
+
 }

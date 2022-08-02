@@ -62,4 +62,5 @@ public class ReviewController {
         return "reviewPages/detail";
     }
 
+
 }

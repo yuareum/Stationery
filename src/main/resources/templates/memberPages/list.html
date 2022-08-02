@@ -50,7 +50,6 @@
                     <td>
                         <button class="btn btn-secondary" th:onclick="deleteById([[${member.id}]])">삭제</button>
                     </td>
-                    <td></td>
                 </tr>
                 </tbody>
             </table>
@@ -68,7 +67,6 @@
                             <span><</span> <!-- < -->
                         </a>
                     </li>
-
 
                     <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
                         th:class="${page == memberList.number + 1} ? 'page-item active'" class="page-item">
