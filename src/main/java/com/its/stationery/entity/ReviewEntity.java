@@ -1,5 +1,6 @@
 package com.its.stationery.entity;
 
+import com.its.stationery.dto.ReviewDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,4 +42,16 @@ public class ReviewEntity extends BaseEntity{
     private ProductEntity productEntity;
 
 
+    public static ReviewEntity toSaveEntity(ReviewDTO reviewDTO, MemberEntity memberEntity, ProductEntity productEntity) {
+        ReviewEntity reviewEntity = new ReviewEntity();
+        reviewEntity.setReviewProductId(reviewDTO.getReviewProductId());
+        reviewEntity.setReviewWriter(reviewDTO.getReviewWriter());
+        reviewEntity.setReviewTitle(reviewDTO.getReviewTitle());
+        reviewEntity.setReviewContents(reviewDTO.getReviewContents());
+        reviewEntity.setReviewProductName(reviewDTO.getReviewProductName());
+        reviewEntity.setReviewFileName(reviewDTO.getReviewFileName());
+        reviewEntity.setMemberEntity(memberEntity);
+        reviewEntity.setProductEntity(productEntity);
+        return reviewEntity;
+    }
 }

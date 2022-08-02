@@ -74,25 +74,28 @@
                     <div class="tab-content" id="myTabContent" style="margin-left: 55px;">
                         <div class="tab-pane fade show active" id="information-tab-pane" role="tabpanel" aria-labelledby="information-tab" tabindex="0" th:text="${product.productInformation}"></div>
                         <div class="tab-pane fade" id="review-tab-pane" role="tabpanel" aria-labelledby="review-tab" tabindex="0">
-                            <h4>상품 리뷰 목록</h4>
                             <input type="button" th:onclick="reviewSave([[${product.id}]])" class="btn btn-info" value="리뷰 작성">
                             <table class="table" th:each="review : ${reviewList}">
                                 <tr>
-                                    <td rowspan="3"><img th:src="@{|/upload/${review.reviewFileName}|}" width="80" height="80" alt=""></td>
+                                    <td rowspan="4"><img th:src="@{|/upload/${review.reviewFileName}|}" width="80" height="80" alt=""></td>
                                 </tr>
                                 <tr>
                                     <td style="font-size: 15px;" th:text="'상품명: ' + ${product.productName}"></td>
+                                    <td style="font-size: 12px; margin-right: 15px;" th:text="'작성자: ' + ${review.reviewWriter}"></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 15px;" th:text="'리뷰 번호: ' + ${review.id}"></td>
+                                    <td style="font-size: 12px; margin-right: 15px;" th:text="'작성일: ' + *{#temporals.format(review.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                 </tr>
                                 <tr>
                                     <td style="font-size: 15px;" th:text="'제목: ' + ${review.reviewTitle}"></td>
+                                    <td style="font-size: 12px; margin-right: 30px;" th:if="${review.updatedTime} != null" th:text="'수정일: ' + *{#temporals.format(review.updatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                 </tr>
                                 <tr>
-                                    <td style="font-size: 12px;" th:text="'작성자: ' + ${review.reviewWriter}"></td>
-                                    <td style="font-size: 12px;" th:text="'작성일: ' + ${review.createdTime}"></td>
-                                    <td style="font-size: 12px;" th:text="'수정일: ' + ${review.updatedTime}"></td>
-                                </tr>
-                                <tr>
-                                    <td><button class="btn btn-outline-primary" th:if="${session.loginMemberId.toString().equals('${review.writer}')}" th:onclick="'location=\''+ @{|/review/update/${review.id}|}+'\'">수정</button></td>
+                                    <div th:if="${session.loginMemberId}">
+                                        <td><button class="btn btn-outline-primary" th:if="${session.loginMemberId.toString().equals('${review.reviewWriter}')}" th:onclick="'location=\''+ @{|/review/update-form/${review.id}|}+'\'">수정</button></td>
+
+                                    </div>
                                 </tr>
                             </table>
                         </div>
@@ -231,7 +234,7 @@
                 alert("ajax 실패");
             }
         })
-    }
+     }
     const reviewSave =() => {
         if([[${session.loginId}]]){
             if([[${session.loginMemberId}]] == "admin"){
