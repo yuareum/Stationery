@@ -40,7 +40,9 @@
         <div class="container">
             <nav class="nav nav-pills nav-fill">
                 <a class="nav-link active" aria-current="page" href="#">작성한 리뷰</a>
-                <a class="nav-link" th:href="@{|/review/orderCheck/${session.loginMemberId}|}">작성 가능한 리뷰</a>
+                <div th:each="review : ${reviewList}">
+                    <a class="nav-link" th:href="@{|/order/check/${review.reviewProductId}|}">작성 가능한 리뷰</a>
+                </div>
             </nav>
             <h2 style="margin-top: 30px;">[[${session.loginMemberId}]] 리뷰 목록</h2>
             <table class="table table-hover">

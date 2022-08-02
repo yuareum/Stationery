@@ -4,8 +4,10 @@ import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.MemberDTO;
 import com.its.stationery.dto.OrderDTO;
 import com.its.stationery.dto.ProductDTO;
+import com.its.stationery.dto.ReviewDTO;
 import com.its.stationery.service.OrderService;
 import com.its.stationery.service.ProductService;
+import com.its.stationery.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.criterion.Order;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,8 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
     private final ProductService productService;
+
+    private final ReviewService reviewService;
     @GetMapping("/save-form/{productId}")
     public String saveForm(@PathVariable("productId") Long productId, Model model){
         ProductDTO productDTO = productService.findById(productId);
@@ -79,5 +83,17 @@ public class OrderController {
     public @ResponseBody int check(@ModelAttribute OrderDTO orderDTO){
         int checkResult = orderService.check(orderDTO);
         return checkResult;
+    }
+
+    @GetMapping("/check/{orderMemberId}")
+    public String orderCheck(@PathVariable("orderMemberId") String orderMemberId, Model model){
+        List<OrderDTO> orderList = orderService.findByOrderMemberId(orderMemberId);
+        for(OrderDTO orderDTO: orderList){
+            List<ReviewDTO> reviewDTOList = reviewService.findByReviewProductId(orderDTO.getOrderProductId());
+            if(reviewDTOList == null){
+                return "/reviewPages/write";
+            }
+        }
+        return "redirect:/review/findByMemberId/" + orderMemberId;
     }
 }
