@@ -26,12 +26,12 @@
             <nav class="nav nav-pills flex-column">
                 <a class="nav-link ms-1 my-1" th:href="@{|/member/myPage/${session.loginId}|}">My Page</a>
                 <a class="nav-link ms-1 my-1" href="#">상품 관련 목록</a>
-                <a class="nav-link ms-1 my-1" th:href="@{|/review/${session.loginMemberId}|}">리뷰</a>
+                <a class="nav-link ms-1 my-1" th:href="@{|/review/findByMemberId/${session.loginMemberId}|}">리뷰</a>
                 <p class="ms-1 my-1">개인 정보</p>
                 <nav class="nav nav-pills flex-column">
                     <a class="nav-link ms-1 my-1" th:href="@{|/member/profile/${session.loginId}|}">Profile</a>
                     <a class="nav-link ms-1 my-1" th:href="@{|/member/update/${session.loginId}|}">회원 정보 수정</a>
-                    <a class="nav-link ms-1 my-1" th:href="@{|/member/withdrawal/${session.loginId}|}">회원 탈퇴</a>
+                    <a class="nav-link ms-1 my-1" th:href="@{|/member/findByMemberId/withdrawal/${session.loginId}|}">회원 탈퇴</a>
                 </nav>
             </nav>
         </nav>

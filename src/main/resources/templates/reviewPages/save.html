@@ -18,7 +18,7 @@
     <h3>리뷰 작성</h3>
     <form action="/review/save" method="post" enctype="multipart/form-data" name="reviewForm">
         <input type="hidden" name="reviewProductId" th:value="${product.id}">
-        아이디<br> <input type="text" class="form-control" name="reviewWriter" th:value="${session.loginMemberId}" readonly><br>
+        작성자<br> <input type="text" class="form-control" name="reviewWriter" th:value="${session.loginMemberId}" readonly><br>
         리뷰 상품명<br> <input type="text" class="form-control" name="reviewProductName" th:value="${product.productName}" readonly><br>
         리뷰 제목 <br> <input type="text" class="form-control" id="reviewTitle" name="reviewTitle"><br>
         리뷰 내용 <br> <textarea type="text" class="form-control" id="reviewContents" rows="15" cols="10" name="reviewContents"></textarea><br>

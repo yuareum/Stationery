@@ -48,11 +48,18 @@ public class ReviewController {
         return "reviewPages/update";
     }
 
-    @GetMapping("/{reviewWriter}")
+    @GetMapping("/findByMemberId/{reviewWriter}")
     public String findByMemberId(@PathVariable("reviewWriter") String reviewWriter, Model model){
         List<ReviewDTO> reviewDTOList = reviewService.findByReviewWriter(reviewWriter);
         model.addAttribute("reviewList", reviewDTOList);
         return "reviewPages/list";
+    }
+
+    @GetMapping("/{id}")
+    public String findById(@PathVariable("id") Long id, Model model){
+        ReviewDTO reviewDTO = reviewService.findById(id);
+        model.addAttribute("review", reviewDTO);
+        return "reviewPages/detail";
     }
 
 }
