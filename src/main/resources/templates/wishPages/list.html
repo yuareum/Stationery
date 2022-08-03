@@ -71,4 +71,19 @@
     </div>
 </div>
 </body>
+<script th:inline="javascript">
+    const deleteById = (id)=> {
+        $.ajax({
+            type: "delete",
+            url: "/wish/" + id,
+            success:function (){
+                console.log("success");
+                location.href="/wish/"+ [[${session.loginMemberId}]];
+            },
+            error:function (){
+                alert("ajax 실패");
+            }
+        });
+    }
+</script>
 </html>
