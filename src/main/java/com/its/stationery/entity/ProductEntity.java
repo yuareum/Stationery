@@ -1,5 +1,6 @@
 package com.its.stationery.entity;
 
+import com.its.stationery.dto.OrderDTO;
 import com.its.stationery.dto.ProductDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -92,11 +93,11 @@ public class ProductEntity extends BaseEntity {
         return productEntity;
     }
 
-    public static ProductEntity toUpdateCounts(ProductDTO productDTO, OrderEntity orderEntity){
+    public static ProductEntity toUpdateCounts(ProductDTO productDTO, int orderCounts){
         ProductEntity productEntity = new ProductEntity();
         productEntity.setId(productDTO.getId());
         productEntity.setProductHits(productDTO.getProductHits());
-        productEntity.setProductCounts(productDTO.getProductCounts()-orderEntity.getOrderCounts());
+        productEntity.setProductCounts(productDTO.getProductCounts()-orderCounts);
         productEntity.setProductAdmin(productDTO.getProductAdmin());
         productEntity.setProductBrand(productDTO.getProductBrand());
         productEntity.setProductName(productDTO.getProductName());

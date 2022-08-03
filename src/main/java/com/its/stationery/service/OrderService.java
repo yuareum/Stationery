@@ -89,7 +89,7 @@ public class OrderService {
     }
 
     public int check(OrderDTO orderDTO) {
-        Optional<OrderEntity> optionalOrderEntity = orderRepository.findByOrderMemberIdAndOrderProductId(orderDTO.getOrderMemberId(), orderDTO.getOrderProductId());
+        List<OrderEntity> optionalOrderEntity = orderRepository.findByOrderMemberIdAndOrderProductId(orderDTO.getOrderMemberId(), orderDTO.getOrderProductId());
         if(optionalOrderEntity.isPresent()){
             OrderDTO order = OrderDTO.toOrderDTO(optionalOrderEntity.get());
             if(order.getAdminProcess() == 1){

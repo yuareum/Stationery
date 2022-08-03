@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/order")
@@ -89,7 +90,22 @@ public class OrderController {
     @GetMapping("/write/{orderMemberId}")
     public String write(@PathVariable("orderMemberId") String orderMemberId, Model model){
         List<OrderDTO> orderDTOList = orderService.findByOrderMemberId(orderMemberId);
-        model.addAttribute("writeList", orderDTOList);
-        return "reviewPage/write";
+        List<ReviewDTO> reviewDTOList = reviewService.findByReviewWriter(orderMemberId);
+        for(OrderDTO orderDTO : orderDTOList){
+            for(ReviewDTO reviewDTO : reviewDTOList){
+                if(Objects.equals(orderDTO.getOrderProductName(), reviewDTO.getReviewProductName())){
+                    model.addAttribute("writeList", orderDTOList);
+                }
+            }
+        }
+        return "reviewPages/write";
+    }
+
+    @GetMapping("/productCountsUpdate/{id}")
+    public String productCountsUpdate(@PathVariable("id") Long id){
+        OrderDTO orderDTO = orderService.findById(id);
+        ProductDTO productDTO = productService.findById(orderDTO.getOrderProductId());
+        productService.countsUpdate(productDTO);
+        return "redirect:/order";
     }
 }

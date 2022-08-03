@@ -1,6 +1,7 @@
 package com.its.stationery.service;
 
 import com.its.stationery.common.PagingConst;
+import com.its.stationery.dto.OrderDTO;
 import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.entity.MemberEntity;
 import com.its.stationery.entity.OrderEntity;
@@ -135,9 +136,10 @@ public class ProductService {
     }
 
     public Long countsUpdate(ProductDTO productDTO) {
-        Optional<OrderEntity> optionalOrderEntity = orderRepository.findByOrderProductId(productDTO.getId());
+        Optional<OrderEntity> optionalOrderEntity = orderRepository.findById(productDTO.getId());
         if(optionalOrderEntity.isPresent()){
-            ProductEntity productEntity = ProductEntity.toUpdateCounts(productDTO, optionalOrderEntity.get());
+            OrderDTO orderDTO = OrderDTO.toOrderDTO(optionalOrderEntity.get());
+            ProductEntity productEntity = ProductEntity.toUpdateCounts(productDTO, orderDTO.getOrderCounts());
             Long id = productRepository.save(productEntity).getId();
             return id;
         }

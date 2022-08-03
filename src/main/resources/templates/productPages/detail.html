@@ -68,11 +68,11 @@
                             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#information-tab-pane" type="button" role="tab" aria-controls="information-tab-pane" aria-selected="true">상품 정보</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review-tab-pane" type="button" role="tab" aria-controls="review-tab-pane" aria-selected="false" >상품 리뷰</button>
+                            <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review-tab-pane" type="button" role="tab" aria-controls="review-tab-pane" aria-selected="false">상품 리뷰</button>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent" style="margin-left: 55px;">
-                        <div class="tab-pane fade show active" id="information-tab-pane" role="tabpanel" aria-labelledby="information-tab" tabindex="0" th:text="${product.productInformation}"></div>
+                        <div class="tab-pane fade show active" id="information-tab-pane" role="tabpanel" aria-labelledby="information-tab" t abindex="0" th:text="${product.productInformation}"></div>
                         <div class="tab-pane fade" id="review-tab-pane" role="tabpanel" aria-labelledby="review-tab" tabindex="0">
                             <i class="bi bi-chat-left-text"></i> [[${reviewList.size()}]] reviews
                             <button class="btn btn-outline-primary" th:onclick="reviewSave([[${product.id}]])" ><i class="bi bi-pencil-square"></i>작성하기</button>
@@ -249,7 +249,7 @@
                             location.href = "/review/save-form/" + [[${product.id}]];
                         }
                         else{
-                            alert("해당 상품을 주문 하지 않았거나 구매 완료가 된 상품이 아니므로 리뷰를 작성할 수 없습니다.");
+                            alert("해당 상품이 구매 완료되지 않았으므로 회원은 리뷰를 작성하실 수 없습니다.");
                         }
                     },
                     error:function (){

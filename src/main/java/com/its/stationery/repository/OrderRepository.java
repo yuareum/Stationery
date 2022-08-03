@@ -13,5 +13,5 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
 
     Optional<OrderEntity> findByOrderProductId(Long orderProductId);
 
-    Optional<OrderEntity> findByOrderMemberIdAndOrderProductId(String orderMemberId, Long orderProductId);
+    List<OrderEntity> findByOrderMemberIdAndOrderProductId(String orderMemberId, Long orderProductId);
 }
