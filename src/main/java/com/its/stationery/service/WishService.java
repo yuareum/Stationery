@@ -1,6 +1,8 @@
 package com.its.stationery.service;
 
+import com.its.stationery.dto.CartDTO;
 import com.its.stationery.dto.WishDTO;
+import com.its.stationery.entity.CartEntity;
 import com.its.stationery.entity.MemberEntity;
 import com.its.stationery.entity.WishEntity;
 import com.its.stationery.repository.MemberRepository;
@@ -29,4 +31,11 @@ public class WishService {
         return null;
     }
 
+    public WishDTO findByWishMemberId(String wishMemberId) {
+        Optional<WishEntity> optionalWishEntity = wishRepository.findByWishMemberId(wishMemberId);
+        if(optionalWishEntity.isPresent()){
+            return WishDTO.toWishDTO(optionalWishEntity.get());
+        }
+        return null;
+    }
 }

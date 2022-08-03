@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -85,15 +86,10 @@ public class OrderController {
         return checkResult;
     }
 
-    @GetMapping("/check/{orderMemberId}")
-    public String orderCheck(@PathVariable("orderMemberId") String orderMemberId, Model model){
-        List<OrderDTO> orderList = orderService.findByOrderMemberId(orderMemberId);
-        for(OrderDTO orderDTO: orderList){
-            List<ReviewDTO> reviewDTOList = reviewService.findByReviewProductId(orderDTO.getOrderProductId());
-            if(reviewDTOList == null){
-                return "/reviewPages/write";
-            }
-        }
-        return "redirect:/review/findByMemberId/" + orderMemberId;
+    @GetMapping("/write/{orderMemberId}")
+    public String write(@PathVariable("orderMemberId") String orderMemberId, Model model){
+        List<OrderDTO> orderDTOList = orderService.findByOrderMemberId(orderMemberId);
+        model.addAttribute("writeList", orderDTOList);
+        return "reviewPage/write";
     }
 }

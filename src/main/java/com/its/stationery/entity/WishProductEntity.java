@@ -32,9 +32,6 @@ public class WishProductEntity {
     @Column(length = 30, nullable = false)
     private String wishProductBrand;
 
-    @Column(length = 30, nullable = false)
-    private String wishProductCreatedTime;
-
     @Column(nullable = false)
     private Long wishPrice;
 
@@ -56,7 +53,6 @@ public class WishProductEntity {
         wishProductEntity.setWishProductBrand(wishProductDTO.getWishProductBrand());
         wishProductEntity.setWishProductName(wishProductDTO.getWishProductName());
         wishProductEntity.setWishPrice(wishProductDTO.getWishPrice());
-        wishProductEntity.setWishProductCreatedTime(wishProductDTO.getWishProductCreatedTime());
         wishProductEntity.setWishMemberId(wishProductDTO.getWishMemberId());
         wishProductEntity.setWishFileName(wishProductDTO.getWishFileName());
         wishProductEntity.setWishEntity(wishEntity);

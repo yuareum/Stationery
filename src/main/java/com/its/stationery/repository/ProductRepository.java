@@ -1,8 +1,6 @@
 package com.its.stationery.repository;
 
-import com.its.stationery.entity.OrderEntity;
 import com.its.stationery.entity.ProductEntity;
-import org.hibernate.criterion.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +17,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     List<ProductEntity> findByCategoryId(Long categoryId);
 
     List<ProductEntity> findByProductNameContainingOrProductBrandContaining(String q, String q1);
-    void productCounts(int i);
+
 
 }

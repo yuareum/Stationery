@@ -97,11 +97,9 @@ public class ProductController {
     }
 
     @GetMapping("/countsUpdate/{id}")
-    public String countsUpdate(@PathVariable("id") Long id, HttpSession session){
+    public String countsUpdate(@PathVariable("id") Long id){
         ProductDTO productDTO = productService.findById(id);
         productService.countsUpdate(productDTO);
         return "redirect:/order";
     }
-
-
 }

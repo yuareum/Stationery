@@ -19,7 +19,7 @@ public class WishProductDTO {
     private String wishProductName;
     private String wishProductBrand;
     private Long wishPrice;
-    private String wishProductCreatedTime;
+
     private MultipartFile wishFile;
     private String wishFileName;
     private LocalDateTime createdTime;
@@ -32,7 +32,6 @@ public class WishProductDTO {
         wishProductDTO.setWishProductBrand(wishProductEntity.getWishProductBrand());
         wishProductDTO.setWishMemberId(wishProductEntity.getWishMemberId());
         wishProductDTO.setWishPrice(wishProductEntity.getWishPrice());
-        wishProductDTO.setWishProductCreatedTime(wishProductEntity.getWishProductCreatedTime());
         wishProductDTO.setWishFileName(wishProductEntity.getWishFileName());
         wishProductDTO.setCreatedTime(wishProductEntity.getCreatedTime());
         return wishProductDTO;

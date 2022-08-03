@@ -1,5 +1,6 @@
 package com.its.stationery.service;
 
+import com.its.stationery.dto.CartProductDTO;
 import com.its.stationery.dto.WishProductDTO;
 import com.its.stationery.entity.CartProductEntity;
 import com.its.stationery.entity.ProductEntity;
@@ -12,6 +13,7 @@ import com.its.stationery.repository.WishRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,5 +56,14 @@ public class WishProductService {
 
     public void delete(Long id) {
         wishProductRepository.deleteById(id);
+    }
+
+    public List<WishProductDTO> findByWishMemberId(String wishMemberId) {
+        List<WishProductEntity> wishProductEntityList = wishProductRepository.findByWishMemberId(wishMemberId);
+        List<WishProductDTO> wishProductDTOList  = new ArrayList<>();
+        for(WishProductEntity wishProduct : wishProductEntityList){
+            wishProductDTOList.add(WishProductDTO.toWishProductDTO(wishProduct));
+        }
+        return wishProductDTOList;
     }
 }

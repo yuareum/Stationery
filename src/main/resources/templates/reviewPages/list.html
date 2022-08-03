@@ -23,9 +23,9 @@
     <div class="col-2">
         <nav id="navbar-example3" class="h-100 flex-column align-items-stretch pe-4 border-end">
             <nav class="nav nav-pills flex-column">
-                <a class="nav-link ms-1 my-1" href="#">My Page</a>
+                <a class="nav-link ms-1 my-1" th:href="@{|/member/myPage/${session.loginId}|}">My Page</a>
                 <a class="nav-link ms-1 my-1" th:href="@{|/order/findByMemberId/${session.loginMemberId}|}">상품 관련 목록</a>
-                <a class="nav-link ms-1 my-1" th:href="@{|/review/findByMemberId/${session.loginMemberId}|}">리뷰</a>
+                <a class="nav-link ms-1 my-1" href="#">리뷰</a>
                 <p class="ms-1 my-1">개인 정보</p>
                 <nav class="nav nav-pills flex-column">
                     <a class="nav-link ms-1 my-1" th:href="@{|/member/profile/${session.loginId}|}">Profile</a>
@@ -40,11 +40,9 @@
         <div class="container">
             <nav class="nav nav-pills nav-fill">
                 <a class="nav-link active" aria-current="page" href="#">작성한 리뷰</a>
-                <div th:each="review : ${reviewList}">
-                    <a class="nav-link" th:href="@{|/order/check/${review.reviewProductId}|}">작성 가능한 리뷰</a>
-                </div>
+                <a class="nav-link" th:href="@{|/order/write/${session.loginMemberId}|}">작성 가능한 리뷰</a>
             </nav>
-            <h2 style="margin-top: 30px;">[[${session.loginMemberId}]] 리뷰 목록</h2>
+            <h3 style="margin-top: 30px;">작성한 리뷰 목록</h3>
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -54,7 +52,7 @@
                     <th scope="col">리뷰 제목</th>
                     <th scope="col">작성시간</th>
                     <th scope="col">수정시간</th>
-                    <th scope="col">리뷰 상세 조회</th>
+                    <th scope="col">상세 조회</th>
                 </tr>
                 </thead>
                 <tbody>

@@ -157,7 +157,7 @@
                 $.ajax({
                     type: "post",
                     url: "/cart/save",
-                    data: {"cartMemberId": [[${session.loginMemberId}]], "cartProductName": [[${product.productName}]],"cartProductBrand": [[${product.productBrand}]], "cartProductCreatedTime": [[${product.productCreatedTime}]],
+                    data: {"cartMemberId": [[${session.loginMemberId}]], "cartProductName": [[${product.productName}]],"cartProductBrand": [[${product.productBrand}]],
                         "cartProductId": [[${product.id}]], "cartProductFileName": [[${product.productFileName}]], "cartProductPrice": [[${product.productPrice}]], "cartProductCounts":1},
                     dataType: "text",
                     success:function (result){
@@ -204,7 +204,6 @@
                 "wishProductName": [[${product.productName}]],
                 "wishProductBrand": [[${product.productBrand}]],
                 "wishPrice": [[${product.productPrice}]],
-                "wishProductCreatedTime": [[${product.productCreatedTime}]],
                 "wishFileName": [[${product.productFileName}]]
             },
             dataType: "text",

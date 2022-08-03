@@ -32,9 +32,6 @@ public class CartProductEntity {
     @Column(length = 30, nullable = false)
     private String cartProductBrand;
 
-    @Column(length = 30, nullable = false)
-    private String cartProductCreatedTime;
-
     @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime createdTime;
@@ -62,7 +59,7 @@ public class CartProductEntity {
         cartProductEntity.setCartProductName(cartProductDTO.getCartProductName());
         cartProductEntity.setCartProductPrice(cartProductDTO.getCartProductPrice());
         cartProductEntity.setCartProductFileName(cartProductDTO.getCartProductFileName());
-        cartProductEntity.setCartProductCreatedTime(cartProductDTO.getCartProductCreatedTime());
+
         cartProductEntity.setCartEntity(cartEntity);
         cartProductEntity.setProductEntity(productEntity);
         return cartProductEntity;

@@ -1,5 +1,7 @@
 package com.its.stationery.controller;
 
+import com.its.stationery.dto.CartDTO;
+import com.its.stationery.dto.WishDTO;
 import com.its.stationery.dto.WishProductDTO;
 import com.its.stationery.service.WishProductService;
 import com.its.stationery.service.WishService;
@@ -7,7 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/wish")
@@ -16,7 +21,11 @@ public class WishController {
     private final WishService wishService;
     private final WishProductService wishProductService;
     @GetMapping("/{wishMemberId}")
-    public String findByMemberId(@PathVariable("wishMemberId") String wishMemberId){
+    public String findByMemberId(@PathVariable("wishMemberId") String wishMemberId, Model model){
+        WishDTO findDTO = wishService.findByWishMemberId(wishMemberId);
+        model.addAttribute("wish", findDTO);
+        List<WishProductDTO> wishProductDTOList = wishProductService.findByWishMemberId(wishMemberId);
+        model.addAttribute("wishProductList", wishProductDTOList);
         return "/wishPages/list";
     }
 
