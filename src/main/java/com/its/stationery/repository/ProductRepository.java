@@ -20,7 +20,4 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
     List<ProductEntity> findByProductNameContainingOrProductBrandContaining(String q, String q1);
 
-    @Modifying
-    @Query("update ProductEntity p set p.productCounts = p.productCounts where p.id= :id")
-    void updateCounts(@Param("id") Long id);
 }

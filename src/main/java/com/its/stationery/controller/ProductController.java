@@ -96,5 +96,4 @@ public class ProductController {
         return "productPages/searchList";
     }
 
-
 }

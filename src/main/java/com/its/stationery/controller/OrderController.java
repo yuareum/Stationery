@@ -108,8 +108,7 @@ public class OrderController {
     public String productCountsUpdate(@PathVariable("id") Long id){
         OrderDTO orderDTO = orderService.findById(id);
         ProductDTO productDTO = productService.findById(orderDTO.getOrderProductId());
-        int productCounts = productDTO.getProductCounts() - orderDTO.getOrderCounts();
-        productService.countsUpdate(productDTO, productCounts);
+        productService.countsUpdate(productDTO,orderDTO.getOrderCounts());
         return "redirect:/order";
     }
 }

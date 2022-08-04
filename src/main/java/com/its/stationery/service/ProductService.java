@@ -134,7 +134,7 @@ public class ProductService {
     }
 
 
-    public void countsUpdate(ProductDTO productDTO,int productCounts) {
-        ProductEntity.toUpdateCounts(productDTO, productCounts);
+    public void countsUpdate(ProductDTO productDTO, int counts) {
+        ProductEntity.toUpdateCounts(productDTO);
     }
 }
