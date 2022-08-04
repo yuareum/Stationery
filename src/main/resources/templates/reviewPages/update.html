@@ -1,10 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>리뷰 수정</title>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>상품 리뷰 수정</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
 </head>
 <body>
-
+<th:block th:replace="commonPages/header :: header"></th:block>
+    <div class="container">
+        <form action="/review/update" method="post">
+            <input type="hidden" name="id" th:value="${updateReview.id}">
+            <table class="table">
+                <tr>
+                    <td>아이디 <input type="text" class="form-control" name="reviewWriter" th:value="${updateReview.reviewWriter}" readonly></td>
+                </tr>
+                <tr>
+                    <td>상품명 <input type="text" class="form-control" name="reviewProductName" th:value="${updateReview.reviewProductName}" readonly></td>
+                </tr>
+                <tr>
+                    <td>제목 <input type="text" class="form-control" name="reviewTitle" th:value="${updateReview.reviewTitle}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>내용 <input type="text" class="form-control" name="reviewContents" th:value="${updateReview.reviewContents}"></td>
+                </tr>
+            </table>
+            <input type="hidden" name="reviewProductId" th:value="${updateReview.reviewProductId}">
+            <input type="hidden" name="reviewFileName" th:value="${updateReview.reviewFileName}">
+            <input type="submit" class="btn btn-primary" value="수정하기">
+        </form>
+    </div>
 </body>
 </html>

@@ -82,4 +82,18 @@ public class ReviewService {
     }
 
 
+    public void update(ReviewDTO reviewDTO) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberId(reviewDTO.getReviewWriter());
+        Optional<ProductEntity> optionalProductEntity = productRepository.findById(reviewDTO.getReviewProductId());
+        if(optionalMemberEntity.isPresent()){
+            if (optionalProductEntity.isPresent()){
+                ReviewEntity reviewEntity = ReviewEntity.toUpdateEntity(reviewDTO,optionalMemberEntity.get(),optionalProductEntity.get());
+                reviewRepository.save(reviewEntity).getId();
+            }
+        }
+    }
+
+    public void delete(Long id) {
+        reviewRepository.deleteById(id);
+    }
 }

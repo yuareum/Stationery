@@ -54,4 +54,18 @@ public class ReviewEntity extends BaseEntity{
         reviewEntity.setProductEntity(productEntity);
         return reviewEntity;
     }
+
+    public static ReviewEntity toUpdateEntity(ReviewDTO reviewDTO, MemberEntity memberEntity, ProductEntity productEntity) {
+        ReviewEntity reviewEntity = new ReviewEntity();
+        reviewEntity.setId(reviewDTO.getId());
+        reviewEntity.setReviewTitle(reviewDTO.getReviewTitle());
+        reviewEntity.setReviewWriter(reviewDTO.getReviewWriter());
+        reviewEntity.setReviewProductId(reviewDTO.getReviewProductId());
+        reviewEntity.setReviewContents(reviewDTO.getReviewContents());
+        reviewEntity.setReviewFileName(reviewDTO.getReviewFileName());
+        reviewEntity.setReviewProductName(reviewDTO.getReviewProductName());
+        reviewEntity.setProductEntity(productEntity);
+        reviewEntity.setMemberEntity(memberEntity);
+        return reviewEntity;
+    }
 }

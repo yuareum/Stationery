@@ -83,8 +83,11 @@ public class OrderController {
 
     @PostMapping("/check")
     public @ResponseBody int check(@ModelAttribute OrderDTO orderDTO){
-        int checkResult = orderService.check(orderDTO);
-        return checkResult;
+        List<OrderDTO> orderDTOList = orderService.check(orderDTO);
+        if(orderDTOList != null){
+            return 1;
+        }
+        return 0;
     }
 
     @GetMapping("/write/{orderMemberId}")
@@ -105,7 +108,8 @@ public class OrderController {
     public String productCountsUpdate(@PathVariable("id") Long id){
         OrderDTO orderDTO = orderService.findById(id);
         ProductDTO productDTO = productService.findById(orderDTO.getOrderProductId());
-        productService.countsUpdate(productDTO);
+        int productCounts = productDTO.getProductCounts() - orderDTO.getOrderCounts();
+        productService.countsUpdate(productDTO, productCounts);
         return "redirect:/order";
     }
 }

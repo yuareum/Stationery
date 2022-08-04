@@ -22,7 +22,7 @@
             </tr>
             <tr>
                 <td th:text="'제목: ' + ${review.reviewTitle}"></td>
-                <td style="font-size: 15px;" th:if="${review.updatedTime} != null" th:text="'수정일: ' + *{#temporals.format(review.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td style="font-size: 15px;" th:if="${review.updatedTime} != null" th:text="'수정일: ' + *{#temporals.format(review.updatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
             </tr>
             <tr>
                 <td rowspan="4"><img th:src="@{|/upload/${review.reviewFileName}|}" width="300" height="350" alt=""></td>

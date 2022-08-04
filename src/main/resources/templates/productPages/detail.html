@@ -48,7 +48,7 @@
             <tr>
                 <td>
                     <button th:unless="${session.loginId}" onclick="idCheck(1)" class="btn" style="border-radius: 50%"> <i class="bi bi-heart" style="color: gray;"></i></button>
-                    <div th:if="${session.loginId}">
+                    <div th:if="${session.loginId} ">
                         <div><button th:if="${session.loginMemberId.toString().equals('admin')}" class="btn" style="border-radius: 50%;" onclick="idCheck(2)"> <i class="bi bi-heart" style="color: gray;"></i></button></div>
                         <div th:if="${session.loginMemberId != 'admin'}">
                             <button class="btn" style="border-radius: 50%;">
@@ -72,13 +72,14 @@
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent" style="margin-left: 55px;">
-                        <div class="tab-pane fade show active" id="information-tab-pane" role="tabpanel" aria-labelledby="information-tab" t abindex="0" th:text="${product.productInformation}"></div>
+                        <div class="tab-pane fade show active" id="information-tab-pane" role="tabpanel" aria-labelledby="information-tab" tabindex="0" th:text="${product.productInformation}"></div>
                         <div class="tab-pane fade" id="review-tab-pane" role="tabpanel" aria-labelledby="review-tab" tabindex="0">
                             <i class="bi bi-chat-left-text"></i> [[${reviewList.size()}]] reviews
                             <button class="btn btn-outline-primary" th:onclick="reviewSave([[${product.id}]])" ><i class="bi bi-pencil-square"></i>작성하기</button>
                             <table class="table" th:each="review : ${reviewList}">
                                 <div th:if="${session.loginMemberId}">
-                                    <button class="btn btn-primary" th:if="${session.loginMemberId.toString().equals('[[${review.reviewWriter}]]')}">수정</button>
+                                    <button class="btn btn-primary" th:if="${#strings.equals(session.loginMemberId, review.reviewWriter)}" th:onclick="reviewUpdateById([[${review.id}]])">수정</button>
+                                    <button class="btn btn-primary" th:if="${#strings.equals(session.loginMemberId, review.reviewWriter)}" th:onclick="reviewDeleteById([[${review.id}]])">삭제</button>
                                 </div>
                                 <tr>
                                     <td rowspan="4"><img th:src="@{|/upload/${review.reviewFileName}|}" width="80" height="80" alt=""></td>
@@ -264,6 +265,22 @@
                 location.href="/member/login-form";
             }
         }
+    }
+
+    const reviewUpdateById = (id) => {
+        location.href="/review/update-form/" + id;
+    }
+    const reviewDeleteById = (id) => {
+        $.ajax({
+            type:"delete",
+            url: "/review/" + id,
+            success:function (){
+              location.href="/product/" + [[${product.id}]];
+            },
+            error:function (){
+                alert("ajax 실패");
+            }
+        })
     }
 
 

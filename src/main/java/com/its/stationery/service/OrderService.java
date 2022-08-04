@@ -88,14 +88,12 @@ public class OrderService {
         return null;
     }
 
-    public int check(OrderDTO orderDTO) {
+    public List<OrderDTO> check(OrderDTO orderDTO) {
         List<OrderEntity> optionalOrderEntity = orderRepository.findByOrderMemberIdAndOrderProductId(orderDTO.getOrderMemberId(), orderDTO.getOrderProductId());
-        if(optionalOrderEntity.isPresent()){
-            OrderDTO order = OrderDTO.toOrderDTO(optionalOrderEntity.get());
-            if(order.getAdminProcess() == 1){
-                return 1;
-            }
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+        for(OrderEntity order : optionalOrderEntity){
+            orderDTOList.add(OrderDTO.toOrderDTO(order));
         }
-        return 0;
+        return orderDTOList;
     }
 }

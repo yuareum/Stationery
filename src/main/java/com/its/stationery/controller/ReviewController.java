@@ -6,6 +6,8 @@ import com.its.stationery.service.OrderService;
 import com.its.stationery.service.ProductService;
 import com.its.stationery.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -62,5 +64,16 @@ public class ReviewController {
         return "reviewPages/detail";
     }
 
+    @PostMapping("/update")
+    public String update(@ModelAttribute ReviewDTO reviewDTO){
+       reviewService.update(reviewDTO);
+       return "redirect:/review/" + reviewDTO.getId();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable("id") Long id){
+        reviewService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }
