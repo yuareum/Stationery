@@ -10,6 +10,7 @@
 <body>
 <th:block th:replace="commonPages/header :: header"></th:block>
     <div class="container">
+
         <form action="/review/update" method="post">
             <input type="hidden" name="id" th:value="${updateReview.id}">
             <table class="table">
@@ -29,7 +30,8 @@
             </table>
             <input type="hidden" name="reviewProductId" th:value="${updateReview.reviewProductId}">
             <input type="hidden" name="reviewFileName" th:value="${updateReview.reviewFileName}">
-            <input type="submit" class="btn btn-primary" value="수정하기">
+            <input type="button" class="btn btn-outline-dark" th:onclick="'location.href=\''+ @{|/product/${updateReview.reviewProductId}|} + '\''" value="취소">
+            <input type="submit" class="btn btn-primary" value="수정">
         </form>
     </div>
 </body>

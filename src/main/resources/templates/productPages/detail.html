@@ -76,10 +76,11 @@
                         <div class="tab-pane fade" id="review-tab-pane" role="tabpanel" aria-labelledby="review-tab" tabindex="0">
                             <i class="bi bi-chat-left-text"></i> [[${reviewList.size()}]] reviews
                             <button class="btn btn-outline-primary" th:onclick="reviewSave([[${product.id}]])" ><i class="bi bi-pencil-square"></i>작성하기</button>
-                            <table class="table" th:each="review : ${reviewList}">
+                            <br>
+                            <table class="table" style="margin-top: 15px;" th:each="review : ${reviewList}">
                                 <div th:if="${session.loginMemberId}">
                                     <button class="btn btn-primary" th:if="${#strings.equals(session.loginMemberId, review.reviewWriter)}" th:onclick="reviewUpdateById([[${review.id}]])">수정</button>
-                                    <button class="btn btn-primary" th:if="${#strings.equals(session.loginMemberId, review.reviewWriter)}" th:onclick="reviewDeleteById([[${review.id}]])">삭제</button>
+                                    <button class="btn btn-danger" th:if="${#strings.equals(session.loginMemberId, review.reviewWriter)}" th:onclick="reviewDeleteById([[${review.id}]])">삭제</button>
                                 </div>
                                 <tr>
                                     <td rowspan="4"><img th:src="@{|/upload/${review.reviewFileName}|}" width="80" height="80" alt=""></td>
