@@ -16,6 +16,7 @@ public class InquiryDTO {
     private String inquiryTitle;
     private String inquiryContents;
     private Long inquiryProductId;
+    private int inquiryPublic;
     private LocalDateTime inquiryCreatedTime;
     private int commentCheck;
 
@@ -24,6 +25,7 @@ public class InquiryDTO {
         inquiryDTO.setId(inquiryEntity.getId());
         inquiryDTO.setInquiryContents(inquiryEntity.getInquiryContents());
         inquiryDTO.setInquiryTitle(inquiryEntity.getInquiryTitle());
+        inquiryDTO.setInquiryPublic(inquiryEntity.getInquiryPublic());
         inquiryDTO.setInquiryWriter(inquiryEntity.getInquiryWriter());
         inquiryDTO.setInquiryCreatedTime(inquiryEntity.getInquiryCreatedTime());
         inquiryDTO.setCommentCheck(inquiryEntity.getCommentCheck());
@@ -31,4 +33,6 @@ public class InquiryDTO {
         return inquiryDTO;
 
     }
+
+
 }

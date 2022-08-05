@@ -1,5 +1,6 @@
 package com.its.stationery.entity;
 
+import com.its.stationery.dto.InquiryDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -28,11 +29,15 @@ public class InquiryEntity {
     @Column(length = 500, nullable = false)
     private String inquiryContents;
 
+    @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime inquiryCreatedTime;
 
-    @Column
+    @Column(nullable = false)
     private Long inquiryProductId;
+
+    @Column(nullable = false)
+    private int inquiryPublic;
 
     @ColumnDefault("0")
     @Column(nullable = false)
@@ -46,4 +51,14 @@ public class InquiryEntity {
     private List<CommentEntity> commentEntity = new ArrayList<>();
 
 
+    public static InquiryEntity toInquiryEntity(InquiryDTO inquiryDTO, MemberEntity memberEntity) {
+        InquiryEntity inquiryEntity = new InquiryEntity();
+        inquiryEntity.setInquiryProductId(inquiryDTO.getInquiryProductId());
+        inquiryEntity.setInquiryWriter(inquiryDTO.getInquiryWriter());
+        inquiryEntity.setInquiryTitle(inquiryDTO.getInquiryTitle());
+        inquiryEntity.setInquiryContents(inquiryDTO.getInquiryContents());
+        inquiryEntity.setInquiryPublic(inquiryDTO.getInquiryPublic());
+        inquiryEntity.setMemberEntity(memberEntity);
+        return inquiryEntity;
+    }
 }

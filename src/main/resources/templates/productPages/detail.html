@@ -78,7 +78,7 @@
                         <div class="tab-pane fade show active" id="information-tab-pane" role="tabpanel" aria-labelledby="information-tab" tabindex="0" th:text="${product.productInformation}"></div>
                         <div class="tab-pane fade" id="review-tab-pane" role="tabpanel" aria-labelledby="review-tab" tabindex="0">
                             <i class="bi bi-chat-left-text"></i> [[${reviewList.size()}]] reviews
-                            <button class="btn btn-outline-primary" th:onclick="reviewSave([[${product.id}]])" ><i class="bi bi-pencil-square"></i>작성하기</button>
+                            <button class="btn btn-outline-primary" th:onclick="reviewSave([[${product.id}]])" ><i class="bi bi-pencil-square"></i>리뷰 작성</button>
                             <br>
                             <table class="table" style="margin-top: 15px;" th:each="review : ${reviewList}">
                                 <div th:if="${session.loginMemberId}">
@@ -102,9 +102,33 @@
                                 </tr>
                             </table>
                         </div>
-                    </div>
-                    <div class="tab-content" id="myTabContent2" style="margin-left: 55px;">
-
+                    <div class="tab-pane fade" id="inquiry-tab-pane" role="tabpanel" aria-labelledby="inquiry-tab" tabindex="0">
+                        <div class="tab-content" id="myTabContent2" style="margin-left: 55px;">
+                            <div th:if="${session.loginMemberId}">
+                                <button th:unless="${session.loginMemberId.toString().equals('admin')}" th:onclick="'location.href=\''+ @{|/inquiry/save-form/${product.id}|} + '\''" class="btn btn-primary"><i class="bi bi-pencil-square"></i>문의 작성</button>
+                            </div>
+                                <table class="table" style="margin-top: 15px;">
+                                    <tr>
+                                        <td>문의사항 번호</td>
+                                        <td>상품명</td>
+                                        <td>작성자</td>
+                                        <td>제목</td>
+                                        <td>작성시간</td>
+                                        <td>수정</td>
+                                        <td>삭제</td>
+                                    </tr>
+                                    <tr th:each="inquiry: ${inquiryList}">
+                                        <td th:text="${inquiry.id}"></td>
+                                        <td th:text="${product.productName}"></td>
+                                        <td th:text="${inquiry.inquiryWriter}"></td>
+                                        <td><a th:href="@{|/inquiry/${inquiry.id}|}" th:text="${inquiry.inquiryTitle}"></a></td></td>
+                                        <td th:text="*{#temporals.format(inquiry.inquiryCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                        <td><button class="btn btn-primary" th:if="${#strings.equals(session.loginMemberId, inquiry.inquiryWriter)}" th:onclick="inquiryUpdateById([[${inquiry.id}]])">수정</button></td>
+                                        <td><button class="btn btn-danger" th:if="${#strings.equals(session.loginMemberId, inquiry.inquiryWriter)}" th:onclick="inquiryDeleteById([[${inquiry.id}]])">삭제</button></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </td>
             </tr>
