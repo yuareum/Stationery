@@ -70,6 +70,9 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review-tab-pane" type="button" role="tab" aria-controls="review-tab-pane" aria-selected="false">상품 리뷰</button>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="inquiry-tab" data-bs-toggle="tab" data-bs-target="#inquiry-tab-pane" type="button" role="tab" aria-controls="inquiry-tab-pane" aria-selected="false">문의 사항</button>
+                        </li>
                     </ul>
                     <div class="tab-content" id="myTabContent" style="margin-left: 55px;">
                         <div class="tab-pane fade show active" id="information-tab-pane" role="tabpanel" aria-labelledby="information-tab" tabindex="0" th:text="${product.productInformation}"></div>
@@ -98,7 +101,10 @@
                                     <td style="font-size: 12px; margin-right: 30px;" th:if="${review.updatedTime} != null" th:text="'수정일: ' + *{#temporals.format(review.updatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                 </tr>
                             </table>
-                        </p>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="myTabContent2" style="margin-left: 55px;">
+
                     </div>
                 </td>
             </tr>

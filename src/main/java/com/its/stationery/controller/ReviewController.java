@@ -1,5 +1,6 @@
 package com.its.stationery.controller;
 
+import com.its.stationery.dto.OrderDTO;
 import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.dto.ReviewDTO;
 import com.its.stationery.service.OrderService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 
 @Controller
@@ -24,6 +26,7 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final ProductService productService;
 
+    private final OrderService orderService;
     @GetMapping("/save-form/{reviewProductId}")
     public String saveForm(@PathVariable("reviewProductId") Long reviewProductId, Model model, HttpSession session){
         Long checkResult = reviewService.findByReviewWriterAndReviewProductId((String) session.getAttribute("loginMemberId"), reviewProductId);

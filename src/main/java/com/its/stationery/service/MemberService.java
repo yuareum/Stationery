@@ -1,10 +1,8 @@
 package com.its.stationery.service;
 
-import com.its.stationery.common.PagingConst;
+import com.its.stationery.config.WebConfig;
 import com.its.stationery.dto.MemberDTO;
-import com.its.stationery.entity.CartEntity;
 import com.its.stationery.entity.MemberEntity;
-import com.its.stationery.entity.WishEntity;
 import com.its.stationery.repository.CartRepository;
 import com.its.stationery.repository.MemberRepository;
 import com.its.stationery.repository.WishRepository;
@@ -20,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -119,7 +116,7 @@ public class MemberService {
 //        page = page - 1;
         // 삼항연산자
         page = (page == 1)? 0: (page-1);
-        Page<MemberEntity> memberEntities = memberRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        Page<MemberEntity> memberEntities = memberRepository.findAll(PageRequest.of(page, WebConfig.PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
         Page<MemberDTO> memberList = memberEntities.map(
                 member -> new MemberDTO(member.getId(),
                         member.getMemberId(),

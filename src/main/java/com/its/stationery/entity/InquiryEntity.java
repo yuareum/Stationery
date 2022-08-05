@@ -31,6 +31,9 @@ public class InquiryEntity {
     @Column(nullable = false)
     private LocalDateTime inquiryCreatedTime;
 
+    @Column
+    private Long inquiryProductId;
+
     @ColumnDefault("0")
     @Column(nullable = false)
     private int commentCheck;

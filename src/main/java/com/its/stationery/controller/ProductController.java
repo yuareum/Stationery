@@ -1,7 +1,8 @@
 package com.its.stationery.controller;
 
-import com.its.stationery.common.PagingConst;
+import com.its.stationery.config.WebConfig;
 import com.its.stationery.dto.*;
+import com.its.stationery.entity.InquiryEntity;
 import com.its.stationery.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ public class ProductController {
     private final WishProductService wishProductService;
 
     private final ReviewService reviewService;
+    private final InquiryService inquiryService;
 
 
     @GetMapping("/save-form")
@@ -43,8 +45,8 @@ public class ProductController {
     public String findAll(@PageableDefault(page = 1) Pageable pageable, Model model){
         Page<ProductDTO> productList = productService.paging(pageable);
         model.addAttribute("productList", productList);
-        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
-        int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < productList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : productList.getTotalPages();
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / WebConfig.PagingConst.BLOCK_LIMIT))) - 1) * WebConfig.PagingConst.BLOCK_LIMIT + 1;
+        int endPage = ((startPage + WebConfig.PagingConst.BLOCK_LIMIT - 1) < productList.getTotalPages()) ? startPage + WebConfig.PagingConst.BLOCK_LIMIT - 1 : productList.getTotalPages();
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         return "productPages/list";
@@ -68,6 +70,8 @@ public class ProductController {
         model.addAttribute("reviewList", reviewDTOList);
         WishProductDTO wishProductDTOList = wishProductService.findByWishMemberIdAndWishProductName((String) session.getAttribute("loginMemberId"), productDTO.getProductName());
         model.addAttribute("wishProduct", wishProductDTOList);
+        List<InquiryDTO> inquiryDTOList = inquiryService.findByInquiryProductId(id);
+        model.addAttribute("inquiryList", inquiryDTOList);
         return "productPages/detail";
     }
 

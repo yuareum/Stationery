@@ -1,6 +1,6 @@
 package com.its.stationery.service;
 
-import com.its.stationery.common.PagingConst;
+import com.its.stationery.config.WebConfig;
 import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.entity.MemberEntity;
 import com.its.stationery.entity.ProductEntity;
@@ -70,7 +70,7 @@ public class ProductService {
     public Page<ProductDTO> paging(Pageable pageable) {
         int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
         page = (page == 1)? 0: (page-1);
-        Page<ProductEntity> productEntities = productRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        Page<ProductEntity> productEntities = productRepository.findAll(PageRequest.of(page, WebConfig.PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
         Page<ProductDTO> productList = productEntities.map(
             product -> new ProductDTO(product.getId(),
                     product.getProductName(),
@@ -134,7 +134,9 @@ public class ProductService {
     }
 
 
-    public void countsUpdate(ProductDTO productDTO, int counts) {
-        ProductEntity.toUpdateCounts(productDTO);
+    public Long countsUpdate(ProductDTO productDTO, int counts) {
+      ProductEntity productEntity = ProductEntity.toUpdateCounts(productDTO, counts);
+      Long id = productRepository.save(productEntity).getId();
+      return id;
     }
 }

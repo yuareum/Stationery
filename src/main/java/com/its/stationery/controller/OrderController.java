@@ -1,27 +1,21 @@
 package com.its.stationery.controller;
 
-import com.its.stationery.common.PagingConst;
-import com.its.stationery.dto.MemberDTO;
+import com.its.stationery.config.WebConfig;
 import com.its.stationery.dto.OrderDTO;
 import com.its.stationery.dto.ProductDTO;
-import com.its.stationery.dto.ReviewDTO;
 import com.its.stationery.service.OrderService;
 import com.its.stationery.service.ProductService;
 import com.its.stationery.service.ReviewService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.criterion.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/order")
@@ -56,8 +50,8 @@ public class OrderController {
         if("admin".equals(session.getAttribute("loginMemberId"))){
             Page<OrderDTO> orderList = orderService.paging(pageable);
             model.addAttribute("orderList", orderList);
-            int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
-            int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < orderList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : orderList.getTotalPages();
+            int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / WebConfig.PagingConst.BLOCK_LIMIT))) - 1) * WebConfig.PagingConst.BLOCK_LIMIT + 1;
+            int endPage = ((startPage + WebConfig.PagingConst.BLOCK_LIMIT - 1) < orderList.getTotalPages()) ? startPage + WebConfig.PagingConst.BLOCK_LIMIT - 1 : orderList.getTotalPages();
             model.addAttribute("startPage", startPage);
             model.addAttribute("endPage", endPage);
             return "orderPages/list";
@@ -88,20 +82,6 @@ public class OrderController {
             return 1;
         }
         return 0;
-    }
-
-    @GetMapping("/write/{orderMemberId}")
-    public String write(@PathVariable("orderMemberId") String orderMemberId, Model model){
-        List<OrderDTO> orderDTOList = orderService.findByOrderMemberId(orderMemberId);
-        List<ReviewDTO> reviewDTOList = reviewService.findByReviewWriter(orderMemberId);
-        for(OrderDTO orderDTO : orderDTOList){
-            for(ReviewDTO reviewDTO : reviewDTOList){
-                if(Objects.equals(orderDTO.getOrderProductName(), reviewDTO.getReviewProductName())){
-                    model.addAttribute("writeList", orderDTOList);
-                }
-            }
-        }
-        return "reviewPages/write";
     }
 
     @GetMapping("/productCountsUpdate/{id}")

@@ -93,11 +93,11 @@ public class ProductEntity extends BaseEntity {
         return productEntity;
     }
 
-    public static ProductEntity toUpdateCounts(ProductDTO productDTO){
+    public static ProductEntity toUpdateCounts(ProductDTO productDTO,int counts){
         ProductEntity productEntity = new ProductEntity();
         productEntity.setId(productDTO.getId());
         productEntity.setProductHits(productDTO.getProductHits());
-        productEntity.setProductCounts(productDTO.getProductCounts());
+        productEntity.setProductCounts(productDTO.getProductCounts()-counts);
         productEntity.setProductAdmin(productDTO.getProductAdmin());
         productEntity.setProductBrand(productDTO.getProductBrand());
         productEntity.setProductName(productDTO.getProductName());
