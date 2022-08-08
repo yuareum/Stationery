@@ -68,8 +68,8 @@ public class ProductController {
         model.addAttribute("product", productDTO);
         List<ReviewDTO> reviewDTOList = reviewService.findByReviewProductId(id);
         model.addAttribute("reviewList", reviewDTOList);
-        WishProductDTO wishProductDTOList = wishProductService.findByWishMemberIdAndWishProductName((String) session.getAttribute("loginMemberId"), productDTO.getProductName());
-        model.addAttribute("wishProduct", wishProductDTOList);
+        WishProductDTO wishProductDTO = wishProductService.findByWishMemberIdAndWishProductName((String) session.getAttribute("loginMemberId"), productDTO.getProductName());
+        model.addAttribute("wishProduct", wishProductDTO);
         List<InquiryDTO> inquiryDTOList = inquiryService.findByInquiryProductId(id);
         model.addAttribute("inquiryList", inquiryDTOList);
         return "productPages/detail";

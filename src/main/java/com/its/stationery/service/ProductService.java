@@ -86,7 +86,6 @@ public class ProductService {
         productRepository.productHits(id);
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
         if(optionalProductEntity.isPresent()){
-
             return ProductDTO.toProductDTO(optionalProductEntity.get());
         }
         else {

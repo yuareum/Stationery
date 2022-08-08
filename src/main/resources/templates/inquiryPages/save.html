@@ -13,6 +13,7 @@
         <h3 style="margin-top: 30px;">문의사항 작성</h3>
         <form action="/inquiry/save" method="post" name="inquiryForm">
             <input type="hidden" name="inquiryProductId" th:value="${product.id}">
+            상품명 <input type="text" class="form-control" name="inquiryProductName" th:value="${product.productName}" readonly>
             작성자 <input type="text" class="form-control" name="inquiryWriter" th:value="${session.loginMemberId}" readonly>
             제목 <input type="text" class="form-control" id="inquiryTitle" name="inquiryTitle">
             내용 <textarea  class="form-control" id="inquiryContents" cols="10" rows="10" name="inquiryContents"></textarea>

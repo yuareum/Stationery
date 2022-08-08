@@ -89,7 +89,7 @@
                                     <td rowspan="4"><img th:src="@{|/upload/${review.reviewFileName}|}" width="80" height="80" alt=""></td>
                                 </tr>
                                 <tr>
-                                    <td><a th:href="@{|/review/${review.id}|}" style="font-size: 15px;" th:text="'상품명: ' + ${product.productName}"></a></td>
+                                    <td><a th:href="@{|/review/${review.id}|}" style="font-size: 15px;" th:text="'상품명: ' + ${review.reviewProductName}"></a></td>
                                     <td style="font-size: 12px; margin-right: 15px;" th:text="'작성자: ' + ${review.reviewWriter}"></td>
                                 </tr>
                                 <tr>
@@ -102,32 +102,30 @@
                                 </tr>
                             </table>
                         </div>
-                    <div class="tab-pane fade" id="inquiry-tab-pane" role="tabpanel" aria-labelledby="inquiry-tab" tabindex="0">
-                        <div class="tab-content" id="myTabContent2" style="margin-left: 55px;">
+                        <div class="tab-pane fade" id="inquiry-tab-pane" role="tabpanel" aria-labelledby="inquiry-tab" tabindex="0">
                             <div th:if="${session.loginMemberId}">
                                 <button th:unless="${session.loginMemberId.toString().equals('admin')}" th:onclick="'location.href=\''+ @{|/inquiry/save-form/${product.id}|} + '\''" class="btn btn-primary"><i class="bi bi-pencil-square"></i>문의 작성</button>
                             </div>
-                                <table class="table" style="margin-top: 15px;">
-                                    <tr>
-                                        <td>문의사항 번호</td>
-                                        <td>상품명</td>
-                                        <td>작성자</td>
-                                        <td>제목</td>
-                                        <td>작성시간</td>
-                                        <td>수정</td>
-                                        <td>삭제</td>
-                                    </tr>
-                                    <tr th:each="inquiry: ${inquiryList}">
-                                        <td th:text="${inquiry.id}"></td>
-                                        <td th:text="${product.productName}"></td>
-                                        <td th:text="${inquiry.inquiryWriter}"></td>
-                                        <td><a th:href="@{|/inquiry/${inquiry.id}|}" th:text="${inquiry.inquiryTitle}"></a></td></td>
-                                        <td th:text="*{#temporals.format(inquiry.inquiryCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                        <td><button class="btn btn-primary" th:if="${#strings.equals(session.loginMemberId, inquiry.inquiryWriter)}" th:onclick="inquiryUpdateById([[${inquiry.id}]])">수정</button></td>
-                                        <td><button class="btn btn-danger" th:if="${#strings.equals(session.loginMemberId, inquiry.inquiryWriter)}" th:onclick="inquiryDeleteById([[${inquiry.id}]])">삭제</button></td>
-                                    </tr>
-                                </table>
-                            </div>
+                            <table class="table" style="margin-top: 15px;">
+                                <tr>
+                                    <td>문의사항 번호</td>
+                                    <td>상품명</td>
+                                    <td>작성자</td>
+                                    <td>제목</td>
+                                    <td>작성시간</td>
+                                    <td>수정</td>
+                                    <td>삭제</td>
+                                </tr>
+                                <tr th:each="inquiry: ${inquiryList}">
+                                    <td th:text="${inquiry.id}"></td>
+                                    <td th:text="${inquiry.inquiryProductName}"></td>
+                                    <td th:text="${inquiry.inquiryWriter}"></td>
+                                    <td><a th:href="@{|/inquiry/${inquiry.id}|}" th:text="${inquiry.inquiryTitle}"></a></td>
+                                    <td th:text="*{#temporals.format(inquiry.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    <td><button th:if="${#strings.equals(session.loginMemberId, inquiry.inquiryWriter)}" th:onclick="inquiryUpdateById([[${inquiry.id}]])">수정</button></td>
+                                    <td><button th:if="${#strings.equals(session.loginMemberId, inquiry.inquiryWriter)}" th:onclick="inquiryDeleteById([[${inquiry.id}]])">삭제</button></td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </td>
@@ -307,6 +305,22 @@
             url: "/review/" + id,
             success:function (){
               location.href="/product/" + [[${product.id}]];
+            },
+            error:function (){
+                alert("ajax 실패");
+            }
+        })
+    }
+    const inquiryUpdateById = (id) => {
+
+        location.href="/inquiry/update-form/" + id;
+    }
+    const inquiryDeleteById = (id) => {
+        $.ajax({
+            type:"delete",
+            url: "/inquiry/" + id,
+            success:function (){
+                location.href="/product/" + [[${product.id}]];
             },
             error:function (){
                 alert("ajax 실패");

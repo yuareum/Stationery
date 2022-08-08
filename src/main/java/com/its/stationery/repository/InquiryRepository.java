@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface InquiryRepository extends JpaRepository<InquiryEntity, Long> {
     List<InquiryEntity> findByInquiryProductId(Long inquiryProductId);
+
+    List<InquiryEntity> findByInquiryWriter(String inquiryMemberId);
 }

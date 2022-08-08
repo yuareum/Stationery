@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @Table(name = "inquiry_table")
-public class InquiryEntity {
+public class InquiryEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -29,12 +29,12 @@ public class InquiryEntity {
     @Column(length = 500, nullable = false)
     private String inquiryContents;
 
-    @CreationTimestamp
-    @Column(nullable = false)
-    private LocalDateTime inquiryCreatedTime;
-
     @Column(nullable = false)
     private Long inquiryProductId;
+
+    @Column(length = 50, nullable = false)
+    private String inquiryProductName;
+
 
     @Column(nullable = false)
     private int inquiryPublic;
@@ -47,18 +47,24 @@ public class InquiryEntity {
     @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private ProductEntity productEntity;
+
     @OneToMany(mappedBy = "inquiryEntity", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<CommentEntity> commentEntity = new ArrayList<>();
 
 
-    public static InquiryEntity toInquiryEntity(InquiryDTO inquiryDTO, MemberEntity memberEntity) {
+    public static InquiryEntity toSaveEntity(InquiryDTO inquiryDTO, MemberEntity memberEntity,ProductEntity productEntity) {
         InquiryEntity inquiryEntity = new InquiryEntity();
         inquiryEntity.setInquiryProductId(inquiryDTO.getInquiryProductId());
         inquiryEntity.setInquiryWriter(inquiryDTO.getInquiryWriter());
         inquiryEntity.setInquiryTitle(inquiryDTO.getInquiryTitle());
         inquiryEntity.setInquiryContents(inquiryDTO.getInquiryContents());
         inquiryEntity.setInquiryPublic(inquiryDTO.getInquiryPublic());
+        inquiryEntity.setInquiryProductName(inquiryDTO.getInquiryProductName());
         inquiryEntity.setMemberEntity(memberEntity);
+        inquiryEntity.setProductEntity(productEntity);
         return inquiryEntity;
     }
 }

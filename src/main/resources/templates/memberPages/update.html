@@ -26,7 +26,8 @@
             <nav class="nav nav-pills flex-column">
                 <a class="nav-link ms-1 my-1" th:href="@{|/member/myPage/${updateMember.id}|}">My Page</a>
                 <a class="nav-link ms-1 my-1" th:href="@{|/order/findByMemberId/${updateMember.memberId}|}">상품 관련 목록</a>
-                <a class="nav-link ms-1 my-1" th:href="@{|/review/findByMemberId/${updateMember.memberId}|}">리뷰</a>
+                <a class="nav-link ms-1 my-1" th:href="@{|/review/findByReviewWriter/${updateMember.memberId}|}">리뷰</a>
+                <a class="nav-link ms-1 my-1" th:href="@{|/inquiry/findByInquiryWriter/${updateMember.memberId}|}">문의사항</a>
                 <p class="ms-1 my-1">개인 정보</p>
                 <nav class="nav nav-pills flex-column">
                     <a class="nav-link ms-1 my-1" th:href="@{|/member/profile/${updateMember.id}|}">Profile</a>

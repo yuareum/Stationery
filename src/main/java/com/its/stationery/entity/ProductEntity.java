@@ -55,6 +55,9 @@ public class ProductEntity extends BaseEntity {
     private List<ReviewEntity> reviewEntityList = new ArrayList<>();
 
     @OneToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<InquiryEntity> inquiryEntityList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderEntity> orderEntityList = new ArrayList<>();
 
     @OneToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
