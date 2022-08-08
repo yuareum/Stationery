@@ -41,14 +41,20 @@ public class InquiryController {
     }
 
     @GetMapping("/update-form/{id}")
-    public String updateForm(@PathVariable("id") Long id){
+    public String updateForm(@PathVariable("id") Long id,Model model){
         InquiryDTO inquiryDTO = inquiryService.findById(id);
         if(inquiryDTO.getCommentCheck() == 0){
+            model.addAttribute("updateInquiry", inquiryDTO);
             return "/inquiryPages/update";
         }
         return "redirect:/findByInquiryWriter/" + inquiryDTO.getInquiryWriter();
     }
 
+    @PostMapping("/update")
+    public String update(@ModelAttribute InquiryDTO inquiryDTO){
+        inquiryService.update(inquiryDTO);
+        return "redirect:/inquiry/" + inquiryDTO.getId();
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id){
         inquiryService.delete(id);

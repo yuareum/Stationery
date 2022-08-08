@@ -67,4 +67,20 @@ public class InquiryEntity extends BaseEntity {
         inquiryEntity.setProductEntity(productEntity);
         return inquiryEntity;
     }
+
+
+    public static InquiryEntity toUpdateEntity(InquiryDTO inquiryDTO, MemberEntity memberEntity, ProductEntity productEntity) {
+        InquiryEntity inquiryEntity = new InquiryEntity();
+        inquiryEntity.setId(inquiryDTO.getId());
+        inquiryEntity.setInquiryTitle(inquiryDTO.getInquiryTitle());
+        inquiryEntity.setInquiryProductId(inquiryDTO.getInquiryProductId());
+        inquiryEntity.setInquiryWriter(inquiryDTO.getInquiryWriter());
+        inquiryEntity.setInquiryContents(inquiryDTO.getInquiryContents());
+        inquiryEntity.setInquiryProductName(inquiryDTO.getInquiryProductName());
+        inquiryEntity.setInquiryPublic(inquiryDTO.getInquiryPublic());
+        inquiryEntity.setCommentCheck(inquiryDTO.getCommentCheck());
+        inquiryEntity.setMemberEntity(memberEntity);
+        inquiryEntity.setProductEntity(productEntity);
+        return inquiryEntity;
+    }
 }

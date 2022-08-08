@@ -1,10 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>문의사항 수정</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
 </head>
 <body>
-
+<th:block th:replace="commonPages/header :: header"></th:block>
+<div class="container">
+    <h3 style="margin-top: 30px;">문의사항 수정</h3>
+    <form action="/inquiry/update" method="post" name="inquiryForm">
+        <input type="hidden" name="id" th:value="${updateInquiry.id}">
+        <input type="hidden" name="inquiryProductId" th:value="${updateInquiry.inquiryProductId}">
+        상품명 <input type="text" class="form-control" name="inquiryProductName" th:value="${updateInquiry.inquiryProductName}" readonly>
+        작성자 <input type="text" class="form-control" name="inquiryWriter" th:value="${updateInquiry.inquiryWriter}" readonly>
+        제목 <input type="text" class="form-control" id="inquiryTitle" name="inquiryTitle" th:value="${updateInquiry.inquiryTitle}">
+        내용 <textarea  class="form-control" id="inquiryContents" cols="10" rows="10" name="inquiryContents" th:value="${updateInquiry.inquiryContents}"></textarea>
+        <div>
+            공개여부:
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inquiryPublic" id="inlineRadio1" value="1" checked>
+                <label class="form-check-label" for="inlineRadio1">공개</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inquiryPublic" id="inlineRadio2" value="2">
+                <label class="form-check-label" for="inlineRadio2">비공개</label>
+            </div>
+        </div>
+        <input type="hidden" name="commentCheck" th:value="${updateInquiry.commentCheck}">
+        <input type="button" class="btn btn-outline-dark" th:onclick="'location.href=\''+ @{|/product/${updateInquiry.inquiryProductId}|} + '\''" value="취소">
+        <input type="button" class="btn btn-outline-primary" onclick="inquiryCheck()" value="수정하기">
+    </form>
+</div>
 </body>
+<script th:inline="javascript">
+    const inquiryCheck = () => {
+        const inquiryTitle = document.getElementById("inquiryTitle").value;
+        const inquiryContents = document.getElementById("inquiryContents").value;
+        if(inquiryTitle == ""){
+            alert("제목을 작성해주세요.");
+        }
+        else{
+            if(inquiryContents == "") {
+                alert("내용을 작성해주세요.");
+            }
+            else{
+                inquiryForm.submit();
+            }
+        }
+
+    }
+</script>
 </html>

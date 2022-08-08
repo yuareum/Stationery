@@ -68,5 +68,18 @@ public class InquiryService {
     public void delete(Long id) {
         inquiryRepository.deleteById(id);
     }
+
+    public Long update(InquiryDTO inquiryDTO) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberId(inquiryDTO.getInquiryWriter());
+        if(optionalMemberEntity.isPresent()){
+            Optional<ProductEntity> optionalProductEntity = productRepository.findById(inquiryDTO.getInquiryProductId());
+            if(optionalProductEntity.isPresent()){
+                InquiryEntity inquiryEntity = InquiryEntity.toUpdateEntity(inquiryDTO, optionalMemberEntity.get(),optionalProductEntity.get());
+                Long id = inquiryRepository.save(inquiryEntity).getId();
+                return id;
+            }
+        }
+        return null;
+    }
 }
 
