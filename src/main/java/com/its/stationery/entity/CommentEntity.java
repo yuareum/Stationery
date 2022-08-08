@@ -1,5 +1,6 @@
 package com.its.stationery.entity;
 
+import com.its.stationery.dto.CommentDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,17 +18,15 @@ public class CommentEntity {
     private Long id;
 
     @Column(length = 20, nullable = false)
-    private String admin;
-
-    @Column(length = 20, nullable = false)
     private String commentWriter;
-
-    @Column(length = 50, nullable = false)
-    private String commentTitle;
 
     @Column(length = 500, nullable = false)
     private String commentContents;
 
+    @Column
+    private Long commentInquiryId;
+
+    @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime commentCreatedTime;
 
@@ -36,6 +35,12 @@ public class CommentEntity {
     private InquiryEntity inquiryEntity;
 
 
-
-
+    public static CommentEntity toSaveEntity(CommentDTO commentDTO, InquiryEntity inquiryEntity) {
+        CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setCommentContents(commentDTO.getCommentContents());
+        commentEntity.setCommentInquiryId(commentDTO.getCommentInquiryId());
+        commentEntity.setCommentWriter(commentDTO.getCommentWriter());
+        commentEntity.setInquiryEntity(inquiryEntity);
+        return commentEntity;
+    }
 }

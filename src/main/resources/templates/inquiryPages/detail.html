@@ -12,6 +12,9 @@
     <div class="container">
         <h3>문의사항 상세 조회</h3>
         <input type="button"  style="float: right;" class="btn btn-outline-dark" th:onclick="'location.href=\''+ @{|/product/${inquiry.inquiryProductId}|} + '\''" value="상품 상세 조회">
+        <div th:if="${session.loginId}">
+            <input type="button"  style="float: right;" class="btn btn-outline-success" th:if="${#strings.equals(session.loginMemberId, inquiry.inquiryWriter)}" th:onclick="'location.href=\''+ @{|/inquiry/findByInquiryWriter/${inquiry.inquiryWriter}|} + '\''" value="문의사항 목록">
+        </div>
         <table class="table">
             <tr>
                 <td th:text="'작성자: ' + ${inquiry.inquiryWriter}"></td>
@@ -25,7 +28,39 @@
                 <td colspan="10" rowspan="20" th:text="${inquiry.inquiryContents}"></td>
             </tr>
         </table>
-
+        <div th:if="${session.loginMemberId}">
+            <div th:if="${session.loginMemberId.toString().equals('admin')}" id="comment-write" class="input-group mb-3">
+                관리자 답변 작성: <br>
+                <input type="hidden" id="commentWriter" th:value="${session.loginMemberId}">
+                <textarea cols="5" rows="5" id="commentContents" class="form-control" placeholder="내용 입력"></textarea>
+                <button id="comment-write-btn" onclick="commentCheck()" class="btn btn-primary">작성</button>
+            </div>
+        </div>
+        관리자 답변
+        <div id="commentResult" class="container">
+        </div>
     </div>
 </body>
+<script th:inline="javascript">
+    const commentCheck = () => {
+        const commentContents = document.getElementById("commentContents").value;
+        if(commentContents == ""){
+            alert("댓글 내용을 작성해 주세요.");
+        }
+        else{
+            $.ajax({
+                type: "post",
+                url: "/comment/save",
+                data: {"commentWriter": [[${session.loginMemberId}]], "commentContents": commentContents, "commentInquiryId": [[${inquiry.inquiryProductId}]]},
+                dataType: "json",
+                success: function (result){
+                    console.log("success");
+                },
+                error:function (){
+                    alert("ajax 실패");
+                }
+            })
+        }
+    }
+</script>
 </html>
