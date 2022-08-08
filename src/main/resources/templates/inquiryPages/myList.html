@@ -1,10 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
     <title>문의사항 작성 목록</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <style>
+        .container{
+            margin-top: 20px;
+        }
+        .nav{
+            width: 180px;
+        }
+        .nav-fill{
+            width: 50%;
+        }
+    </style>
 </head>
 <body>
-
+<th:block th:replace="commonPages/header :: header"></th:block>
+<div class="row">
+    <div class="col-2">
+        <nav id="navbar-example3" class="h-100 flex-column align-items-stretch pe-4 border-end">
+            <nav class="nav nav-pills flex-column">
+                <a class="nav-link ms-1 my-1" th:href="@{|/member/myPage/${session.loginId}|}">My Page</a>
+                <a class="nav-link ms-1 my-1" th:href="@{|/order/findByMemberId/${session.loginMemberId}|}">상품 관련 목록</a>
+                <a class="nav-link ms-1 my-1" th:href="@{|/review/findByReviewWriter/${session.loginMemberId}|}">리뷰</a>
+                <a class="nav-link ms-1 my-1" href="#">문의사항</a>
+                <p class="ms-1 my-1">개인 정보</p>
+                <nav class="nav nav-pills flex-column">
+                    <a class="nav-link ms-1 my-1" th:href="@{|/member/profile/${session.loginId}|}">Profile</a>
+                    <a class="nav-link ms-1 my-1" th:href="@{|/member/update/${session.loginId}|}">회원 정보 수정</a>
+                    <a class="nav-link ms-1 my-1" th:href="@{|/member/withdrawal/${session.loginId}|}">회원 탈퇴</a>
+                </nav>
+            </nav>
+        </nav>
+    </div>
+    <div class="col-10">
+        <div class="container">
+            <h3>문의사항 작성 목록</h3>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">문의 번호</th>
+                    <th scope="col">상품 번호</th>
+                    <th scope="col">상품명</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">문의 시간</th>
+                    <th scope="col">답변 작성</th>
+                    <th scope="col">상세 조회</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="inquiry: ${inquiryList}">
+                    <td th:text="${inquiry.id}"></td>
+                    <td th:text="${inquiry.inquiryProductId}"></td>
+                    <td><a th:href="@{|/product/${inquiry.inquiryProductId}|}" th:text="${inquiry.inquiryProductName}"></a></td>
+                    <td th:text="${inquiry.inquiryTitle}"></td>
+                    <td th:text="*{#temporals.format(inquiry.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:if="${inquiry.commentCheck} == 0">미답변</td>
+                    <td th:if="${inquiry.commentCheck} == 1">답변 완료</td>
+                    <td><button class="btn btn-outline-success" th:onclick="'location.href=\''+ @{|/inquiry/${inquiry.id}|} + '\''">상세 조회</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
 </html>
