@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
-    <title>리뷰 상세조회</title>
+    <title>리뷰 상세 조회</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <style>
@@ -14,7 +14,7 @@
 <body>
 <th:block th:replace="commonPages/header :: header"></th:block>
     <div class="container">
-        <h3>리뷰 상세조회</h3>
+        <h3>리뷰 상세 조회</h3>
         <input type="button"  style="float: right;" class="btn btn-outline-dark" th:onclick="'location.href=\''+ @{|/product/${review.reviewProductId}|} + '\''" value="상품 상세 조회">
         <table class="table">
             <tr>
