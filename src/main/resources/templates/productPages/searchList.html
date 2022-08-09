@@ -41,5 +41,40 @@
             </div>
         </div>
     </div>
+<div class="container">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+
+            <a class="page-link" th:href="@{/product/search(page=1, q=${q})}">
+                <span>First</span>
+            </a>
+        </li>
+
+        <li th:class="${searchList.first} ? 'disabled'" class="page-item">
+
+            <a class="page-link" th:href="${searchList.first} ? '#' : @{/product/search(page=${searchList.number},q=${q})}">
+                <span><</span> <!-- < -->
+            </a>
+        </li>
+
+
+        <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+            th:class="${page == searchList.number + 1} ? 'page-item active'" class="page-item">
+            <a class="page-link" th:text="${page}" th:href="@{/product/search(page=${page},q=${q})}"></a>
+        </li>
+
+        <li th:class="${searchList.last} ? 'disabled'">
+            <a class="page-link" th:href="${searchList.last} ? '#' : @{/product/search(page=${searchList.number + 2},q=${q})}">
+                <span>&gt;</span>
+            </a>
+        </li>
+
+        <li class="page-item">
+            <a class="page-link" th:href="@{/product/search(page=${searchList.totalPages},q=${q})}">
+                <span>Last</span>
+            </a>
+        </li>
+    </ul>
+</div>
 </body>
 </html>

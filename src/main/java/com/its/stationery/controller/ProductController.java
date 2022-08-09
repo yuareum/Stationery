@@ -102,6 +102,7 @@ public class ProductController {
         int endPage =((startPage + PagingConst.BLOCK_LIMIT-1)< searchList.getTotalPages())?startPage + PagingConst.BLOCK_LIMIT -1 : searchList.getTotalPages();
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("q", q);
         return "productPages/searchList";
     }
 

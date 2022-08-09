@@ -52,7 +52,7 @@
 
             <li th:class="${productList.first} ? 'disabled'" class="page-item">
 
-                <a class="page-link" th:href="${productList.first} ? '#' : @{/product(page=${memberList.number})}">
+                <a class="page-link" th:href="${productList.first} ? '#' : @{/product(page=${productList.number})}">
                     <span><</span> <!-- < -->
                 </a>
             </li>
