@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,14 +38,25 @@ public class OrderService {
         }
         return null;
     }
-
-    public List<OrderDTO> findByOrderMemberId(String orderMemberId) {
-        List<OrderEntity> orderEntityList = orderRepository.findByOrderMemberId(orderMemberId);
-        List<OrderDTO> orderDTOList = new ArrayList<>();
-        for(OrderEntity orderEntity: orderEntityList){
-            orderDTOList.add(OrderDTO.toOrderDTO(orderEntity));
-        }
-        return orderDTOList;
+    @Transactional
+    public Page<OrderDTO> findByOrderMemberId(String orderMemberId, Pageable pageable) {
+        int page = pageable.getPageNumber();
+        page  = (page == 1) ? 0 : (page -1);
+        Page<OrderEntity> orderEntity = null;
+        orderRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        orderEntity = orderRepository.findByOrderMemberIdContainingIgnoreCase(orderMemberId,PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        Page<OrderDTO> orderList = orderEntity.map(
+                order -> new OrderDTO(order.getId(),
+                        order.getOrderMemberId(),
+                        order.getOrderFileName(),
+                        order.getOrderProductName(),
+                        order.getOrderProductId(),
+                        order.getAdminProcess(),
+                        order.getOrderCreatedTime(),
+                        order.getOrderCounts(),
+                        order.getOrderPrice()
+                ));
+        return orderList;
     }
 
     public OrderDTO findById(Long id) {
@@ -93,8 +105,12 @@ public class OrderService {
         List<OrderEntity> optionalOrderEntity = orderRepository.findByOrderMemberIdAndOrderProductId(orderDTO.getOrderMemberId(), orderDTO.getOrderProductId());
         List<OrderDTO> orderDTOList = new ArrayList<>();
         for(OrderEntity order : optionalOrderEntity){
-            orderDTOList.add(OrderDTO.toOrderDTO(order));
+            if(order.getAdminProcess() == 1){
+                orderDTOList.add(OrderDTO.toOrderDTO(order));
+            }
         }
         return orderDTOList;
     }
+
+
 }

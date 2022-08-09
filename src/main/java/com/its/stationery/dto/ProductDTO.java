@@ -35,11 +35,13 @@ public class ProductDTO {
         this.categoryId = categoryId;
     }
 
-    public ProductDTO(Long id, String productName, String productBrand) {
+    public ProductDTO(Long id, String productName, String productBrand, Long productPrice) {
         this.id = id;
         this.productName = productName;
         this.productBrand = productBrand;
+        this.productPrice = productPrice;
     }
+
 
     public static ProductDTO toProductDTO(ProductEntity productEntity) {
         ProductDTO productDTO = new ProductDTO();

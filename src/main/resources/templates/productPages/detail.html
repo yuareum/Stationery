@@ -262,7 +262,7 @@
             }
         })
      }
-    const reviewSave =() => {
+    const reviewSave = (id) => {
         if([[${session.loginId}]]){
             if([[${session.loginMemberId}]] == "admin"){
                 alert("관리자는 리뷰를 작성할 수 없습니다.");
@@ -271,12 +271,12 @@
                 $.ajax({
                     type:"post",
                     url:"/order/check",
-                    data: {"orderProductId": [[${product.id}]], "orderMemberId": [[${session.loginMemberId}]]},
+                    data: {"orderProductId": id, "orderMemberId": [[${session.loginMemberId}]]},
                     dataType: "text",
                     success:function (result){
                         if(result == 1){
                             console.log("리뷰 작성 가능");
-                            location.href = "/review/save-form/" + [[${product.id}]];
+                            location.href = "/review/save-form/" + id;
                         }
                         else{
                             alert("해당 상품이 구매 완료되지 않았으므로 회원은 리뷰를 작성하실 수 없습니다.");
@@ -304,7 +304,7 @@
             type:"delete",
             url: "/review/" + id,
             success:function (){
-              location.href="/product/" + [[${product.id}]];
+              location.href="/product/" + id;
             },
             error:function (){
                 alert("ajax 실패");

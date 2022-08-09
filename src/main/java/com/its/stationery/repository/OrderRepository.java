@@ -1,11 +1,12 @@
 package com.its.stationery.repository;
 
-import com.its.stationery.dto.OrderDTO;
 import com.its.stationery.entity.OrderEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Optional;
+
 
 public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
 
@@ -14,4 +15,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     List<OrderEntity> findByOrderProductId(Long orderProductId);
 
     List<OrderEntity> findByOrderMemberIdAndOrderProductId(String orderMemberId, Long orderProductId);
+
+    Page<OrderEntity> findByOrderMemberIdContainingIgnoreCase(String orderMemberId, Pageable pageable);
 }

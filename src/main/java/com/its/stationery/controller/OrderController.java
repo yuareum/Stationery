@@ -1,7 +1,6 @@
 package com.its.stationery.controller;
 
 import com.its.stationery.common.PagingConst;
-import com.its.stationery.config.WebConfig;
 import com.its.stationery.dto.OrderDTO;
 import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.service.OrderService;
@@ -40,9 +39,14 @@ public class OrderController {
     }
 
     @GetMapping("/findByMemberId/{orderMemberId}")
-    public String findByMemberId(@PathVariable("orderMemberId") String orderMemberId, Model model){
-        List<OrderDTO> orderDTOList = orderService.findByOrderMemberId(orderMemberId);
-        model.addAttribute("orderList", orderDTOList);
+    public String findByMemberId(@PathVariable("orderMemberId") String orderMemberId, Model model, @PageableDefault(page = 1) Pageable pageable, HttpSession session){
+        Page<OrderDTO> orderList = orderService.findByOrderMemberId(orderMemberId, pageable);
+        model.addAttribute("orderList", orderList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage =((startPage + PagingConst.BLOCK_LIMIT-1)< orderList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT -1 : orderList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("memberId", session.getAttribute("loginMemberId"));
         return "orderPages/myList";
     }
 
@@ -79,10 +83,10 @@ public class OrderController {
     @PostMapping("/check")
     public @ResponseBody int check(@ModelAttribute OrderDTO orderDTO){
         List<OrderDTO> orderDTOList = orderService.check(orderDTO);
-        if(orderDTOList != null){
-            return 1;
+        if(orderDTOList.isEmpty()){
+            return 0;
         }
-        return 0;
+        return 1;
     }
 
     @GetMapping("/productCountsUpdate/{id}")

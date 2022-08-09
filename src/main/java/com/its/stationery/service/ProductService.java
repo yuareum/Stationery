@@ -113,8 +113,9 @@ public class ProductService {
         Page<ProductDTO> productList = searchEntity.map(
                 product -> new ProductDTO(product.getId(),
                         product.getProductName(),
-                        product.getProductBrand())
-        );
+                        product.getProductBrand(),
+                        product.getProductPrice()
+                ));
 
         return productList;
     }
