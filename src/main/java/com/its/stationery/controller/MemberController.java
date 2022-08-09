@@ -1,5 +1,6 @@
 package com.its.stationery.controller;
 
+import com.its.stationery.common.PagingConst;
 import com.its.stationery.config.WebConfig;
 import com.its.stationery.dto.MemberDTO;
 import com.its.stationery.service.CartService;
@@ -132,8 +133,8 @@ public class MemberController {
         if("admin".equals(session.getAttribute("loginMemberId"))) {
             Page<MemberDTO> memberList = memberService.paging(pageable);
             model.addAttribute("memberList", memberList);
-            int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / WebConfig.PagingConst.BLOCK_LIMIT))) - 1) * WebConfig.PagingConst.BLOCK_LIMIT + 1;
-            int endPage = ((startPage + WebConfig.PagingConst.BLOCK_LIMIT - 1) < memberList.getTotalPages()) ? startPage + WebConfig.PagingConst.BLOCK_LIMIT - 1 : memberList.getTotalPages();
+            int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+            int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < memberList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : memberList.getTotalPages();
             model.addAttribute("startPage", startPage);
             model.addAttribute("endPage", endPage);
             return "memberPages/list";

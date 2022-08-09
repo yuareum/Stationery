@@ -35,6 +35,12 @@ public class ProductDTO {
         this.categoryId = categoryId;
     }
 
+    public ProductDTO(Long id, String productName, String productBrand) {
+        this.id = id;
+        this.productName = productName;
+        this.productBrand = productBrand;
+    }
+
     public static ProductDTO toProductDTO(ProductEntity productEntity) {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setId(productEntity.getId());

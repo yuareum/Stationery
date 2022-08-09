@@ -1,5 +1,6 @@
 package com.its.stationery.service;
 
+import com.its.stationery.common.PagingConst;
 import com.its.stationery.config.WebConfig;
 import com.its.stationery.dto.OrderDTO;
 import com.its.stationery.entity.MemberEntity;
@@ -59,7 +60,7 @@ public class OrderService {
     public Page<OrderDTO> paging(Pageable pageable) {
         int page = pageable.getPageNumber();
         page = (page == 1)? 0: (page-1);
-        Page<OrderEntity> orderEntities = orderRepository.findAll(PageRequest.of(page, WebConfig.PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        Page<OrderEntity> orderEntities = orderRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
         Page<OrderDTO> orderList = orderEntities.map(
                 order -> new OrderDTO(order.getId(),
                         order.getOrderProductId(),

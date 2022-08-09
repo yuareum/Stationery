@@ -1,5 +1,6 @@
 package com.its.stationery.service;
 
+import com.its.stationery.common.PagingConst;
 import com.its.stationery.config.WebConfig;
 import com.its.stationery.dto.MemberDTO;
 import com.its.stationery.entity.MemberEntity;
@@ -116,7 +117,7 @@ public class MemberService {
 //        page = page - 1;
         // 삼항연산자
         page = (page == 1)? 0: (page-1);
-        Page<MemberEntity> memberEntities = memberRepository.findAll(PageRequest.of(page, WebConfig.PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        Page<MemberEntity> memberEntities = memberRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
         Page<MemberDTO> memberList = memberEntities.map(
                 member -> new MemberDTO(member.getId(),
                         member.getMemberId(),

@@ -1,5 +1,6 @@
 package com.its.stationery.service;
 
+import com.its.stationery.common.PagingConst;
 import com.its.stationery.config.WebConfig;
 import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.entity.MemberEntity;
@@ -70,7 +71,7 @@ public class ProductService {
     public Page<ProductDTO> paging(Pageable pageable) {
         int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
         page = (page == 1)? 0: (page-1);
-        Page<ProductEntity> productEntities = productRepository.findAll(PageRequest.of(page, WebConfig.PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        Page<ProductEntity> productEntities = productRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
         Page<ProductDTO> productList = productEntities.map(
             product -> new ProductDTO(product.getId(),
                     product.getProductName(),
@@ -102,14 +103,20 @@ public class ProductService {
         }
         return productDTOList;
     }
+    @Transactional
+    public Page<ProductDTO> search(String q, Pageable pageable) {
+        int page = pageable.getPageNumber();
+        page  = (page == 1) ? 0 : (page -1);
+        Page<ProductEntity> searchEntity = null;
+        productRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+            searchEntity = productRepository.findByProductNameContainingOrProductBrandContainingIgnoreCase(q,q,PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        Page<ProductDTO> productList = searchEntity.map(
+                product -> new ProductDTO(product.getId(),
+                        product.getProductName(),
+                        product.getProductBrand())
+        );
 
-    public List<ProductDTO> search(String q) {
-        List<ProductEntity> productEntityList = productRepository.findByProductNameContainingOrProductBrandContaining(q, q);
-        List<ProductDTO> productDTOList = new ArrayList<>();
-        for(ProductEntity productEntity: productEntityList){
-            productDTOList.add(ProductDTO.toProductDTO(productEntity));
-        }
-        return productDTOList;
+        return productList;
     }
 
     public ProductDTO findById(Long id) {
