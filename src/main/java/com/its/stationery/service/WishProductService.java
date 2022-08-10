@@ -1,5 +1,6 @@
 package com.its.stationery.service;
 
+import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.CartProductDTO;
 import com.its.stationery.dto.WishProductDTO;
 import com.its.stationery.entity.CartProductEntity;
@@ -11,6 +12,10 @@ import com.its.stationery.repository.WishProductRepository;
 
 import com.its.stationery.repository.WishRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -58,12 +63,21 @@ public class WishProductService {
         wishProductRepository.deleteById(id);
     }
 
-    public List<WishProductDTO> findByWishMemberId(String wishMemberId) {
-        List<WishProductEntity> wishProductEntityList = wishProductRepository.findByWishMemberId(wishMemberId);
-        List<WishProductDTO> wishProductDTOList  = new ArrayList<>();
-        for(WishProductEntity wishProduct : wishProductEntityList){
-            wishProductDTOList.add(WishProductDTO.toWishProductDTO(wishProduct));
-        }
-        return wishProductDTOList;
+    public Page<WishProductDTO> findByWishMemberId(String wishMemberId, Pageable pageable) {
+        int page = pageable.getPageNumber();
+        page  = (page == 1) ? 0 : (page -1);
+        Page<WishProductEntity> wishProductEntity = null;
+        wishProductRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        wishProductEntity = wishProductRepository.findByWishMemberIdContainingIgnoreCase(wishMemberId,PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        Page<WishProductDTO> wishProductList = wishProductEntity.map(
+                wishProduct -> new WishProductDTO(wishProduct.getId(),
+                        wishProduct.getWishProductId(),
+                        wishProduct.getWishProductName(),
+                        wishProduct.getWishFileName(),
+                        wishProduct.getWishProductBrand(),
+                        wishProduct.getWishPrice(),
+                        wishProduct.getCreatedTime()
+                        ));
+        return wishProductList;
     }
 }

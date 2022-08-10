@@ -23,6 +23,17 @@ public class CartProductDTO {
     private Long cartProductPrice;
     private int cartProductCounts;
 
+    public CartProductDTO(Long id, Long cartProductId,String cartProductName, String cartProductFileName, String cartProductBrand, int cartProductCounts, Long cartProductPrice, LocalDateTime createdTime) {
+        this.id = id;
+        this.cartProductId = cartProductId;
+        this.cartProductName = cartProductName;
+        this.cartProductBrand = cartProductBrand;
+        this.cartProductCounts = cartProductCounts;
+        this.cartProductFileName = cartProductFileName;
+        this.cartProductPrice = cartProductPrice;
+        this.createdTime = createdTime;
+    }
+
     public static CartProductDTO toCartProductDTO(CartProductEntity cartProductEntity) {
         CartProductDTO cartProductDTO = new CartProductDTO();
         cartProductDTO.setId(cartProductEntity.getId());

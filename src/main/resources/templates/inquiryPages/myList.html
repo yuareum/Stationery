@@ -65,6 +65,37 @@
                 </tr>
                 </tbody>
             </table>
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/inquiry/findByInquiryWriter/{inquiryWriter}(inquiryWriter = ${session.loginMemberId}, page=1)}">
+                        <span>First</span>
+                    </a>
+                </li>
+
+                <li th:class="${inquiryList.first} ? 'disabled'" class="page-item">
+                    <a class="page-link" th:href="${inquiryList.first} ? '#' : @{/inquiry/findByInquiryWriter/{inquiryWriter}(inquiryWriter = ${session.loginMemberId}, page=${inquiryList.number})}">
+                        <span><</span>
+                    </a>
+                </li>
+
+
+                <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+                    th:class="${page == inquiryList.number + 1} ? 'page-item active'" class="page-item">
+                    <a class="page-link" th:text="${page}" th:href="@{/inquiry/findByInquiryWriter/{inquiryWriter}(inquiryWriter = ${session.loginMemberId}, page=${page})}"></a>
+                </li>
+
+                <li th:class="${inquiryList.last} ? 'disabled'">
+                    <a class="page-link" th:href="${inquiryList.last} ? '#' : @{/inquiry/findByInquiryWriter/{inquiryWriter}(inquiryWriter = ${session.loginMemberId}, page=${inquiryList.number + 2})}">
+                        <span>&gt;</span>
+                    </a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/inquiry/findByInquiryWriter/{inquiryWriter}(inquiryWriter = ${session.loginMemberId}, page=${inquiryList.totalPages})}">
+                        <span>Last</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

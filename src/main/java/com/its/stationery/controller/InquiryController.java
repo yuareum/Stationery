@@ -1,10 +1,14 @@
 package com.its.stationery.controller;
 
+import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.InquiryDTO;
 import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.service.InquiryService;
 import com.its.stationery.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,9 +38,13 @@ public class InquiryController {
     }
 
     @GetMapping("/findByInquiryWriter/{inquiryWriter}")
-    public String findByInquiryWriter(@PathVariable("inquiryWriter") String inquiryWriter, Model model){
-        List<InquiryDTO> inquiryDTOList = inquiryService.findByInquiryWriter(inquiryWriter);
-        model.addAttribute("inquiryList" , inquiryDTOList);
+    public String findByInquiryWriter(@PathVariable("inquiryWriter") String inquiryWriter, Model model, @PageableDefault(page = 1) Pageable pageable){
+        Page<InquiryDTO> inquiryList = inquiryService.findByInquiryWriter(inquiryWriter,pageable);
+        model.addAttribute("inquiryList" , inquiryList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage =((startPage + PagingConst.BLOCK_LIMIT-1)< inquiryList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT -1 : inquiryList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         return "inquiryPages/myList";
     }
 
@@ -45,7 +53,7 @@ public class InquiryController {
         InquiryDTO inquiryDTO = inquiryService.findById(id);
         if(inquiryDTO.getCommentCheck() == 0){
             model.addAttribute("updateInquiry", inquiryDTO);
-            return "/inquiryPages/update";
+            return "inquiryPages/update";
         }
         return "redirect:/findByInquiryWriter/" + inquiryDTO.getInquiryWriter();
     }

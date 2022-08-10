@@ -51,9 +51,8 @@
         </li>
 
         <li th:class="${searchList.first} ? 'disabled'" class="page-item">
-
             <a class="page-link" th:href="${searchList.first} ? '#' : @{/product/search(page=${searchList.number},q=${q})}">
-                <span><</span> <!-- < -->
+                <span><</span>
             </a>
         </li>
 

@@ -22,6 +22,17 @@ public class InquiryDTO {
     private LocalDateTime updatedTime;
     private String inquiryProductName;
 
+    public InquiryDTO(Long id, String inquiryWriter, String inquiryTitle, int inquiryPublic, Long inquiryProductId, int commentCheck, String inquiryProductName, LocalDateTime createdTime) {
+        this.id = id;
+        this.inquiryWriter = inquiryWriter;
+        this.inquiryProductId = inquiryProductId;
+        this.inquiryPublic = inquiryPublic;
+        this.inquiryTitle = inquiryTitle;
+        this.inquiryProductName = inquiryProductName;
+        this.commentCheck = commentCheck;
+        this.createdTime = createdTime;
+    }
+
     public static InquiryDTO toInquiryDTO(InquiryEntity inquiryEntity) {
         InquiryDTO inquiryDTO = new InquiryDTO();
         inquiryDTO.setId(inquiryEntity.getId());

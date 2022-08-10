@@ -73,6 +73,37 @@
                 </tr>
                 </tbody>
             </table>
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/order/findByMemberId/{orderMemberId}(orderMemberId = ${session.loginMemberId}, page=1)}">
+                        <span>First</span>
+                    </a>
+                </li>
+
+                <li th:class="${orderList.first} ? 'disabled'" class="page-item">
+                    <a class="page-link" th:href="${orderList.first} ? '#' : @{/order/findByMemberId/{orderMemberId}(orderMemberId = ${session.loginMemberId}, page=${orderList.number})}">
+                        <span><</span>
+                    </a>
+                </li>
+
+
+                <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+                    th:class="${page == orderList.number + 1} ? 'page-item active'" class="page-item">
+                    <a class="page-link" th:text="${page}" th:href="@{/order/findByMemberId/{orderMemberId}(orderMemberId = ${session.loginMemberId}, page=${page})}"></a>
+                </li>
+
+                <li th:class="${orderList.last} ? 'disabled'">
+                    <a class="page-link" th:href="${orderList.last} ? '#' : @{/order/findByMemberId/{orderMemberId}(orderMemberId = ${session.loginMemberId}, page=${orderList.number + 2})}">
+                        <span>&gt;</span>
+                    </a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/order/findByMemberId/{orderMemberId}(orderMemberId = ${session.loginMemberId}, page=${orderList.totalPages})}">
+                        <span>Last</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

@@ -5,6 +5,7 @@
     <title>작성 리뷰 목록</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
     <style>
         .container{
             margin-top: 20px;
@@ -50,22 +51,74 @@
                     <th scope="col">작성시간</th>
                     <th scope="col">수정시간</th>
                     <th scope="col">상세 조회</th>
+                    <th scope="col">삭제</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="review: ${reviewList}">
-                    <td><img th:src="@{|/upload/${review.reviewFileName}|}" width="100" height="100" alt=""></td>
-                    <td th:text="${review.id}"></td>
-                    <td><a th:href="@{|/product/${review.reviewProductId}|}" th:text="${review.reviewProductName}"></a></td>
-                    <td th:text="${review.reviewTitle}"></td>
-                    <td th:text="*{#temporals.format(review.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    <td th:if="${review.updatedTime} != null" th:text="*{#temporals.format(review.updatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    <td><button class="btn btn-outline-success" th:onclick="'location.href=\''+ @{|/review/${review.id}|} + '\''">상세 조회</button></td>
-                </tr>
+                    <tr th:each="review: ${reviewList}" style="position: center">
+                        <td><img th:src="@{|/upload/${review.reviewFileName}|}" width="100" height="100" alt=""></td>
+                        <td th:text="${review.id}"></td>
+                        <td><a th:href="@{|/product/${review.reviewProductId}|}" th:text="${review.reviewProductName}"></a></td>
+                        <td th:text="${review.reviewTitle}"></td>
+                        <td th:text="*{#temporals.format(review.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:if="${review.updatedTime} != null" th:text="*{#temporals.format(review.updatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:if="${review.updatedTime} == null"> - </td>
+                        <td><button class="btn btn-outline-success" th:onclick="'location.href=\''+ @{|/review/${review.id}|} + '\''">상세 조회</button></td>
+                        <td><button class="btn btn-danger" th:onclick="reviewDeleteById([[${review.id}]])">삭제</button></td>
+                    </tr>
                 </tbody>
             </table>
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/review/findByReviewWriter/{reviewWriter}(reviewWriter = ${session.loginMemberId}, page=1)}">
+                        <span>First</span>
+                    </a>
+                </li>
+
+                <li th:class="${reviewList.first} ? 'disabled'" class="page-item">
+                    <a class="page-link" th:href="${reviewList.first} ? '#' : @{/review/findByReviewWriter/{reviewWriter}(reviewWriter = ${session.loginMemberId}, page=${reviewList.number})}">
+                        <span><</span>
+                    </a>
+                </li>
+
+
+                <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+                    th:class="${page == reviewList.number + 1} ? 'page-item active'" class="page-item">
+                    <a class="page-link" th:text="${page}" th:href="@{/review/findByReviewWriter/{reviewWriter}(reviewWriter = ${session.loginMemberId}, page=${page})}"></a>
+                </li>
+
+                <li th:class="${reviewList.last} ? 'disabled'">
+                    <a class="page-link" th:href="${reviewList.last} ? '#' : @{/review/findByReviewWriter{reviewWriter}(reviewWriter= ${session.loginMemberId}, page=${reviewList.number + 2})}">
+                        <span>&gt;</span>
+                    </a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/review/findByReviewWriter/{reviewWriter}(reviewWriter = ${session.loginMemberId}, page=${reviewList.totalPages})}">
+                        <span>Last</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
 </body>
+<script th:inline="javascript">
+    const reviewDeleteById = (id) => {
+        const check = confirm("리뷰를 삭제하시겠습니까?")
+        if(check){
+            $.ajax({
+                type: "delete",
+                url: "/review/" + id,
+                success:function (){
+                    location.href="/review/findByReviewWriter/" + [[${session.loginMemberId}]];
+                },
+                error:function (){
+                    alert("삭제 ajax 실패");
+                }
+            })
+        }
+
+    }
+</script>
 </html>

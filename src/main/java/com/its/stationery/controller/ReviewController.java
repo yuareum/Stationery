@@ -1,5 +1,6 @@
 package com.its.stationery.controller;
 
+import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.OrderDTO;
 import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.dto.ReviewDTO;
@@ -7,6 +8,9 @@ import com.its.stationery.service.OrderService;
 import com.its.stationery.service.ProductService;
 import com.its.stationery.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,7 +30,6 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final ProductService productService;
 
-    private final OrderService orderService;
     @GetMapping("/save-form/{reviewProductId}")
     public String saveForm(@PathVariable("reviewProductId") Long reviewProductId, Model model, HttpSession session){
         Long checkResult = reviewService.findByReviewWriterAndReviewProductId((String) session.getAttribute("loginMemberId"), reviewProductId);
@@ -54,9 +57,13 @@ public class ReviewController {
     }
 
     @GetMapping("/findByReviewWriter/{reviewWriter}")
-    public String findByReviewWriter(@PathVariable("reviewWriter") String reviewWriter, Model model){
-        List<ReviewDTO> reviewDTOList = reviewService.findByReviewWriter(reviewWriter);
-        model.addAttribute("reviewList", reviewDTOList);
+    public String findByReviewWriter(@PathVariable("reviewWriter") String reviewWriter, Model model, @PageableDefault(page = 1) Pageable pageable){
+        Page<ReviewDTO> reviewList = reviewService.findByReviewWriter(reviewWriter,pageable);
+        model.addAttribute("reviewList", reviewList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage =((startPage + PagingConst.BLOCK_LIMIT-1)< reviewList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT -1 : reviewList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         return "reviewPages/list";
     }
 

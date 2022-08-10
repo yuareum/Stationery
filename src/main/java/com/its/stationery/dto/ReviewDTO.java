@@ -23,6 +23,16 @@ public class ReviewDTO {
     private MultipartFile reviewFile;
     private String reviewFileName;
 
+    public ReviewDTO(Long id, Long reviewProductId, String reviewProductName, String reviewFileName, String reviewTitle, LocalDateTime createdTime, LocalDateTime updatedTime) {
+        this.id = id;
+        this.reviewProductId = reviewProductId;
+        this.reviewProductName = reviewProductName;
+        this.reviewFileName = reviewFileName;
+        this.createdTime = createdTime;
+        this.updatedTime = updatedTime;
+        this.reviewTitle = reviewTitle;
+    }
+
     public static ReviewDTO toReviewDTO(ReviewEntity reviewEntity) {
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setId(reviewEntity.getId());

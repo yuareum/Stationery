@@ -24,6 +24,16 @@ public class WishProductDTO {
     private String wishFileName;
     private LocalDateTime createdTime;
 
+    public WishProductDTO(Long id, Long wishProductId, String wishProductName, String wishFileName, String wishProductBrand, Long wishPrice, LocalDateTime createdTime) {
+        this.id = id;
+        this.wishProductName = wishProductName;
+        this.wishProductId = wishProductId;
+        this.wishFileName = wishFileName;
+        this.wishProductBrand = wishProductBrand;
+        this.wishPrice = wishPrice;
+        this.createdTime = createdTime;
+    }
+
     public static WishProductDTO toWishProductDTO(WishProductEntity wishProductEntity) {
         WishProductDTO wishProductDTO = new WishProductDTO();
         wishProductDTO.setId(wishProductEntity.getId());

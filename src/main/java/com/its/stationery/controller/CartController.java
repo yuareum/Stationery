@@ -1,5 +1,6 @@
 package com.its.stationery.controller;
 
+import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.CartDTO;
 import com.its.stationery.dto.CartProductDTO;
 import com.its.stationery.dto.ProductDTO;
@@ -7,6 +8,9 @@ import com.its.stationery.service.CartProductService;
 import com.its.stationery.service.CartService;
 import com.its.stationery.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,11 +28,15 @@ public class CartController {
 
     private final ProductService productService;
     @GetMapping("/{cartMemberId}")
-    public String findByCartMemberId(@PathVariable("cartMemberId") String cartMemberId, Model model){
+    public String findByCartMemberId(@PathVariable("cartMemberId") String cartMemberId, Model model, @PageableDefault(page = 1) Pageable pageable){
         CartDTO findDTO = cartService.findByCartMemberId(cartMemberId);
         model.addAttribute("cart", findDTO);
-        List<CartProductDTO> cartProductDTOList = cartProductService.findByCartMemberId(findDTO.getCartMemberId());
-        model.addAttribute("cartProductList", cartProductDTOList);
+        Page<CartProductDTO> cartProductList = cartProductService.findByCartMemberId(findDTO.getCartMemberId(),pageable);
+        model.addAttribute("cartProductList", cartProductList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage =((startPage + PagingConst.BLOCK_LIMIT-1)< cartProductList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT -1 : cartProductList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         return "cartPages/list";
     }
 

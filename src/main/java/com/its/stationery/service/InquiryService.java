@@ -1,13 +1,20 @@
 package com.its.stationery.service;
 
+import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.InquiryDTO;
+import com.its.stationery.dto.ReviewDTO;
 import com.its.stationery.entity.InquiryEntity;
 import com.its.stationery.entity.MemberEntity;
 import com.its.stationery.entity.ProductEntity;
+import com.its.stationery.entity.ReviewEntity;
 import com.its.stationery.repository.InquiryRepository;
 import com.its.stationery.repository.MemberRepository;
 import com.its.stationery.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -47,13 +54,23 @@ public class InquiryService {
         return null;
     }
 
-    public List<InquiryDTO> findByInquiryWriter(String inquiryWriter) {
-        List<InquiryEntity> inquiryEntityList = inquiryRepository.findByInquiryWriter(inquiryWriter);
-        List<InquiryDTO> inquiryDTOList = new ArrayList<>();
-        for(InquiryEntity inquiry : inquiryEntityList){
-            inquiryDTOList.add(InquiryDTO.toInquiryDTO(inquiry));
-        }
-        return inquiryDTOList;
+    public Page<InquiryDTO> findByInquiryWriter(String inquiryWriter, Pageable pageable) {
+        int page = pageable.getPageNumber();
+        page = (page == 1) ? 0 : (page - 1);
+        Page<InquiryEntity> inquiryEntity = null;
+        inquiryRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.Direction.DESC, "id"));
+        inquiryEntity = inquiryRepository.findByInquiryWriterContainingIgnoreCase(inquiryWriter, PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        Page<InquiryDTO> inquiryList = inquiryEntity.map(
+                inquiry -> new InquiryDTO(inquiry.getId(),
+                        inquiry.getInquiryWriter(),
+                        inquiry.getInquiryTitle(),
+                        inquiry.getInquiryPublic(),
+                        inquiry.getInquiryProductId(),
+                        inquiry.getCommentCheck(),
+                        inquiry.getInquiryProductName(),
+                        inquiry.getCreatedTime()
+                ));
+        return inquiryList;
     }
 
     public InquiryDTO findById(Long id) {

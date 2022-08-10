@@ -48,6 +48,7 @@
                 <thead>
                     <tr>
                         <th scope="col">이미지</th>
+                        <th scope="col">장바구니 상품 번호</th>
                         <th scope="col">상품명</th>
                         <th scope="col">상품 브랜드</th>
                         <th scope="col">수량</th>
@@ -60,6 +61,7 @@
                 <tbody>
                 <tr th:each="cartProduct: ${cartProductList}">
                     <td><img th:src="@{|/upload/${cartProduct.cartProductFileName}|}" width="100" height="100" alt=""></td>
+                    <td th:text="${cartProduct.id}"></td>
                     <td th:text="${cartProduct.cartProductName}"></td>
                     <td th:text="${cartProduct.cartProductBrand}"></td>
                     <td th:text="${cartProduct.cartProductCounts}"></td>
@@ -70,9 +72,40 @@
                 </tr>
                 </tbody>
             </table>
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/cart/{cartMemberId}(cartMemberId = ${session.loginMemberId}, page=1)}">
+                        <span>First</span>
+                    </a>
+                </li>
+
+                <li th:class="${cartProductList.first} ? 'disabled'" class="page-item">
+                    <a class="page-link" th:href="${cartProductList.first} ? '#' : @{/cart/{cartMemberId}(cartMemberId = ${session.loginMemberId}, page=${cartProductList.number})}">
+                        <span><</span>
+                    </a>
+                </li>
+
+
+                <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+                    th:class="${page == cartProductList.number + 1} ? 'page-item active'" class="page-item">
+                    <a class="page-link" th:text="${page}" th:href="@{/cart/{cartMemberId}(cartMemberId = ${session.loginMemberId}, page=${page})}"></a>
+                </li>
+
+                <li th:class="${cartProductList.last} ? 'disabled'">
+                    <a class="page-link" th:href="${cartProductList.last} ? '#' : @{/cart/{cartMemberId}(cartMemberId = ${session.loginMemberId}, page=${cartProductList.number + 2})}">
+                        <span>&gt;</span>
+                    </a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/cart/{cartMemberId}(cartMemberId = ${session.loginMemberId}, page=${cartProductList.totalPages})}">
+                        <span>Last</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
-    </div>
+</div>
 </body>
 <script th:inline="javascript">
     const deleteById = (id)=> {

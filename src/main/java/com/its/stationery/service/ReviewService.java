@@ -1,6 +1,8 @@
 package com.its.stationery.service;
 
+import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.ReviewDTO;
+import com.its.stationery.dto.WishProductDTO;
 import com.its.stationery.entity.MemberEntity;
 import com.its.stationery.entity.ProductEntity;
 import com.its.stationery.entity.ReviewEntity;
@@ -8,9 +10,14 @@ import com.its.stationery.repository.MemberRepository;
 import com.its.stationery.repository.ProductRepository;
 import com.its.stationery.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.naming.ldap.PagedResultsControl;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,13 +79,22 @@ public class ReviewService {
         return null;
     }
 
-    public List<ReviewDTO> findByReviewWriter(String reviewWriter) {
-        List<ReviewEntity> reviewEntityList = reviewRepository.findByReviewWriter(reviewWriter);
-        List<ReviewDTO> reviewDTOList = new ArrayList<>();
-        for(ReviewEntity reviewEntity : reviewEntityList){
-            reviewDTOList.add(ReviewDTO.toReviewDTO(reviewEntity));
-        }
-        return reviewDTOList;
+    public Page<ReviewDTO> findByReviewWriter(String reviewWriter, Pageable pageable) {
+        int page = pageable.getPageNumber();
+        page = (page == 1) ? 0 : (page - 1);
+        Page<ReviewEntity> reviewEntity = null;
+        reviewRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.Direction.DESC, "id"));
+        reviewEntity = reviewRepository.findByReviewWriterContainingIgnoreCase(reviewWriter, PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        Page<ReviewDTO> reviewList = reviewEntity.map(
+                review -> new ReviewDTO(review.getId(),
+                        review.getReviewProductId(),
+                        review.getReviewProductName(),
+                        review.getReviewFileName(),
+                        review.getReviewTitle(),
+                        review.getCreatedTime(),
+                        review.getUpdatedTime()
+                ));
+        return reviewList;
     }
 
 

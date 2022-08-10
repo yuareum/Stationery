@@ -25,9 +25,9 @@ public class OrderController {
     private final ProductService productService;
 
     private final ReviewService reviewService;
-    @GetMapping("/save-form/{productId}")
-    public String saveForm(@PathVariable("productId") Long productId, Model model){
-        ProductDTO productDTO = productService.findById(productId);
+    @GetMapping("/save-form/{orderProductId}")
+    public String saveForm(@PathVariable("orderProductId") Long orderProductId, Model model){
+        ProductDTO productDTO = productService.findById(orderProductId);
         model.addAttribute("product", productDTO);
         return "orderPages/save";
     }
@@ -39,14 +39,13 @@ public class OrderController {
     }
 
     @GetMapping("/findByMemberId/{orderMemberId}")
-    public String findByMemberId(@PathVariable("orderMemberId") String orderMemberId, Model model, @PageableDefault(page = 1) Pageable pageable, HttpSession session){
+    public String findByMemberId(@PathVariable("orderMemberId") String orderMemberId, Model model, @PageableDefault(page = 1) Pageable pageable){
         Page<OrderDTO> orderList = orderService.findByOrderMemberId(orderMemberId, pageable);
         model.addAttribute("orderList", orderList);
         int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
         int endPage =((startPage + PagingConst.BLOCK_LIMIT-1)< orderList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT -1 : orderList.getTotalPages();
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-        model.addAttribute("memberId", session.getAttribute("loginMemberId"));
         return "orderPages/myList";
     }
 
