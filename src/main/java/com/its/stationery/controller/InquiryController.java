@@ -1,8 +1,10 @@
 package com.its.stationery.controller;
 
 import com.its.stationery.common.PagingConst;
+import com.its.stationery.dto.CommentDTO;
 import com.its.stationery.dto.InquiryDTO;
 import com.its.stationery.dto.ProductDTO;
+import com.its.stationery.service.CommentService;
 import com.its.stationery.service.InquiryService;
 import com.its.stationery.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,8 @@ import java.util.List;
 public class InquiryController {
     private final InquiryService inquiryService;
     private final ProductService productService;
+
+    private final CommentService commentService;
 
     @GetMapping("/save-form/{inquiryProductId}")
     public String saveForm(@PathVariable("inquiryProductId") Long inquiryProductId, Model model){
@@ -73,6 +77,8 @@ public class InquiryController {
     public String findById(@PathVariable("id") Long id, Model model){
         InquiryDTO inquiryDTO = inquiryService.findById(id);
         model.addAttribute("inquiry", inquiryDTO);
+        List<CommentDTO> commentDTOList = commentService.findAll(id);
+        model.addAttribute("commentList", commentDTOList);
         return "inquiryPages/detail";
     }
 }

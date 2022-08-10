@@ -18,7 +18,6 @@ import java.util.Optional;
 public class CommentService {
     private final InquiryRepository inquiryRepository;
     private final CommentRepository commentRepository;
-    private final ProductRepository productRepository;
 
     public Long save(CommentDTO commentDTO) {
         Optional<InquiryEntity> optionalInquiryEntity= inquiryRepository.findById(commentDTO.getCommentInquiryId());
