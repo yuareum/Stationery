@@ -1,10 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
     <title>전체 문의 사항</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <style>
+        .container{
+            margin-top: 20px;
+        }
+        .nav{
+            width: 180px;
+        }
+    </style>
 </head>
 <body>
+<th:block th:replace="commonPages/header :: header"></th:block>
 
+<div class="container">
+    <div class="d-flex align-items-start">
+        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Admin Page</button>
+            <button class="nav-link" id="v-pills-member-tab" data-bs-toggle="pill" data-bs-target="#v-pills-member" type="button" role="tab" aria-controls="v-pills-member" aria-selected="false" onclick="location.href='/member'">회원 관리</button>
+            <button class="nav-link" id="v-pills-product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-product" type="button" role="tab" aria-controls="v-pills-product" aria-selected="false" onclick="location.href='/product/save-form'">상품 등록</button>
+            <button class="nav-link" id="v-pills-order-tab" data-bs-toggle="pill" data-bs-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-order" aria-selected="false" onclick="location.href='/order'">주문 관리</button>
+            <button class="nav-link" id="v-pills-inquiry-tab" data-bs-toggle="pill" data-bs-target="#v-pills-inquiry" type="button" role="tab" aria-controls="v-pills-inquiry" aria-selected="false" onclick="location.href='/inquiry'">문의 사항</button>
+        </div>
+        <div class="container">
+            <h3>문의사항 작성 목록</h3>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">문의 번호</th>
+                    <th scope="col">상품 번호</th>
+                    <th scope="col">상품명</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">문의 시간</th>
+                    <th scope="col">상세 조회</th>
+                    <th scope="col">삭제</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="inquiry: ${inquiryList}">
+                    <td th:text="${inquiry.id}"></td>
+                    <td th:text="${inquiry.inquiryProductId}"></td>
+                    <td><a th:href="@{|/product/${inquiry.inquiryProductId}|}" th:text="${inquiry.inquiryProductName}"></a></td>
+                    <td th:text="${inquiry.inquiryTitle}"></td>
+                    <td th:text="*{#temporals.format(inquiry.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td><button class="btn btn-outline-success" th:if="${inquiry.inquiryPublic} == 1" th:onclick="'location.href=\''+ @{|/inquiry/${inquiry.id}|} + '\''">상세 조회</button>
+                        <button class="btn btn-outline-success" th:if="${inquiry.inquiryPublic} == 2" th:onclick="'location.href=\''+ @{|/inquiry/findById/${inquiry.id}|} + '\''">상세 조회</button></td>
+                    <td><button class="btn btn-danger" th:onclick="deleteById([[${inquiry.id}]])">삭제</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
+<script th:inline="javascript">
+    const deleteById = (id) => {
+        $.ajax({
+            type:"delete",
+            url:"/inquiry/" + id,
+            success:function (){
+                location.href="/inquiry/findByInquiryWriter/" + [[${session.loginMemberId}]]
+            },
+            error:function (){
+                alert("삭제 ajax 실패");
+            }
+        })
+    }
+</script>
 </html>

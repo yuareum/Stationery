@@ -15,7 +15,6 @@ public class CommentDTO {
     private Long commentInquiryId;
     private String commentWriter;
     private String commentContents;
-    private int commentCheck;
     private LocalDateTime commentCreatedTime;
 
     public static CommentDTO toCommentDTO(CommentEntity commentEntity) {

@@ -117,6 +117,8 @@ public class InquiryService {
                 inquiry -> new InquiryDTO(inquiry.getId(),
                         inquiry.getInquiryWriter(),
                         inquiry.getInquiryTitle(),
+                        inquiry.getInquiryPublic(),
+                        inquiry.getInquiryProductId(),
                         inquiry.getInquiryProductName(),
                         inquiry.getCreatedTime()
                 ));

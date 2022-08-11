@@ -32,13 +32,6 @@ public class InquiryDTO {
         this.createdTime = createdTime;
     }
 
-    public InquiryDTO(Long id, String inquiryWriter, String inquiryTitle, String inquiryProductName, LocalDateTime createdTime) {
-        this.id = id;
-        this.inquiryWriter = inquiryWriter;
-        this.inquiryTitle = inquiryTitle;
-        this.createdTime = createdTime;
-        this.inquiryProductName = inquiryProductName;
-    }
 
     public static InquiryDTO toInquiryDTO(InquiryEntity inquiryEntity) {
         InquiryDTO inquiryDTO = new InquiryDTO();
