@@ -1,5 +1,6 @@
 package com.its.stationery.repository;
 
+import com.its.stationery.entity.CommentEntity;
 import com.its.stationery.entity.InquiryEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,4 +22,5 @@ public interface InquiryRepository extends JpaRepository<InquiryEntity, Long> {
     @Modifying
     @Query(value = "update InquiryEntity i set i.inquiryHits= i.inquiryHits+1 where i.id= :id")
     void inquiryHits(@Param("id") Long id);
+
 }

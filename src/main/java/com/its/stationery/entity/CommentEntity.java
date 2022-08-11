@@ -27,6 +27,9 @@ public class CommentEntity {
     @Column(nullable = false)
     private Long commentInquiryId;
 
+    @ColumnDefault("0")
+    @Column(nullable = false)
+    private int commentCheck;
 
     @CreationTimestamp
     @Column(nullable = false)

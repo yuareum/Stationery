@@ -89,5 +89,15 @@ public class InquiryController {
         return "inquiryPages/detail";
     }
 
+    @GetMapping
+    public String findAll(@PageableDefault(page = 1) Pageable pageable, Model model){
+        Page<InquiryDTO> inquiryList = inquiryService.paging(pageable);
+        model.addAttribute("inquiryList", inquiryList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < inquiryList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : inquiryList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        return "inquiryPages/list";
+    }
 
 }

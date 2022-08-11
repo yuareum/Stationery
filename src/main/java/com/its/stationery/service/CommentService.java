@@ -19,8 +19,8 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     public Long save(CommentDTO commentDTO) {
-        Optional<InquiryEntity> optionalInquiryEntity= inquiryRepository.findById(commentDTO.getCommentInquiryId());
-        if(optionalInquiryEntity.isPresent()){
+        Optional<InquiryEntity> optionalInquiryEntity = inquiryRepository.findById(commentDTO.getCommentInquiryId());
+        if (optionalInquiryEntity.isPresent()) {
             Long saveId = commentRepository.save(CommentEntity.toSaveEntity(commentDTO, optionalInquiryEntity.get())).getId();
             return saveId;
         }
@@ -30,7 +30,7 @@ public class CommentService {
     public List<CommentDTO> findAll(Long commentInquiryId) {
         List<CommentEntity> commentEntityList = commentRepository.findByCommentInquiryId(commentInquiryId);
         List<CommentDTO> commentDTOList = new ArrayList<>();
-        for(CommentEntity comment: commentEntityList){
+        for (CommentEntity comment : commentEntityList) {
             commentDTOList.add(CommentDTO.toCommentDTO(comment));
         }
         return commentDTOList;
@@ -38,7 +38,7 @@ public class CommentService {
 
     public CommentDTO findById(Long id) {
         Optional<CommentEntity> optionalCommentEntity = commentRepository.findById(id);
-        if(optionalCommentEntity.isPresent()){
+        if (optionalCommentEntity.isPresent()) {
             CommentDTO commentDTO = CommentDTO.toCommentDTO(optionalCommentEntity.get());
             return commentDTO;
         }
@@ -48,4 +48,5 @@ public class CommentService {
     public void delete(Long id) {
         commentRepository.deleteById(id);
     }
+
 }

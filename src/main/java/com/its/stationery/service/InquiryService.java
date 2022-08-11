@@ -2,6 +2,7 @@ package com.its.stationery.service;
 
 import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.InquiryDTO;
+import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.dto.ReviewDTO;
 import com.its.stationery.entity.InquiryEntity;
 import com.its.stationery.entity.MemberEntity;
@@ -108,5 +109,19 @@ public class InquiryService {
 
     }
 
+    public Page<InquiryDTO> paging(Pageable pageable) {
+        int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
+        page = (page == 1)? 0: (page-1);
+        Page<InquiryEntity> inquiryEntities = inquiryRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        Page<InquiryDTO> inquiryList = inquiryEntities.map(
+                inquiry -> new InquiryDTO(inquiry.getId(),
+                        inquiry.getInquiryWriter(),
+                        inquiry.getInquiryTitle(),
+                        inquiry.getInquiryProductName(),
+                        inquiry.getCreatedTime()
+                ));
+
+        return inquiryList;
+    }
 }
 

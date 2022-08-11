@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -27,5 +28,6 @@ public class CommentController {
         commentService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
 }
