@@ -122,8 +122,8 @@
                                     <td th:text="${inquiry.inquiryWriter}"></td>
                                     <td><a th:href="@{|/inquiry/${inquiry.id}|}" th:text="${inquiry.inquiryTitle}"></a></td>
                                     <td th:text="*{#temporals.format(inquiry.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                    <td><button th:if="${#strings.equals(session.loginMemberId, inquiry.inquiryWriter)}" th:onclick="inquiryUpdateById([[${inquiry.id}]])">수정</button></td>
-                                    <td><button th:if="${#strings.equals(session.loginMemberId, inquiry.inquiryWriter)}" th:onclick="inquiryDeleteById([[${inquiry.id}]])">삭제</button></td>
+                                    <td><button th:if="${#strings.equals(session.loginMemberId, inquiry.inquiryWriter)}" style="background-color: blue; color: white; border-style: hidden" th:onclick="inquiryUpdateById([[${inquiry.id}]])">수정</button></td>
+                                    <td><button th:if="${#strings.equals(session.loginMemberId, inquiry.inquiryWriter)}" style="background-color:red; color:white;border-style: hidden" th:onclick="inquiryDeleteById([[${inquiry.id}]])">삭제</button></td>
                                 </tr>
                             </table>
                         </div>

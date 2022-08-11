@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @Table(name = "inquiry_table")
-public class InquiryEntity extends BaseEntity {
+public class InquiryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -32,16 +32,20 @@ public class InquiryEntity extends BaseEntity {
     @Column(nullable = false)
     private Long inquiryProductId;
 
+    @ColumnDefault("0")
+    @Column(nullable = false)
+    private int inquiryHits;
+
+    @CreationTimestamp
+    @Column(nullable = false)
+    private LocalDateTime createdTime;
+
     @Column(length = 50, nullable = false)
     private String inquiryProductName;
-
 
     @Column(nullable = false)
     private int inquiryPublic;
 
-    @ColumnDefault("0")
-    @Column(nullable = false)
-    private int commentCheck;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -78,9 +82,10 @@ public class InquiryEntity extends BaseEntity {
         inquiryEntity.setInquiryContents(inquiryDTO.getInquiryContents());
         inquiryEntity.setInquiryProductName(inquiryDTO.getInquiryProductName());
         inquiryEntity.setInquiryPublic(inquiryDTO.getInquiryPublic());
-        inquiryEntity.setCommentCheck(inquiryDTO.getCommentCheck());
+        inquiryEntity.setInquiryHits(inquiryDTO.getInquiryHits());
         inquiryEntity.setMemberEntity(memberEntity);
         inquiryEntity.setProductEntity(productEntity);
         return inquiryEntity;
     }
+
 }

@@ -24,11 +24,14 @@
         <table class="table">
             <tr>
                 <td th:text="'작성자: ' + ${inquiry.inquiryWriter}"></td>
-                <td style="font-size: 15px;" th:text="'작성일: ' + *{#temporals.format(inquiry.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td style="font-size: 15px;" th:text="'작성시간: ' + *{#temporals.format(inquiry.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+            <tr>
+                <td th:text="'상품명: ' + ${inquiry.inquiryProductName}"></td>
+                <td th:if="${inquiry.inquiryPublic} == 1" th:text="'조회수: ' + ${inquiry.inquiryHits}"></td>
             </tr>
             <tr>
                 <td th:text="'제목: ' + ${inquiry.inquiryTitle}"></td>
-                <td style="font-size: 15px;" th:if="${inquiry.updatedTime} != null" th:text="'수정일: ' + *{#temporals.format(inquiry.updatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
             </tr>
             <tr>
                 <td colspan="10" rowspan="20" th:text="${inquiry.inquiryContents}"></td>
@@ -36,67 +39,86 @@
         </table>
         <div th:if="${session.loginMemberId}">
             <div th:if="${session.loginMemberId.toString().equals('admin')}" id="comment-write" class="input-group mb-3">
-                    관리자 답변 작성 <br>
-                    <input type="hidden" id="commentWriter" th:value="${session.loginMemberId}" readonly>
-                    <textarea cols="5" rows="5" id="commentContents" class="form-control" placeholder="내용 입력"></textarea>
-                    <button id="comment-write-btn" class="btn btn-primary">작성</button>
+                관리자 답변 작성 <br>
+                <input type="hidden" id="commentWriter" th:value="${session.loginMemberId}" readonly>
+                <textarea cols="5" rows="5" id="commentContents" class="form-control" placeholder="내용 입력"></textarea>
+                <button id="comment-write-btn" class="btn btn-primary">작성</button>
             </div>
         </div>
         <div id="comment-list">
-        관리자 답변
-            <table class="table">
-                <tr th:each="comment: ${commentList}">
-                    <td  colspan="2" th:text="'답변 번호: ' + ${comment.id}"></td>
+            <p style="margin-top: 20px">관리자 답변</p>
+            <table class="table" th:each="comment: ${commentList}">
+                <button class="btn btn-danger" th:onclick="deleteById([[${comment.id}]])">삭제</button>
+                <tr>
+                    <td colspan="2" th:text="'답변번호: '  + ${comment.id} "></td>
                 </tr>
                 <tr>
-                    <td th:text="'관리자: ' + ${comment.commentWriter}"></td>
-                    <td th:text="'작성시간: ' + *{#temporals.format(comment.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="'작성자: ' + ${comment.commentWriter}"></td>
+                    <td th:text="'작성시간: ' + *{#temporals.format(comment.commentCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                 </tr>
                 <tr>
                     <td>내용</td>
-                    <td><textarea cols="10" rows="5" th:text="${comment.commentContents}"></textarea> </td>
+                    <td th:text="${comment.commentContents}"></td>
                 </tr>
             </table>
         </div>
     </div>
 </body>
 <script th:inline="javascript">
-    $("#comment-write-btn").click(function (){
+    $("#comment-write-btn").click(function () {
         const commentContents = $("#commentContents").val();
-        if(commentContents == ""){
+        const commentWriter = document.getElementById("commentWriter").value;
+        const inquiryId = [[${inquiry.id}]];
+        if (commentContents == "") {
             alert("댓글 내용을 작성해 주세요.");
         }
-        else{
+        else {
             $.ajax({
                 type: "post",
                 url: "/comment/save",
-                data: {"commentWriter": [[${session.loginMemberId}]],"commentContents": commentContents, "commentInquiryId": [[${inquiry.id}]]},
+                data: {"commentWriter": commentWriter, "commentContents": commentContents, "commentInquiryId": inquiryId},
                 dataType: "json",
-                success: function (result){
+                success: function (result) {
                     console.log("success");
                     let output = "<table class='table'>";
-                    for(let i in result) {
-                        output += "<tr><td colspan='2'>" + '답변번호: ' + result[i].id + "</td></tr>";
+                    for (let i in result) {
+                        output += "<tr>";
+                        output += "<td colspan='2'>"+ "답변번호: " + result[i].id + "</td>";
+                        output += "</tr>";
 
                         output += "<tr>";
-                        output += "<td>" + '관리자: ' + result[i].commentWriter + "</td>";
-                        output += "<td>" + '작성시간: ' +moment(result[i].createdTime).format("YYYY-MM-DD HH:mm:ss") + "</td></tr>";
+                        output += "<td>"+ "작성자: " + result[i].commentWriter +"</td>";
+                        output += "<td>"+"작성시간: " + moment(result[i].commentCreatedTime).format("YYYY-MM-DD HH:mm:ss")+ "</td>";
+                        output += "</tr>";
 
                         output += "<tr>";
-                        output += "<th>내용</th>";
-                        output += "<td>" + <textarea cols="10" rows="5"> result[i].commentContents </textarea> + "</td>";
+                        output += "<td>내용</td>";
+                        output += "<td>"+result[i].commentContents+"</td>";
                         output += "</tr>";
                     }
                     output += "</table>";
-                    document.getElementById("commentResult").innerHTML = output;
-                    document.getElementById("commentWriter").value = '[[${session.loginMemberId}]]';
-                    document.getElementById('commentContents').value='';
+                    document.getElementById("comment-list").innerHTML = output;
+                    document.getElementById("commentWriter").value = commentWriter;
+                    document.getElementById('commentContents').value = '';
                 },
-                error:function (){
+                error: function () {
                     alert("ajax 실패");
                 }
-            })
+            });
         }
+    });
+    const deleteById = (id) => {
+        $.ajax({
+            type:"delete",
+            url:"/comment/" + id,
+            success:function (){
+                location.href="/inquiry/" + [[${inquiry.id}]];
+            },
+            error:function (){
+                alert("삭제 ajax 실패");
+            }
+
+        })
     }
 </script>
 </html>

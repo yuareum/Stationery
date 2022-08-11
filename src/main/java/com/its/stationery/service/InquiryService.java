@@ -66,7 +66,6 @@ public class InquiryService {
                         inquiry.getInquiryTitle(),
                         inquiry.getInquiryPublic(),
                         inquiry.getInquiryProductId(),
-                        inquiry.getCommentCheck(),
                         inquiry.getInquiryProductName(),
                         inquiry.getCreatedTime()
                 ));
@@ -98,5 +97,16 @@ public class InquiryService {
         }
         return null;
     }
+    @Transactional
+    public InquiryDTO detail(Long id) {
+        inquiryRepository.inquiryHits(id);
+        Optional<InquiryEntity> optionalInquiryEntity = inquiryRepository.findById(id);
+        if (optionalInquiryEntity.isPresent()) {
+            return InquiryDTO.toInquiryDTO(optionalInquiryEntity.get());
+        }
+        return null;
+
+    }
+
 }
 

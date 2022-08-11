@@ -49,17 +49,15 @@ public class InquiryController {
         int endPage =((startPage + PagingConst.BLOCK_LIMIT-1)< inquiryList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT -1 : inquiryList.getTotalPages();
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+
         return "inquiryPages/myList";
     }
 
     @GetMapping("/update-form/{id}")
     public String updateForm(@PathVariable("id") Long id,Model model){
         InquiryDTO inquiryDTO = inquiryService.findById(id);
-        if(inquiryDTO.getCommentCheck() == 0){
-            model.addAttribute("updateInquiry", inquiryDTO);
-            return "inquiryPages/update";
-        }
-        return "redirect:/findByInquiryWriter/" + inquiryDTO.getInquiryWriter();
+        model.addAttribute("updateInquiry", inquiryDTO);
+        return "inquiryPages/update";
     }
 
     @PostMapping("/update")
@@ -74,6 +72,15 @@ public class InquiryController {
     }
 
     @GetMapping("/{id}")
+    public String detail(@PathVariable("id") Long id, Model model){
+        InquiryDTO inquiryDTO = inquiryService.detail(id);
+        model.addAttribute("inquiry", inquiryDTO);
+        List<CommentDTO> commentDTOList = commentService.findAll(id);
+        model.addAttribute("commentList", commentDTOList);
+        return "inquiryPages/detail";
+    }
+
+    @GetMapping("/findById/{id}")
     public String findById(@PathVariable("id") Long id, Model model){
         InquiryDTO inquiryDTO = inquiryService.findById(id);
         model.addAttribute("inquiry", inquiryDTO);
@@ -81,4 +88,6 @@ public class InquiryController {
         model.addAttribute("commentList", commentDTOList);
         return "inquiryPages/detail";
     }
+
+
 }

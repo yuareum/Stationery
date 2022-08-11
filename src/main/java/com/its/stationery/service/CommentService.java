@@ -5,7 +5,6 @@ import com.its.stationery.entity.CommentEntity;
 import com.its.stationery.entity.InquiryEntity;
 import com.its.stationery.repository.CommentRepository;
 import com.its.stationery.repository.InquiryRepository;
-import com.its.stationery.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +34,18 @@ public class CommentService {
             commentDTOList.add(CommentDTO.toCommentDTO(comment));
         }
         return commentDTOList;
+    }
+
+    public CommentDTO findById(Long id) {
+        Optional<CommentEntity> optionalCommentEntity = commentRepository.findById(id);
+        if(optionalCommentEntity.isPresent()){
+            CommentDTO commentDTO = CommentDTO.toCommentDTO(optionalCommentEntity.get());
+            return commentDTO;
+        }
+        return null;
+    }
+
+    public void delete(Long id) {
+        commentRepository.deleteById(id);
     }
 }

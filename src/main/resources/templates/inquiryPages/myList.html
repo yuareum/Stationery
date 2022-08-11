@@ -48,8 +48,8 @@
                     <th scope="col">상품명</th>
                     <th scope="col">제목</th>
                     <th scope="col">문의 시간</th>
-                    <th scope="col">답변 작성</th>
                     <th scope="col">상세 조회</th>
+                    <th scope="col">삭제</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -59,9 +59,9 @@
                     <td><a th:href="@{|/product/${inquiry.inquiryProductId}|}" th:text="${inquiry.inquiryProductName}"></a></td>
                     <td th:text="${inquiry.inquiryTitle}"></td>
                     <td th:text="*{#temporals.format(inquiry.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    <td th:if="${inquiry.commentCheck} == 0">미답변</td>
-                    <td th:if="${inquiry.commentCheck} == 1">답변 완료</td>
-                    <td><button class="btn btn-outline-success" th:onclick="'location.href=\''+ @{|/inquiry/${inquiry.id}|} + '\''">상세 조회</button></td>
+                    <td><button class="btn btn-outline-success" th:if="${inquiry.inquiryPublic} == 1" th:onclick="'location.href=\''+ @{|/inquiry/${inquiry.id}|} + '\''">상세 조회</button>
+                    <button class="btn btn-outline-success" th:if="${inquiry.inquiryPublic} == 2" th:onclick="'location.href=\''+ @{|/inquiry/findById/${inquiry.id}|} + '\''">상세 조회</button></td>
+                    <td><button class="btn btn-danger" th:onclick="deleteById([[${inquiry.id}]])">삭제</button></td>
                 </tr>
                 </tbody>
             </table>
@@ -100,4 +100,18 @@
     </div>
 </div>
 </body>
+<script th:inline="javascript">
+    const deleteById = (id) => {
+        $.ajax({
+            type:"delete",
+            url:"/inquiry/" + id,
+            success:function (){
+                location.href="/inquiry/findByInquiryWriter/" + [[${session.loginMemberId}]]
+            },
+            error:function (){
+                alert("삭제 ajax 실패");
+            }
+        })
+    }
+</script>
 </html>

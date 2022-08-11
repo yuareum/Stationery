@@ -30,7 +30,6 @@
                 <label class="form-check-label" for="inlineRadio2">비공개</label>
             </div>
         </div>
-        <input type="hidden" name="commentCheck" th:value="${updateInquiry.commentCheck}">
         <input type="button" class="btn btn-outline-dark" th:onclick="'location.href=\''+ @{|/product/${updateInquiry.inquiryProductId}|} + '\''" value="취소">
         <input type="button" class="btn btn-outline-primary" onclick="inquiryCheck()" value="수정하기">
     </form>

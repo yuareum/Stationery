@@ -17,19 +17,18 @@ public class InquiryDTO {
     private String inquiryContents;
     private Long inquiryProductId;
     private int inquiryPublic;
-    private int commentCheck;
     private LocalDateTime createdTime;
-    private LocalDateTime updatedTime;
     private String inquiryProductName;
 
-    public InquiryDTO(Long id, String inquiryWriter, String inquiryTitle, int inquiryPublic, Long inquiryProductId, int commentCheck, String inquiryProductName, LocalDateTime createdTime) {
+    private int inquiryHits;
+
+    public InquiryDTO(Long id, String inquiryWriter, String inquiryTitle, int inquiryPublic, Long inquiryProductId,  String inquiryProductName, LocalDateTime createdTime) {
         this.id = id;
         this.inquiryWriter = inquiryWriter;
         this.inquiryProductId = inquiryProductId;
         this.inquiryPublic = inquiryPublic;
         this.inquiryTitle = inquiryTitle;
         this.inquiryProductName = inquiryProductName;
-        this.commentCheck = commentCheck;
         this.createdTime = createdTime;
     }
 
@@ -42,8 +41,7 @@ public class InquiryDTO {
         inquiryDTO.setInquiryPublic(inquiryEntity.getInquiryPublic());
         inquiryDTO.setInquiryWriter(inquiryEntity.getInquiryWriter());
         inquiryDTO.setCreatedTime(inquiryEntity.getCreatedTime());
-        inquiryDTO.setUpdatedTime(inquiryEntity.getUpdatedTime());
-        inquiryDTO.setCommentCheck(inquiryEntity.getCommentCheck());
+        inquiryDTO.setInquiryHits(inquiryEntity.getInquiryHits());
         inquiryDTO.setInquiryProductId(inquiryEntity.getInquiryProductId());
         return inquiryDTO;
 

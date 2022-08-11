@@ -3,6 +3,7 @@ package com.its.stationery.entity;
 import com.its.stationery.dto.CommentDTO;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -23,8 +24,9 @@ public class CommentEntity {
     @Column(length = 500, nullable = false)
     private String commentContents;
 
-    @Column
+    @Column(nullable = false)
     private Long commentInquiryId;
+
 
     @CreationTimestamp
     @Column(nullable = false)
@@ -43,4 +45,5 @@ public class CommentEntity {
         commentEntity.setInquiryEntity(inquiryEntity);
         return commentEntity;
     }
+
 }
