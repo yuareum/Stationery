@@ -15,61 +15,64 @@
 </head>
 <body>
 <th:block th:replace="commonPages/header :: header"></th:block>
-<h3>공지사항</h3>
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th scope="col">공지 번호</th>
-        <th scope="col">제목</th>
-        <th scope="col">작성자</th>
-        <th scope="col">공지 시간</th>
-        <th scope="col">조회수</th>
-        <th scope="col">상세 조회</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="notice: ${noticeList}">
-        <td th:text="${notice.id}"></td>
-        <td><a th:href="@{|/notice/${notice.id}|}" th:text="${notice.noticeTitle}"></a></td>
-        <td th:text="${inquiry.inquiryTitle}"></td>
-        <td th:text="*{#temporals.format(inquiry.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-        <td><button class="btn btn-outline-success" th:if="${inquiry.inquiryPublic} == 1" th:onclick="'location.href=\''+ @{|/inquiry/${inquiry.id}|} + '\''">상세 조회</button>
-            <button class="btn btn-outline-success" th:if="${inquiry.inquiryPublic} == 2" th:onclick="'location.href=\''+ @{|/inquiry/findById/${inquiry.id}|} + '\''">상세 조회</button></td>
-        <td><button class="btn btn-danger" th:onclick="deleteById([[${inquiry.id}]])">삭제</button></td>
-    </tr>
-    </tbody>
-</table>
-<ul class="pagination justify-content-center">
-    <li class="page-item">
-        <a class="page-link" th:href="@{/inquiry/findByInquiryWriter/{inquiryWriter}(inquiryWriter = ${session.loginMemberId}, page=1)}">
-            <span>First</span>
-        </a>
-    </li>
+<div class="container">
+    <h3>공지사항</h3>
+    <div th:if="${session.loginMemberId}">
+        <button class="btn btn-outline-primary" style="float: right;" th:if="${session.loginMemberId.toString().equals('admin')}" onclick="location.href='/notice/save-form'">공지사항 작성</button>
+    </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">공지 번호</th>
+            <th scope="col">제목</th>
+            <th scope="col">작성자</th>
+            <th scope="col">공지 시간</th>
+            <th scope="col">조회수</th>
+            <th scope="col">상세 조회</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="notice: ${noticeList}">
+            <td th:text="${notice.id}"></td>
+            <td><a th:href="@{|/notice/${notice.id}|}" th:text="${notice.noticeTitle}"></a></td>
+            <td th:if="${notice.noticeWriter.toString().equals('admin')}" th:text="관리자"></td>
+            <td th:text="*{#temporals.format(notice.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${notice.noticeHits}"></td>
+            <td><button class="btn btn-outline-success" th:onclick="'location.href=\''+ @{|/notice/${notice.id}|} + '\''">상세 조회</button>
+        </tr>
+        </tbody>
+    </table>
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link" th:href="@{/notice(page=1)}">
+                <span>First</span>
+            </a>
+        </li>
 
-    <li th:class="${inquiryList.first} ? 'disabled'" class="page-item">
-        <a class="page-link" th:href="${inquiryList.first} ? '#' : @{/inquiry/findByInquiryWriter/{inquiryWriter}(inquiryWriter = ${session.loginMemberId}, page=${inquiryList.number})}">
-            <span><</span>
-        </a>
-    </li>
+        <li th:class="${noticeList.first} ? 'disabled'" class="page-item">
+            <a class="page-link" th:href="${noticeList.first} ? '#' : @{/notice(page=${noticeList.number})}">
+                <span><</span>
+            </a>
+        </li>
+
+        <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+            th:class="${page == noticeList.number + 1} ? 'page-item active'" class="page-item">
+            <a class="page-link" th:text="${page}" th:href="@{/notice(page=${page})}"></a>
+        </li>
 
 
-    <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
-        th:class="${page == inquiryList.number + 1} ? 'page-item active'" class="page-item">
-        <a class="page-link" th:text="${page}" th:href="@{/inquiry/findByInquiryWriter/{inquiryWriter}(inquiryWriter = ${session.loginMemberId}, page=${page})}"></a>
-    </li>
+        <li th:class="${noticeList.last} ? 'disabled'">
+            <a class="page-link" th:href="${noticeList.last} ? '#' : @{/notice(page=${noticeList.number + 2})}">
+                <span>&gt;</span>
+            </a>
+        </li>
 
-    <li th:class="${inquiryList.last} ? 'disabled'">
-        <a class="page-link" th:href="${inquiryList.last} ? '#' : @{/inquiry/findByInquiryWriter/{inquiryWriter}(inquiryWriter = ${session.loginMemberId}, page=${inquiryList.number + 2})}">
-            <span>&gt;</span>
-        </a>
-    </li>
-
-    <li class="page-item">
-        <a class="page-link" th:href="@{/inquiry/findByInquiryWriter/{inquiryWriter}(inquiryWriter = ${session.loginMemberId}, page=${inquiryList.totalPages})}">
-            <span>Last</span>
-        </a>
-    </li>
-</ul>
+        <li class="page-item">
+            <a class="page-link" th:href="@{/notice(page=${noticeList.totalPages})}">
+                <span>Last</span>
+            </a>
+        </li>
+    </ul>
 </div>
 </body>
 </html>

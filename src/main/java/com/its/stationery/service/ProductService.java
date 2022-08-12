@@ -5,6 +5,7 @@ import com.its.stationery.config.WebConfig;
 import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.entity.MemberEntity;
 import com.its.stationery.entity.ProductEntity;
+import com.its.stationery.entity.WishProductEntity;
 import com.its.stationery.repository.MemberRepository;
 import com.its.stationery.repository.OrderRepository;
 import com.its.stationery.repository.ProductRepository;
@@ -48,7 +49,7 @@ public class ProductService {
         if(optionalMemberEntity.isPresent()) {
             MemberEntity memberEntity = optionalMemberEntity.get();
             if(Objects.equals(memberEntity.getMemberId(), "admin")){
-                Long saveId = productRepository.save(ProductEntity.toSaveEntity(productDTO)).getId();
+                Long saveId = productRepository.save(ProductEntity.toSaveEntity(productDTO,memberEntity)).getId();
                 return saveId;
             }
             else {
@@ -77,7 +78,7 @@ public class ProductService {
                     product.getProductName(),
                     product.getProductPrice(),
                     product.getProductFileName(),
-                    product.getCategoryId()
+                    product.getCategoryName()
             ));
 
         return productList;
@@ -95,8 +96,8 @@ public class ProductService {
     }
     
 
-    public List<ProductDTO> categoryList(Long categoryId) {
-        List<ProductEntity> productEntityList = productRepository.findByCategoryId(categoryId);
+    public List<ProductDTO> categoryList(Long categoryName) {
+        List<ProductEntity> productEntityList = productRepository.findByCategoryName(categoryName);
         List<ProductDTO> productDTOList = new ArrayList<>();
         for(ProductEntity productEntity: productEntityList){
             productDTOList.add(ProductDTO.toProductDTO(productEntity));
@@ -113,8 +114,10 @@ public class ProductService {
         Page<ProductDTO> productList = searchEntity.map(
                 product -> new ProductDTO(product.getId(),
                         product.getProductName(),
+                        product.getProductPrice(),
+                        product.getProductFileName(),
                         product.getProductBrand(),
-                        product.getProductPrice()
+                        product.getCategoryName()
                 ));
 
         return productList;
@@ -131,9 +134,13 @@ public class ProductService {
     }
 
     public Long update(ProductDTO productDTO) {
-        ProductEntity productEntity = ProductEntity.toUpdateEntity(productDTO);
-        Long id = productRepository.save(productEntity).getId();
-        return id;
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberId(productDTO.getProductAdmin());
+        if(optionalMemberEntity.isPresent()){
+            ProductEntity productEntity = ProductEntity.toUpdateEntity(productDTO,optionalMemberEntity.get());
+            Long id = productRepository.save(productEntity).getId();
+            return id;
+        }
+        return null;
     }
 
     public void delete(Long id) {
@@ -142,8 +149,12 @@ public class ProductService {
 
 
     public Long countsUpdate(ProductDTO productDTO, int counts) {
-      ProductEntity productEntity = ProductEntity.toUpdateCounts(productDTO, counts);
-      Long id = productRepository.save(productEntity).getId();
-      return id;
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberId(productDTO.getProductAdmin());
+        if(optionalMemberEntity.isPresent()){
+            ProductEntity productEntity = ProductEntity.toUpdateCounts(productDTO, counts,optionalMemberEntity.get());
+            Long id = productRepository.save(productEntity).getId();
+            return id;
+        }
+        return null;
     }
 }

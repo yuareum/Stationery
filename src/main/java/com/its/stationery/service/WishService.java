@@ -24,7 +24,7 @@ public class WishService {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberId(wishMemberId);
         if(optionalMemberEntity.isPresent()){
             if(!Objects.equals(wishMemberId, "admin")){
-                Long saveId = wishRepository.save(WishEntity.toSaveEntity(optionalMemberEntity.get())).getId();
+                Long saveId = wishRepository.save(WishEntity.toSaveEntity(optionalMemberEntity.get(),wishMemberId)).getId();
                 return saveId;
             }
         }

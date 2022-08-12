@@ -2,8 +2,12 @@ package com.its.stationery.service;
 
 import com.its.stationery.common.PagingConst;
 import com.its.stationery.config.WebConfig;
+import com.its.stationery.dto.CartDTO;
 import com.its.stationery.dto.MemberDTO;
+import com.its.stationery.dto.WishDTO;
+import com.its.stationery.entity.CartEntity;
 import com.its.stationery.entity.MemberEntity;
+import com.its.stationery.entity.WishEntity;
 import com.its.stationery.repository.CartRepository;
 import com.its.stationery.repository.MemberRepository;
 import com.its.stationery.repository.WishRepository;
@@ -26,7 +30,6 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
-    private final WishRepository wishRepository;
 
     public Long save(MemberDTO memberDTO) throws IOException {
         MultipartFile memberProfile = memberDTO.getMemberProfile();
@@ -37,7 +40,8 @@ public class MemberService {
             memberProfile.transferTo(new File(savePath));
         }
         memberDTO.setMemberProfileName(memberProfileName);
-        Long saveId = memberRepository.save(MemberEntity.toSaveEntity(memberDTO)).getId();
+        MemberEntity memberEntity = memberRepository.save(MemberEntity.toSaveEntity(memberDTO));
+        Long saveId = memberEntity.getId();
         return saveId;
     }
     public MemberDTO findById(Long id){
@@ -112,10 +116,7 @@ public class MemberService {
     }
 
     public Page<MemberDTO> paging(Pageable pageable) {
-        int page = pageable.getPageNumber(); // 요청 페이지값 가져옴.
-        // 요청한 페이지가 1이면 페이지값을 0으로 하고 1이 아니면 요청 페이지에서 1을 뺀다.
-//        page = page - 1;
-        // 삼항연산자
+        int page = pageable.getPageNumber();
         page = (page == 1)? 0: (page-1);
         Page<MemberEntity> memberEntities = memberRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
         Page<MemberDTO> memberList = memberEntities.map(

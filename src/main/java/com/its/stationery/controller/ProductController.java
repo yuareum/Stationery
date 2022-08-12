@@ -54,13 +54,10 @@ public class ProductController {
     }
 
     @GetMapping("/category")
-    private String category(@RequestParam("categoryId") Long categoryId, Model model){
-        if(categoryId == 1){
-            List<ProductDTO> productDTOList = productService.categoryList(categoryId);
-            model.addAttribute("productList", productDTOList);
-            return "prdouctPages/categoryList";
-        }
-        return "redirect:/product";
+    private String category(@RequestParam("categoryName") Long categoryName, Model model){
+        List<ProductDTO> productDTOList = productService.categoryList(categoryName);
+        model.addAttribute("productList", productDTOList);
+        return "prdouctPages/categoryList";
     }
 
     @GetMapping("/{id}")

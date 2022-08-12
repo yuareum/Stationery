@@ -19,6 +19,7 @@ public class CartProductDTO {
     private String cartProductBrand;
     private LocalDateTime createdTime;
     private MultipartFile cartProductFile;
+
     private String cartProductFileName;
     private Long cartProductPrice;
     private int cartProductCounts;

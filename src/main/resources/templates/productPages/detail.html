@@ -78,7 +78,9 @@
                         <div class="tab-pane fade show active" id="information-tab-pane" role="tabpanel" aria-labelledby="information-tab" tabindex="0" th:text="${product.productInformation}"></div>
                         <div class="tab-pane fade" id="review-tab-pane" role="tabpanel" aria-labelledby="review-tab" tabindex="0">
                             <i class="bi bi-chat-left-text"></i> [[${reviewList.size()}]] reviews
-                            <button class="btn btn-outline-primary" th:onclick="reviewSave([[${product.id}]])" ><i class="bi bi-pencil-square"></i>리뷰 작성</button>
+                            <div th:if="${session.loginMemberId}">
+                                <button class="btn btn-outline-primary" th:unless="${session.loginMemberId.toString().equals('admin')}" th:onclick="reviewSave([[${product.id}]])" ><i class="bi bi-pencil-square"></i>리뷰 작성</button>
+                            </div>
                             <br>
                             <table class="table" style="margin-top: 15px;" th:each="review : ${reviewList}">
                                 <div th:if="${session.loginMemberId}">
@@ -113,7 +115,7 @@
                                     <td>작성자</td>
                                     <td>제목</td>
                                     <td>작성시간</td>
-                                    <td>삭제</td>
+                                    <td style="visibility: hidden">삭제</td>
                                 </tr>
                                 <tr th:each="inquiry: ${inquiryList}">
                                     <td th:text="${inquiry.id}"></td>
@@ -121,7 +123,8 @@
                                     <td th:text="${inquiry.inquiryWriter}"></td>
                                     <td><a th:href="@{|/inquiry/${inquiry.id}|}" th:text="${inquiry.inquiryTitle}"></a></td>
                                     <td th:text="*{#temporals.format(inquiry.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                    <td><button th:if="${#strings.equals(session.loginMemberId, inquiry.inquiryWriter)}" style="background-color:red; color:white;border-style: hidden" th:onclick="inquiryDeleteById([[${inquiry.id}]])">삭제</button></td>
+                                    <td><button th:if="${#strings.equals(session.loginMemberId, inquiry.inquiryWriter)}" style="background-color:red; color:white;border-style: hidden;" th:onclick="inquiryDeleteById([[${inquiry.id}]])">삭제</button></td>
+
                                 </tr>
                             </table>
                         </div>
@@ -237,7 +240,7 @@
             dataType: "text",
             success: function (result) {
                 if (result == 1) {
-                    location.href = "/product/" + [[${product.id}]];
+                    location.reload();
                 } else {
                     alert("찜 목록에 상품이 저장되지 않았습니다.");
                 }
@@ -253,7 +256,7 @@
             type: "delete",
             url: "/wish/" + id,
             success: function () {
-                location.href = "/product/" + [[${product.id}]];
+               location.reload();
             },
             error: function () {
                 alert("찜 상품 삭제 ajax 실패");

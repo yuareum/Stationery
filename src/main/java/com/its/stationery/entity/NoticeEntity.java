@@ -1,5 +1,6 @@
 package com.its.stationery.entity;
 
+import com.its.stationery.dto.NoticeDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -31,5 +32,20 @@ public class NoticeEntity extends BaseEntity{
     @Column(nullable = false)
     private int noticeHits;
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private MemberEntity memberEntity;
+
+
+    public static NoticeEntity toSaveEntity(NoticeDTO noticeDTO,MemberEntity memberEntity) {
+        NoticeEntity noticeEntity = new NoticeEntity();
+        noticeEntity.setNoticeWriter(noticeDTO.getNoticeWriter());
+        noticeEntity.setNoticeTitle(noticeDTO.getNoticeTitle());
+        noticeEntity.setNoticeContents(noticeDTO.getNoticeContents());
+        noticeEntity.setNoticeFileName(noticeDTO.getNoticeFileName());
+        noticeEntity.setMemberEntity(memberEntity);
+        return noticeEntity;
+    }
 }
 

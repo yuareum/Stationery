@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>공지 사항 등록</title>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>공지사항 등록</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <style>
+        .container{
+            margin-top: 20px;
+        }
+        .btn {
+            margin-top: 20px;
+            width: 180px;
+            height: 40px;
+        }
+    </style>
 </head>
 <body>
-
+<div class="container">
+    <h2>공지사항 작성</h2>
+    <form action="/notice/save" method="post" enctype="multipart/form-data">
+        <input type="hidden" class="form-control" name="noticeWriter" th:value="${session.loginMemberId}"><br>
+        제목 <input type="text" class="form-control" name="noticeTitle"><br>
+        내용 <textarea class="form-control" name="noticeContents" cols="50" rows="10"> </textarea><br>
+        첨부파일 <input type="file" class="form-control" name="noticeFile"><br>
+        <input type="submit" class="btn btn-outline-primary" value="작성하기">
+    </form>
+</div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.its.stationery.entity;
 
+import com.its.stationery.dto.CartDTO;
 import lombok.Getter;
 import lombok.Setter;
 

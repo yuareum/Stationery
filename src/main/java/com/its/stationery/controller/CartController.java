@@ -26,7 +26,6 @@ public class CartController {
     private final CartService cartService;
     private final CartProductService cartProductService;
 
-    private final ProductService productService;
     @GetMapping("/{cartMemberId}")
     public String findByCartMemberId(@PathVariable("cartMemberId") String cartMemberId, Model model, @PageableDefault(page = 1) Pageable pageable){
         CartDTO findDTO = cartService.findByCartMemberId(cartMemberId);

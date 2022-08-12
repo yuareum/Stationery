@@ -1,5 +1,6 @@
 package com.its.stationery.entity;
 
+import com.its.stationery.dto.WishDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,11 +28,18 @@ public class WishEntity {
     private List<WishProductEntity> wishProductEntityList = new ArrayList<>();
 
 
-    public static WishEntity toSaveEntity(MemberEntity memberEntity) {
+    public static WishEntity toSaveEntity(MemberEntity memberEntity,String wishMemberId) {
         WishEntity wishEntity = new WishEntity();
-        wishEntity.setWishMemberId(memberEntity.getMemberId());
+        wishEntity.setWishMemberId(wishMemberId);
         wishEntity.setMemberEntity(memberEntity);
         return wishEntity;
     }
 
+    public static WishEntity toUpdateEntity(MemberEntity memberEntity, WishDTO wishDTO) {
+        WishEntity wishEntity = new WishEntity();
+        wishEntity.setId(wishDTO.getId());
+        wishEntity.setWishMemberId(wishDTO.getWishMemberId());
+        wishEntity.setMemberEntity(memberEntity);
+        return wishEntity;
+    }
 }

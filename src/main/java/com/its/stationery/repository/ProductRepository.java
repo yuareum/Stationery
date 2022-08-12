@@ -19,7 +19,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     @Query(value = "update ProductEntity p set p.productHits= p.productHits+1 where p.id= :id")
     void productHits(@Param("id") Long id);
 
-    List<ProductEntity> findByCategoryId(Long categoryId);
+    List<ProductEntity> findByCategoryName(Long categoryName);
 
     Page<ProductEntity> findByProductNameContainingOrProductBrandContainingIgnoreCase(String q, String q1, Pageable pageable);
 

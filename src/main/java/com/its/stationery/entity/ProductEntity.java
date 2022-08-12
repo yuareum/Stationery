@@ -1,6 +1,5 @@
 package com.its.stationery.entity;
 
-import com.its.stationery.dto.OrderDTO;
 import com.its.stationery.dto.ProductDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,14 +42,17 @@ public class ProductEntity extends BaseEntity {
     @Column(length = 50)
     private String productFileName;
 
-    @Column
-    private Long categoryId;
-
+    @Column(length = 20, nullable = false)
+    private String categoryName;
 
     @ColumnDefault("0")
     @Column(nullable = false)
     private int productHits;
-    
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private MemberEntity memberEntity;
+
     @OneToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ReviewEntity> reviewEntityList = new ArrayList<>();
 
@@ -60,27 +62,29 @@ public class ProductEntity extends BaseEntity {
     @OneToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderEntity> orderEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productEntity", cascade = CascadeType.ALL)
     private List<CartProductEntity> cartProductEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "productEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productEntity", cascade = CascadeType.ALL)
     private List<WishProductEntity> wishProductEntityList = new ArrayList<>();
 
 
-    public static ProductEntity toSaveEntity(ProductDTO productDTO) {
+    public static ProductEntity toSaveEntity(ProductDTO productDTO,MemberEntity memberEntity) {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setProductCounts(productDTO.getProductCounts());
         productEntity.setProductAdmin(productDTO.getProductAdmin());
         productEntity.setProductBrand(productDTO.getProductBrand());
         productEntity.setProductName(productDTO.getProductName());
         productEntity.setProductPrice(productDTO.getProductPrice());
+        productEntity.setCategoryName(productDTO.getCategoryName());
         productEntity.setProductInformation(productDTO.getProductInformation());
         productEntity.setProductCreatedTime(productDTO.getProductCreatedTime());
         productEntity.setProductFileName(productDTO.getProductFileName());
+        productEntity.setMemberEntity(memberEntity);
         return productEntity;
     }
 
-    public static ProductEntity toUpdateEntity(ProductDTO productDTO) {
+    public static ProductEntity toUpdateEntity(ProductDTO productDTO, MemberEntity memberEntity) {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setId(productDTO.getId());
         productEntity.setProductPrice(productDTO.getProductPrice());
@@ -90,13 +94,14 @@ public class ProductEntity extends BaseEntity {
         productEntity.setProductAdmin(productDTO.getProductAdmin());
         productEntity.setProductCreatedTime(productDTO.getProductCreatedTime());
         productEntity.setProductCounts(productDTO.getProductCounts());
-        productEntity.setCategoryId(productDTO.getCategoryId());
+        productEntity.setCategoryName(productDTO.getCategoryName());
         productEntity.setProductHits(productDTO.getProductHits());
         productEntity.setProductFileName(productDTO.getProductFileName());
+        productEntity.setMemberEntity(memberEntity);
         return productEntity;
     }
 
-    public static ProductEntity toUpdateCounts(ProductDTO productDTO,int counts){
+    public static ProductEntity toUpdateCounts(ProductDTO productDTO,int counts, MemberEntity memberEntity){
         ProductEntity productEntity = new ProductEntity();
         productEntity.setId(productDTO.getId());
         productEntity.setProductHits(productDTO.getProductHits());
@@ -106,9 +111,10 @@ public class ProductEntity extends BaseEntity {
         productEntity.setProductName(productDTO.getProductName());
         productEntity.setProductInformation(productDTO.getProductInformation());
         productEntity.setProductFileName(productDTO.getProductFileName());
-        productEntity.setCategoryId(productDTO.getCategoryId());
+        productEntity.setCategoryName(productDTO.getCategoryName());
         productEntity.setProductCreatedTime(productDTO.getProductCreatedTime());
         productEntity.setProductPrice(productDTO.getProductPrice());
+        productEntity.setMemberEntity(memberEntity);
         return productEntity;
     }
 

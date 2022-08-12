@@ -35,7 +35,7 @@
                     <img th:src="@{|/upload/${product.productFileName}|}" class="card-img-top" alt="" width="30" height="130" th:onclick="'location.href=\''+ @{|/product/${product.id}|} + '\''">
                     <div class="card-body">
                         <a class="card-title" style="font-size: 25px;" th:text="${product.productName}" th:href="@{|/product/${product.id}|}" >Card title</a>
-                        <p class="card-text" style="visibility: hidden;" th:text="${product.categoryId}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <p class="card-text" style="visibility: hidden;" th:text="${product.categoryName}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         <p class="card-text" th:text="${product.productPrice}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                     </div>
                 </div>

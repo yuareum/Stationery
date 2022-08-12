@@ -22,5 +22,11 @@ public class NoticeDTO {
     private int noticeHits;
 
 
-
+    public NoticeDTO(Long id, String noticeWriter, String noticeTitle, LocalDateTime createdTime, int noticeHits) {
+        this.id = id;
+        this.noticeWriter = noticeWriter;
+        this.noticeTitle = noticeTitle;
+        this.createdTime = createdTime;
+        this.noticeHits = noticeHits;
+    }
 }

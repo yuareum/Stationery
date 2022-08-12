@@ -36,6 +36,9 @@ public class MemberEntity {
     private String memberProfileName;
 
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ProductEntity> productEntityList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ReviewEntity> reviewEntityList = new ArrayList<>();
 
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -47,11 +50,15 @@ public class MemberEntity {
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<InquiryEntity> inquiryEntityList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<NoticeEntity> noticeEntityList = new ArrayList<>();
+
+    @OneToOne(mappedBy = "memberEntity", cascade = CascadeType.ALL)
     private CartEntity cartEntity;
 
-    @OneToOne(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "memberEntity", cascade = CascadeType.ALL)
     private  WishEntity wishEntity;
+
 
 
     public static MemberEntity toSaveEntity(MemberDTO memberDTO) {
