@@ -47,5 +47,17 @@ public class NoticeEntity extends BaseEntity{
         noticeEntity.setMemberEntity(memberEntity);
         return noticeEntity;
     }
+
+    public static NoticeEntity toUpdateEntity(NoticeDTO noticeDTO, MemberEntity memberEntity) {
+        NoticeEntity noticeEntity = new NoticeEntity();
+        noticeEntity.setId(noticeDTO.getId());
+        noticeEntity.setNoticeWriter(noticeDTO.getNoticeWriter());
+        noticeEntity.setNoticeContents(noticeDTO.getNoticeContents());
+        noticeEntity.setNoticeTitle(noticeDTO.getNoticeTitle());
+        noticeEntity.setNoticeFileName(noticeDTO.getNoticeFileName());
+        noticeEntity.setNoticeHits(noticeDTO.getNoticeHits());
+        noticeEntity.setMemberEntity(memberEntity);
+        return noticeEntity;
+    }
 }
 

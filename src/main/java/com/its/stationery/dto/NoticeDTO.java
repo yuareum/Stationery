@@ -1,5 +1,6 @@
 package com.its.stationery.dto;
 
+import com.its.stationery.entity.NoticeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,5 +29,18 @@ public class NoticeDTO {
         this.noticeTitle = noticeTitle;
         this.createdTime = createdTime;
         this.noticeHits = noticeHits;
+    }
+
+    public static NoticeDTO toNoticeDTO(NoticeEntity noticeEntity) {
+        NoticeDTO noticeDTO = new NoticeDTO();
+        noticeDTO.setId(noticeEntity.getId());
+        noticeDTO.setNoticeTitle(noticeEntity.getNoticeTitle());
+        noticeDTO.setNoticeWriter(noticeEntity.getNoticeWriter());
+        noticeDTO.setNoticeContents(noticeEntity.getNoticeContents());
+        noticeDTO.setNoticeFileName(noticeEntity.getNoticeFileName());
+        noticeDTO.setNoticeHits(noticeEntity.getNoticeHits());
+        noticeDTO.setCreatedTime(noticeEntity.getCreatedTime());
+        noticeDTO.setUpdatedTime(noticeEntity.getCreatedTime());
+        return noticeDTO;
     }
 }

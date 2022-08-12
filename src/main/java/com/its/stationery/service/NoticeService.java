@@ -3,6 +3,7 @@ package com.its.stationery.service;
 import com.its.stationery.common.PagingConst;
 import com.its.stationery.dto.MemberDTO;
 import com.its.stationery.dto.NoticeDTO;
+import com.its.stationery.dto.ProductDTO;
 import com.its.stationery.entity.MemberEntity;
 import com.its.stationery.entity.NoticeEntity;
 import com.its.stationery.entity.ProductEntity;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
@@ -54,6 +56,40 @@ public class NoticeService {
         if(optionalMemberEntity.isPresent()){
             Long saveId = noticeRepository.save(NoticeEntity.toSaveEntity(noticeDTO,optionalMemberEntity.get())).getId();
             return saveId;
+        }
+        return null;
+    }
+    @Transactional
+    public NoticeDTO detail(Long id) {
+        noticeRepository.noticeHits(id);
+        Optional<NoticeEntity> optionalNoticeEntity = noticeRepository.findById(id);
+        if(optionalNoticeEntity.isPresent()){
+            return NoticeDTO.toNoticeDTO(optionalNoticeEntity.get());
+        }
+        else {
+            return null;
+        }
+    }
+
+    public NoticeDTO findById(Long id) {
+        Optional<NoticeEntity> optionalNoticeEntity = noticeRepository.findById(id);
+        if(optionalNoticeEntity.isPresent()){
+            NoticeDTO noticeDTO = NoticeDTO.toNoticeDTO(optionalNoticeEntity.get());
+            return noticeDTO;
+        }
+        return null;
+    }
+
+    public void delete(Long id) {
+        noticeRepository.deleteById(id);
+    }
+
+    public Long update(NoticeDTO noticeDTO) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberId(noticeDTO.getNoticeWriter());
+        if(optionalMemberEntity.isPresent()){
+            NoticeEntity noticeEntity = NoticeEntity.toUpdateEntity(noticeDTO,optionalMemberEntity.get());
+            Long id = noticeRepository.save(noticeEntity).getId();
+            return id;
         }
         return null;
     }

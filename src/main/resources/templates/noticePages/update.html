@@ -1,10 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>공지 사항 수정</title>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>공지사항 수정</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <style>
+        .container{
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-
+<th:block th:replace="commonPages/header :: header"></th:block>
+<div class="container">
+    <h3>공지사항 수정</h3>
+    <form action="/notice/update" method="post">
+        <input type="hidden" name="id" th:value="${updateNotice.id}">
+        글 제목<input type="text" class="form-control" name="noticeTitle" th:value="${updateNotice.noticeTitle}"><br>
+        작성자<input type="text" class="form-control" name="noticeWriter" th:value="${updateNotice.noticeWriter}" readonly><br>
+        내용<textarea rows="10" cols="10" class="form-control" name="noticeContents" th:value="${updateNotice.noticeContents}"></textarea><br>
+        <input type="hidden" class="form-control" name="noticeHits" th:value="${updateNotice.noticeHits}" readonly><br>
+        <input type="hidden" class="form-control" name="noticeFileName" th:value="${updateNotice.noticeFileName}" readonly><br>
+        <input type="button"  class="btn btn-outline-dark" onclick="location.href='/notice'" value="취소">
+        <input type="submit" class="btn btn-primary" value="수정하기">
+    </form>
+</div>
 </body>
 </html>

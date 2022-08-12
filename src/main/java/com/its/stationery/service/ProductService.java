@@ -33,8 +33,6 @@ public class ProductService {
 
     private final MemberRepository memberRepository;
 
-    private final ReviewRepository reviewRepository;
-    private final OrderRepository orderRepository;
 
     public Long save(ProductDTO productDTO) throws IOException {
         MultipartFile productFile = productDTO.getProductFile();

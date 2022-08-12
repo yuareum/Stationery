@@ -24,8 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-
-    private final WishService wishService;
     private final WishProductService wishProductService;
 
     private final ReviewService reviewService;
