@@ -15,32 +15,18 @@
 </head>
 <body>
 <th:block th:replace="commonPages/header :: header"></th:block>
-    <div class="container">
-        <div class="form-floating">
-            <table>
-                <form action="/product/search" method="get">
-                    <div class="input-group mt-5">
-                        <input type="text" class="form-control" name="q" placeholder="상품 검색" style="max-width: 450px" aria-label="Product search" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" style="height: 40px; width: 50px;" type="submit"><i class="bi bi-search"></i></button>
-                        </div>
-                    </div>
-                </form>
-            </table>
-        </div>
         <div class="container">
             <div class="tab-content" id="nav-tabContent" >
-                <div class="card" style="width: 18rem; height: 260px;" th:each="search: ${searchList}">
-                    <img th:src="@{|/upload/${search.productFileName}|}" class="card-img-top" alt="" width="30" height="130" th:onclick="'location.href=\''+ @{|/product/${search.id}|} + '\''">
-                    <div class="card-body">
-                        <a class="card-title" style="font-size: 25px;" th:text="${search.productName}" th:href="@{|/product/${search.id}|}" >Card title</a>
-                        <p class="card-text" style="visibility: hidden;" th:text="${search.categoryId}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <p class="card-text" th:text="${search.productPrice}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <div style="width: 18rem; height: 260px;" th:each="search: ${searchList}">
+                    <img th:src="@{|/upload/${search.productFileName}|}" calt="" width="30" height="130" th:onclick="'location.href=\''+ @{|/product/${search.id}|} + '\''">
+                    <div >
+                        <a style="font-size: 25px;" th:text="${search.productName}" th:href="@{|/product/${search.id}|}" >Card title</a>
+                        <p style="visibility: hidden;" th:text="${search.categoryId}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <p th:text="${search.productPrice}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 <div class="container">
     <ul class="pagination justify-content-center">
         <li class="page-item">

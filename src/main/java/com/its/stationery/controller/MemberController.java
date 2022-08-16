@@ -1,7 +1,6 @@
 package com.its.stationery.controller;
 
 import com.its.stationery.common.PagingConst;
-import com.its.stationery.config.WebConfig;
 import com.its.stationery.dto.MemberDTO;
 import com.its.stationery.service.CartService;
 import com.its.stationery.service.MemberService;

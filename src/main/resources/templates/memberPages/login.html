@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"  xmlns:th="http://www.thymeleaf.org">
+    <title>Login</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <style>
@@ -21,6 +21,7 @@
     <form action="/member/login" method="post">
         아이디 <input type="text" class="form-control" name="memberId"><br>
         비밀번호 <input type="password" class="form-control" name="memberPassword"><br>
+        <a href="/member/save-form">회원가입을 아직 하지 않으셨나요?</a><br>
         <input type="submit" class="btn btn-primary" value="로그인">
     </form>
 </div>

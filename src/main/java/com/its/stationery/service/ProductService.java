@@ -76,7 +76,7 @@ public class ProductService {
                     product.getProductName(),
                     product.getProductPrice(),
                     product.getProductFileName(),
-                    product.getCategoryName()
+                    product.getCategoryId()
             ));
 
         return productList;
@@ -94,8 +94,8 @@ public class ProductService {
     }
     
 
-    public List<ProductDTO> categoryList(Long categoryName) {
-        List<ProductEntity> productEntityList = productRepository.findByCategoryName(categoryName);
+    public List<ProductDTO> categoryList(Long categoryId) {
+        List<ProductEntity> productEntityList = productRepository.findByCategoryId(categoryId);
         List<ProductDTO> productDTOList = new ArrayList<>();
         for(ProductEntity productEntity: productEntityList){
             productDTOList.add(ProductDTO.toProductDTO(productEntity));
@@ -115,7 +115,7 @@ public class ProductService {
                         product.getProductPrice(),
                         product.getProductFileName(),
                         product.getProductBrand(),
-                        product.getCategoryName()
+                        product.getCategoryId()
                 ));
 
         return productList;

@@ -17,7 +17,7 @@ public class ProductDTO {
     private String productName;
     private String productAdmin;
     private String productBrand;
-    private String categoryName;
+    private Long categoryId;
     private Long productPrice;
     private String productInformation;
     private String productCreatedTime;
@@ -27,21 +27,21 @@ public class ProductDTO {
     private MultipartFile productFile;
     private String productFileName;
 
-    public ProductDTO(Long id, String productName, Long productPrice, String productFileName, String categoryName) {
+    public ProductDTO(Long id, String productName, Long productPrice, String productFileName, Long categoryId) {
         this.id = id;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productFileName = productFileName;
-        this.categoryName = categoryName;
+        this.categoryId = categoryId;
     }
 
-    public ProductDTO(Long id, String productName, Long productPrice, String productFileName, String productBrand, String categoryName) {
+    public ProductDTO(Long id, String productName, Long productPrice, String productFileName, String productBrand, Long categoryId) {
         this.id = id;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productBrand = productBrand;
         this.productFileName = productFileName;
-        this.categoryName = categoryName;
+        this.categoryId = categoryId;
     }
 
 
@@ -57,7 +57,7 @@ public class ProductDTO {
         productDTO.setProductPrice(productEntity.getProductPrice());
         productDTO.setProductCreatedTime(productEntity.getProductCreatedTime());
         productDTO.setProductFileName(productEntity.getProductFileName());
-        productDTO.setCategoryName(productEntity.getCategoryName());
+        productDTO.setCategoryId(productEntity.getCategoryId());
         productDTO.setCreatedTime(productEntity.getCreatedTime());
         productDTO.setUpdatedTime(productEntity.getUpdatedTime());
         return productDTO;

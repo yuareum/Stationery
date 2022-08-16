@@ -1,13 +1,12 @@
 package com.its.stationery.entity;
 
 import com.its.stationery.dto.MemberDTO;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter @Setter
 @Table(name = "member_table")
@@ -82,5 +81,16 @@ public class MemberEntity {
         memberEntity.setMemberMobile(memberDTO.getMemberMobile());
         memberEntity.setMemberProfileName(memberDTO.getMemberProfileName());
         return memberEntity;
+    }
+
+    @Builder
+    public MemberEntity(Long id, String memberId, String memberPassword, String memberName, String memberEmail, String memberMobile, String memberProfileName) {
+        this.id = id;
+        this.memberId = memberId;
+        this.memberPassword = memberPassword;
+        this.memberName = memberName;
+        this.memberEmail = memberEmail;
+        this.memberMobile = memberMobile;
+        this.memberProfileName = memberProfileName;
     }
 }

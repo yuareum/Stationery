@@ -42,8 +42,8 @@ public class ProductEntity extends BaseEntity {
     @Column(length = 50)
     private String productFileName;
 
-    @Column(length = 20, nullable = false)
-    private String categoryName;
+    @Column(nullable = false)
+    private Long categoryId;
 
     @ColumnDefault("0")
     @Column(nullable = false)
@@ -68,7 +68,6 @@ public class ProductEntity extends BaseEntity {
     @OneToMany(mappedBy = "productEntity", cascade = CascadeType.ALL)
     private List<WishProductEntity> wishProductEntityList = new ArrayList<>();
 
-
     public static ProductEntity toSaveEntity(ProductDTO productDTO,MemberEntity memberEntity) {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setProductCounts(productDTO.getProductCounts());
@@ -76,7 +75,7 @@ public class ProductEntity extends BaseEntity {
         productEntity.setProductBrand(productDTO.getProductBrand());
         productEntity.setProductName(productDTO.getProductName());
         productEntity.setProductPrice(productDTO.getProductPrice());
-        productEntity.setCategoryName(productDTO.getCategoryName());
+        productEntity.setCategoryId(productDTO.getCategoryId());
         productEntity.setProductInformation(productDTO.getProductInformation());
         productEntity.setProductCreatedTime(productDTO.getProductCreatedTime());
         productEntity.setProductFileName(productDTO.getProductFileName());
@@ -94,7 +93,7 @@ public class ProductEntity extends BaseEntity {
         productEntity.setProductAdmin(productDTO.getProductAdmin());
         productEntity.setProductCreatedTime(productDTO.getProductCreatedTime());
         productEntity.setProductCounts(productDTO.getProductCounts());
-        productEntity.setCategoryName(productDTO.getCategoryName());
+        productEntity.setCategoryId(productDTO.getCategoryId());
         productEntity.setProductHits(productDTO.getProductHits());
         productEntity.setProductFileName(productDTO.getProductFileName());
         productEntity.setMemberEntity(memberEntity);
@@ -111,7 +110,7 @@ public class ProductEntity extends BaseEntity {
         productEntity.setProductName(productDTO.getProductName());
         productEntity.setProductInformation(productDTO.getProductInformation());
         productEntity.setProductFileName(productDTO.getProductFileName());
-        productEntity.setCategoryName(productDTO.getCategoryName());
+        productEntity.setCategoryId(productDTO.getCategoryId());
         productEntity.setProductCreatedTime(productDTO.getProductCreatedTime());
         productEntity.setProductPrice(productDTO.getProductPrice());
         productEntity.setMemberEntity(memberEntity);
